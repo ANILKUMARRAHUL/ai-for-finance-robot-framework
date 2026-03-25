@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+.env/
+
+# Robot Framework Reports
+Reports/
+log.html
+report.html
+output.xml
+pabot_results/
+.pabotsuitenames
+*.png
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
