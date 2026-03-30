@@ -2,8 +2,8 @@
 Resource    ../Settings/Settings.robot
 Resource    ../Keywords/login_keywords.robot
 
-Suite Setup       Open Browser To Login Page
-Suite Teardown    Terminate Browser Session
+Test Setup       Open Browser With Options
+Test Teardown    Terminate Browser Session
 
 *** Test Cases ***
 Verify Valid Login
