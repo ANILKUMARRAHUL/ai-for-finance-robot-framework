@@ -4,6 +4,7 @@ Library    String
 Library    Collections
 Variables    ../Variables/login_variables.py
 Variables    ../Variables/invoice_check_variables.py
+Variables    ../Variables/report_variables.py
 
 *** Variables ***
 ${HEADLESS}    False

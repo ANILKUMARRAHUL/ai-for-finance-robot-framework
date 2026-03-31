@@ -31,3 +31,22 @@ Validate Dashboard Reconciliation View By Filter
     Open Invoice Check Module
     Verify Dashboard Page
     Validate Reconciliation View By Filters
+
+Validate Dashboard Filters Carry Over To Reports Page
+    [Tags]    dashboard    filter
+    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Verify Login Successful
+    Verify Home Page Loaded
+    Open Invoice Check Module
+    Verify Dashboard Page
+    Validate All Dashboard Filter Combinations
+
+Validate Dashboard Custom Range Filter Carries Over To Reports Page
+    [Tags]    dashboard    filter    custom_range
+    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Verify Login Successful
+    Verify Home Page Loaded
+    Open Invoice Check Module
+    Verify Dashboard Page
+    Validate All Custom Range Filter Combinations
+

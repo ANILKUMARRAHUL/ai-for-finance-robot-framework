@@ -1,6 +1,6 @@
 BASE_URL = "https://ai-finance.tkm.co.in/login"
 BROWSER = "chrome"
-TIMEOUT = 20
+TIMEOUT = 30
 VALID_USERNAME = "onetapp"
 VALID_PASSWORD = "!Toyota2026Onetapp)"
 INVALID_USERNAME = "wronguser"
