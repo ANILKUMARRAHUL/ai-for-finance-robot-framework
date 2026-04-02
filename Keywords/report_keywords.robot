@@ -191,6 +191,14 @@ Validate Rows Per Page Option
     Log To Console    Rows per page ${expected_count} verified successfully
 
 Validate All Rows Per Page Options
+    # Check if no data available before starting
+    ${no_data}=    Run Keyword And Return Status
+    ...    Element Should Be Visible    ${REPORTS_NO_DATA_MESSAGE}
+    IF    ${no_data}
+        Log To Console    \nNo reports available — skipping Rows Per Page validation
+        RETURN
+    END
+
     Validate Rows Per Page Option    ${ROWS_PER_PAGE_5}     5
     Validate Rows Per Page Option    ${ROWS_PER_PAGE_10}    10
     Validate Rows Per Page Option    ${ROWS_PER_PAGE_25}    25

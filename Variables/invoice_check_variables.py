@@ -15,9 +15,12 @@ INVOICE_CHECK_MODULE_LOADED = "xpath=//a[contains(@href,'/invoice-check/dashboar
 # DASHBOARD KPI CARDS
 # =========================
 
-DASHBOARD_KPI_CARDS = "xpath=//main//div[contains(@class,'h-40') and contains(@class,'cursor-pointer')]"
-CARD_TITLE_RELATIVE = "xpath=.//div[contains(@class,'uppercase')]"
-CARD_VALUE_RELATIVE = "xpath=.//div[contains(@class,'text-4xl')]"
+# DASHBOARD_KPI_CARDS = "xpath=//main//div[contains(@class,'h-40') and contains(@class,'cursor-pointer')]"
+# CARD_TITLE_RELATIVE = "xpath=.//div[contains(@class,'uppercase')]"
+# CARD_VALUE_RELATIVE = "xpath=.//div[contains(@class,'text-4xl')]"
+DASHBOARD_KPI_CARDS     = "xpath=//main//div[contains(@class,'h-40') and contains(@class,'bg-card')]"
+CARD_TITLE_RELATIVE     = "xpath=.//div[contains(@class,'uppercase')]"
+CARD_VALUE_RELATIVE     = "xpath=.//div[contains(@class,'text-4xl')]"
 
 # Excluded cards
 EXCLUDED_CARD_1 = "ITC RECEIVED"
@@ -62,3 +65,4 @@ CUSTOM_RANGE_APPLY_BUTTON = "xpath=//button[normalize-space()='Apply']"
 CUSTOM_RANGE_CANCEL_BUTTON = "xpath=//button[normalize-space()='Cancel']"
 DASHBOARD_NO_DATA_MESSAGE = "xpath=//h3[normalize-space()='No Data Available']"
 CARD_TOOLTIP = "xpath=//div[contains(text(),'Exact Value:')]"
+CUSTOM_RANGE_DATE_TRIGGER = "xpath=//button[@data-slot='popover-trigger' and @aria-haspopup='dialog']"

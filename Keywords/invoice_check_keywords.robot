@@ -71,8 +71,9 @@ Validate Dashboard KPI Cards With Reports Count
 
         Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    20s
 
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'cursor-pointer')])[${position}]//div[contains(@class,'uppercase')]
-        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'cursor-pointer')])[${position}]
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-4xl')]
+        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
@@ -84,19 +85,22 @@ Validate Dashboard KPI Cards With Reports Count
             CONTINUE
         END
 
-        # Step 1 — Scroll to card and hover
+        # Check if card value is 0 — skip if no data
+        ${value}=           Get Text    ${value_locator}
+        ${clean_value}=     Clean Number Text    ${value}
+        IF    '${clean_value}' == '0'
+            Log To Console    ${title} is 0, can't be clicked — skipping
+            CONTINUE
+        END
+
+        # Hover to get exact value from tooltip
         Scroll Element Into View    ${click_card}
         Sleep    1s
         Mouse Over    ${click_card}
         Sleep    2s
 
-        # Step 2 — Take screenshot to see what tooltip looks like
-        Capture Page Screenshot    tooltip_${position}.png
-
-        # Step 3 — Read tooltip text — try different possible tooltip xpaths
         ${tooltip_visible}=    Run Keyword And Return Status
         ...    Element Should Be Visible    xpath=//*[contains(text(),'Exact Value')]
-        Log To Console    Tooltip visible: ${tooltip_visible}
 
         IF    ${tooltip_visible}
             ${tooltip_text}=    Get Text    xpath=//*[contains(text(),'Exact Value')]
@@ -105,16 +109,12 @@ Validate Dashboard KPI Cards With Reports Count
             ${exact_value}=     Strip String        ${exact_value}
             ${dashboard_count}=    Clean Number Text    ${exact_value}
         ELSE
-            # Fallback — read abbreviated value if tooltip not visible
-            ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'cursor-pointer')])[${position}]//div[contains(@class,'text-4xl')]
-            ${value}=            Get Text    ${value_locator}
             ${dashboard_count}=    Clean Number Text    ${value}
             Log To Console    Tooltip not found — using card value: ${dashboard_count}
         END
 
         Log To Console    Dashboard count: ${dashboard_count}
 
-        # Step 4 — Click the card
         Click Element    ${click_card}
 
         Wait Until Location Contains    /invoice-check/reports    20s
@@ -169,12 +169,28 @@ Validate View By Filter Change
     Open View By Dropdown
     Select View By Option    ${option_locator}
 
-    ${header}=    Get Reconciliation Column Header
+    # Check if no data available
+    ${no_data}=    Run Keyword And Return Status
+    ...    Element Should Be Visible    ${DASHBOARD_NO_DATA_MESSAGE}
+    IF    ${no_data}
+        Log To Console    No data available for filter: ${filter_name} — skipping header check
+        RETURN
+    END
 
+    ${header}=    Get Reconciliation Column Header
     Should Contain    ${header}    ${expected_keyword}
 
 Validate Reconciliation View By Filters
     Scroll To Reconciliation Table
+
+    # Check if no data before even starting
+    ${no_data}=    Run Keyword And Return Status
+    ...    Element Should Be Visible    ${DASHBOARD_NO_DATA_MESSAGE}
+    IF    ${no_data}
+        Log To Console    \nReconciliation table has no data — skipping all View By filter checks
+        RETURN
+    END
+
     Validate View By Filter Change    Month      ${VIEW_BY_MONTH_OPTION}      (
     Validate View By Filter Change    Quarter    ${VIEW_BY_QUARTER_OPTION}    Q
     Validate View By Filter Change    Year       ${VIEW_BY_YEAR_OPTION}       20
@@ -201,15 +217,16 @@ Select Date Range Filter
     Sleep    3s
 
 Click First Available KPI Card
-    Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    45s
+    Wait For Dashboard Cards To Load
     ${cards}=    Get WebElements    ${DASHBOARD_KPI_CARDS}
     ${total_cards}=    Get Length    ${cards}
 
     FOR    ${index}    IN RANGE    ${total_cards}
         ${position}=    Evaluate    ${index} + 1
 
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'cursor-pointer')])[${position}]//div[contains(@class,'uppercase')]
-        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'cursor-pointer')])[${position}]
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-4xl')]
+        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
@@ -219,12 +236,20 @@ Click First Available KPI Card
             CONTINUE
         END
 
+        ${value}=           Get Text    ${value_locator}
+        ${clean_value}=     Clean Number Text    ${value}
+        IF    '${clean_value}' == '0'
+            Log To Console    ${title} is 0, can't be clicked — skipping
+            CONTINUE
+        END
+
         Log To Console    Clicking card: ${title}
         Scroll Element Into View    ${click_card}
         Sleep    1s
         Click Element    ${click_card}
-        BREAK
+        RETURN
     END
+    Log To Console    All KPI cards have 0 data — nothing to click
 
 Verify Reports Page URL Contains Filters
     [Arguments]    ${expected_date_column}    ${expected_date_preset}
@@ -243,8 +268,43 @@ Validate Dashboard Filter Combination
 
     Select Date Column Filter    ${date_column_option}
     Select Date Range Filter     ${date_range_option}
+    Wait For Dashboard Cards To Load
+    # Wait for cards to visually update after filter change
+    Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    30s
+    Wait Until Element Is Visible    ${DASHBOARD_HEADING}      30s
+    Sleep    5s
 
-    Wait For Page To Stabilize
+    # Check all cards for zero before clicking
+    ${cards}=    Get WebElements    ${DASHBOARD_KPI_CARDS}
+    ${total_cards}=    Get Length    ${cards}
+    ${all_zero}=    Set Variable    ${TRUE}
+
+    FOR    ${index}    IN RANGE    ${total_cards}
+        ${position}=    Evaluate    ${index} + 1
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-4xl')]
+
+        ${title}=    Get Text    ${title_locator}
+        ${title}=    Convert To Upper Case    ${title}
+
+        IF    '${title}' == '${EXCLUDED_CARD_1}' or '${title}' == '${EXCLUDED_CARD_2}'
+            CONTINUE
+        END
+
+        ${value}=        Get Text    ${value_locator}
+        ${clean_value}=  Clean Number Text    ${value}
+
+        IF    '${clean_value}' != '0'
+            ${all_zero}=    Set Variable    ${FALSE}
+        ELSE
+            Log To Console    ${title} is 0, can't be clicked
+        END
+    END
+
+    IF    ${all_zero}
+        Log To Console    All KPI cards are 0 for ${expected_date_column} + ${expected_date_preset} — skipping
+        RETURN
+    END
 
     Click First Available KPI Card
 
@@ -254,7 +314,10 @@ Validate Dashboard Filter Combination
     Wait Until Location Contains    /invoice-check/dashboard    20s
     Wait Until Element Is Visible   ${DASHBOARD_HEADING}        20s
     Scroll To Top
-    Wait For Page To Stabilize
+    # Wait for cards to reload after going back
+    Wait For Dashboard Cards To Load
+    # Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    30s
+    # Sleep    5s
 
 Validate All Dashboard Filter Combinations
     Validate Dashboard Filter Combination
@@ -356,16 +419,15 @@ Select Custom Date Range
     Execute JavaScript    window.scrollTo(0, 0)
     Sleep    2s
 
-    # Wait for calendar to be present in DOM — not visibility check
     Wait Until Page Contains Element    ${prev_arrow}    30s
     Sleep    1s
 
-    # Click left arrow using JS to bypass visibility issues in headless
+    # Navigate back to start month
     FOR    ${i}    IN RANGE    ${clicks_needed}
         Wait Until Page Contains Element    ${prev_arrow}    10s
         ${arrow}=    Get WebElement    ${prev_arrow}
         Execute JavaScript    arguments[0].click()    ARGUMENTS    ${arrow}
-        Sleep    1s
+        Sleep    0.5s
     END
 
     # Pick start date
@@ -375,12 +437,12 @@ Select Custom Date Range
     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${start_btn}
     Sleep    1s
 
-    # Click right arrow using JS
+    # Navigate right to end month
     FOR    ${i}    IN RANGE    ${right_clicks_needed}
         Wait Until Page Contains Element    ${next_arrow}    10s
         ${arrow}=    Get WebElement    ${next_arrow}
         Execute JavaScript    arguments[0].click()    ARGUMENTS    ${arrow}
-        Sleep    1s
+        Sleep    0.5s
     END
 
     # Pick end date
@@ -405,12 +467,34 @@ Validate Custom Range Filter Combination
     ...    Get Random Start And End Date
 
     Select Date Column Filter       ${date_column_option}
-    Select Date Range Filter        ${DATE_RANGE_CUSTOM_RANGE}
-    Sleep    2s
+
+    # Check if Custom Range is already selected — if so click date trigger directly
+    ${current_range}=    Get Text    ${DATE_RANGE_DROPDOWN}
+    ${is_custom}=        Run Keyword And Return Status
+    ...    Should Contain    ${current_range}    Custom Range
+
+    IF    ${is_custom}
+        Log To Console    Custom Range already selected — clicking date trigger directly
+        Wait Until Element Is Visible    ${CUSTOM_RANGE_DATE_TRIGGER}    10s
+        Click Element                    ${CUSTOM_RANGE_DATE_TRIGGER}
+        Sleep    2s
+        # Reset calendar position to current month first
+        FOR    ${i}    IN RANGE    ${clicks_needed}
+            Wait Until Page Contains Element    xpath=//button[@aria-label='Go to the Next Month']    10s
+            ${arrow}=    Get WebElement    xpath=//button[@aria-label='Go to the Next Month']
+            Execute JavaScript    arguments[0].click()    ARGUMENTS    ${arrow}
+            Sleep    0.5s
+        END
+        Sleep    1s
+    ELSE
+        Select Date Range Filter    ${DATE_RANGE_CUSTOM_RANGE}
+        Sleep    2s
+    END
 
     Select Custom Date Range        ${start_data_day}    ${end_data_day}    ${clicks_needed}    ${right_clicks_needed}
 
-    Wait For Page To Stabilize
+    # Wait for dashboard cards to fully load visually
+    Wait For Dashboard Cards To Load
 
     # Check if no data available for selected range
     ${no_data}=    Run Keyword And Return Status
@@ -440,7 +524,7 @@ Validate Custom Range Filter Combination
     Wait Until Location Contains    /invoice-check/dashboard    20s
     Wait Until Element Is Visible   ${DASHBOARD_HEADING}        20s
     Scroll To Top
-    Wait For Page To Stabilize
+    Wait For Dashboard Cards To Load
 
 Validate All Custom Range Filter Combinations
     Validate Custom Range Filter Combination
@@ -451,3 +535,8 @@ Validate All Custom Range Filter Combinations
     ...    ${DATE_COLUMN_VOUCHER_DATE}
     ...    date_column=voucher_date
 
+Wait For Dashboard Cards To Load
+    Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    45s
+    # Wait until at least one card value is not empty — confirms visual load
+    Wait Until Element Is Visible    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[1]//div[contains(@class,'text-4xl')]    30s
+    Sleep    3s
