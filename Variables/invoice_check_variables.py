@@ -24,7 +24,7 @@ CARD_VALUE_RELATIVE     = "xpath=.//div[contains(@class,'text-4xl')]"
 
 # Excluded cards
 EXCLUDED_CARD_1 = "ITC RECEIVED"
-EXCLUDED_CARD_2 = "FAILED"
+EXCLUDED_CARD_2 = "OCR FAILED"
 
 # Reports bottom count
 REPORTS_BOTTOM_TOTAL = "xpath=//main//p[@aria-live='polite']//span[last()]"
@@ -54,9 +54,6 @@ DATE_RANGE_MONTH_TILL_DATE = "xpath=//div[@role='option'][normalize-space()='Mon
 DATE_RANGE_LAST_MONTH     = "xpath=//div[@role='option'][normalize-space()='Last Month']"
 DATE_RANGE_FISCAL_YEAR    = "xpath=//div[@role='option'][normalize-space()='Fiscal Year']"
 DATE_RANGE_YEAR_TILL_DATE = "xpath=//div[@role='option'][normalize-space()='Year Till Date']"
-
-# URL parameter mappings are handled in keywords directly
-
 # =========================
 # CUSTOM RANGE DATE PICKER
 # =========================

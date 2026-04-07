@@ -244,6 +244,6 @@ Validate All Downloads Rows Per Page Options
     END
 
     Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_6}     6
-    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_10}    10
-    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_25}    25
-    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_50}    50
+    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_12}    12
+    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_24}    24
+    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_48}    48

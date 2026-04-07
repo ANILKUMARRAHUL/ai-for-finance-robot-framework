@@ -6,6 +6,7 @@ Variables    ../Variables/login_variables.py
 Variables    ../Variables/invoice_check_variables.py
 Variables    ../Variables/report_variables.py
 Variables    ../Variables/download_variables.py
+Variables    ../Variables/non_po_invoice_check_variables.py
 
 *** Variables ***
 ${HEADLESS}    False

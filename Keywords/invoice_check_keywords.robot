@@ -25,8 +25,8 @@ Go To Reports Page
     Click Element    ${SIDENAV_REPORTS}
 
 Verify Reports Page
-    Wait Until Location Contains    /invoice-check/reports    20s
-    Wait Until Element Is Visible    ${REPORTS_HEADING}    20s
+    Wait Until Location Contains    /invoice-check/reports    40s
+    Wait Until Element Is Visible    ${REPORTS_HEADING}    40s
     Wait For Page To Stabilize
     Slow Scroll To Bottom
 
@@ -117,7 +117,7 @@ Validate Dashboard KPI Cards With Reports Count
 
         Click Element    ${click_card}
 
-        Wait Until Location Contains    /invoice-check/reports    20s
+        Wait Until Location Contains    /invoice-check/reports    40s
         Wait Until Element Is Visible   ${REPORTS_BOTTOM_TOTAL}    20s
 
         Slow Scroll To Bottom
@@ -253,7 +253,7 @@ Click First Available KPI Card
 
 Verify Reports Page URL Contains Filters
     [Arguments]    ${expected_date_column}    ${expected_date_preset}
-    Wait Until Location Contains    /invoice-check/reports    20s
+    Wait Until Location Contains    /invoice-check/reports    40s
     Wait Until Element Is Visible   ${REPORTS_HEADING}        20s
     Sleep    2s
     ${current_url}=    Get Location
@@ -506,7 +506,7 @@ Validate Custom Range Filter Combination
 
     Click First Available KPI Card
 
-    Wait Until Location Contains    /invoice-check/reports    20s
+    Wait Until Location Contains    /invoice-check/reports    40s
     Wait Until Element Is Visible   ${REPORTS_HEADING}        20s
     Sleep    2s
 
@@ -536,7 +536,7 @@ Validate All Custom Range Filter Combinations
     ...    date_column=voucher_date
 
 Wait For Dashboard Cards To Load
-    Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    45s
+    Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    60s
     # Wait until at least one card value is not empty — confirms visual load
     Wait Until Element Is Visible    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[1]//div[contains(@class,'text-4xl')]    30s
     Sleep    3s

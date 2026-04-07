@@ -1,2 +1,3 @@
 HOME_PAGE_TITLE = "xpath=//h1[contains(.,'Your Command Center') and contains(.,'Invoice')]"
 OPEN_INVOICE_CHECK_BUTTON = "xpath=//a[contains(@href,'/invoice-check') and contains(.,'Open Invoice Check')]"
+OPEN_NON_INVOICE_CHECK_BUTTON = "xpath=//a[normalize-space()='Open Non PO Invoice']"

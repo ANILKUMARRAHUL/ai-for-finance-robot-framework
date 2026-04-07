@@ -37,9 +37,9 @@ REPORT_GENERATION_TOAST         = "xpath=//div[@data-title][contains(.,'Report g
 
 DOWNLOADS_ROWS_PER_PAGE_DROPDOWN    = "xpath=(//button[@role='combobox'])[7]"
 DOWNLOADS_ROWS_PER_PAGE_6           = "xpath=//div[@role='option'][normalize-space()='6']"
-DOWNLOADS_ROWS_PER_PAGE_10          = "xpath=//div[@role='option'][normalize-space()='10']"
-DOWNLOADS_ROWS_PER_PAGE_25          = "xpath=//div[@role='option'][normalize-space()='25']"
-DOWNLOADS_ROWS_PER_PAGE_50          = "xpath=//div[@role='option'][normalize-space()='50']"
+DOWNLOADS_ROWS_PER_PAGE_12          = "xpath=//div[@role='option'][normalize-space()='12']"
+DOWNLOADS_ROWS_PER_PAGE_24          = "xpath=//div[@role='option'][normalize-space()='24']"
+DOWNLOADS_ROWS_PER_PAGE_48          = "xpath=//div[@role='option'][normalize-space()='48']"
 DOWNLOADS_TABLE_ROWS                = "xpath=//table//tbody//tr"
 DOWNLOADS_SHOWING_TEXT              = "xpath=//p[contains(text(),'Showing')]"
 DOWNLOADS_NO_DATA_MESSAGE = "xpath=//div[normalize-space()='No Reports Found']"
