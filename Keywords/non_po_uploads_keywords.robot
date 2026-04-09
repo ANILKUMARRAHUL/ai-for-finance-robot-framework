@@ -46,7 +46,9 @@ Select Random Reviewer Option
 
 Upload Files To Invoice Tab
     Sleep   3s
-    Click Element                    ${NONPO_UPLOADS_TAB_INVOICE}
+    Wait Until Page Contains Element    ${NONPO_UPLOADS_TAB_INVOICE}    10s
+    ${elem}=    Get WebElement       ${NONPO_UPLOADS_TAB_INVOICE}
+    Execute Javascript    arguments[0].click();    ARGUMENTS    ${elem}
     Sleep    1s
     FOR    ${pdf}    IN    @{INVOICE_PDF_PATHS}
         Choose File    ${NONPO_FILE_INPUT}    ${pdf}
@@ -60,14 +62,40 @@ Scroll To Top
 Upload File To PR Tab
     Scroll To Top
     Sleep    1s
-    Wait Until Element Is Visible    ${NONPO_UPLOADS_TAB_PR}    10s
-    Scroll Element Into View         ${NONPO_UPLOADS_TAB_PR}
+
+    # Wait Until Element Does Not Exist    ${NONPO_INCOMPLETE_DIALOG}    15s
+    Wait Until Element Is Visible        ${NONPO_UPLOADS_TAB_PR}    20s
+    Scroll Element Into View             ${NONPO_UPLOADS_TAB_PR}
     Sleep    1s
-    # Execute JavaScript    document.querySelector('[id*="trigger-payment-request"]').click()
-    Click Element                    ${NONPO_UPLOADS_TAB_PR}
+
+    ${elem}=    Get WebElement    ${NONPO_UPLOADS_TAB_PR}
+
+    Execute Javascript
+    ...    arguments[0].scrollIntoView({block:'center'});
+    ...    arguments[0].dispatchEvent(new MouseEvent('mouseover', {bubbles:true}));
+    ...    arguments[0].dispatchEvent(new MouseEvent('mousedown', {bubbles:true, button:0}));
+    ...    arguments[0].dispatchEvent(new MouseEvent('mouseup', {bubbles:true, button:0}));
+    ...    arguments[0].dispatchEvent(new MouseEvent('click', {bubbles:true, button:0}));
+    ...    ARGUMENTS    ${elem}
+
     Sleep    2s
-    Choose File    ${NONPO_FILE_INPUT}    ${PR_PDF_PATH}
-    Sleep    1s
+
+    ${selected}=    Get Element Attribute    ${NONPO_UPLOADS_TAB_PR}    aria-selected
+    Log To Console    PR tab aria-selected after click: ${selected}
+
+    Run Keyword If    '${selected}' != 'true'
+    ...    Press Keys    ${NONPO_UPLOADS_TAB_PR}    ENTER
+
+    Sleep    2s
+
+    ${selected2}=    Get Element Attribute    ${NONPO_UPLOADS_TAB_PR}    aria-selected
+    Log To Console    PR tab aria-selected after ENTER fallback: ${selected2}
+
+    Should Be Equal    ${selected2}    true
+
+    Wait Until Page Contains Element    ${NONPO_ACTIVE_TAB_FILE_INPUT}    15s
+    Choose File    ${NONPO_ACTIVE_TAB_FILE_INPUT}    ${PR_PDF_PATH}
+    Sleep    2s
 # Upload File To PR Tab
 #     Sleep   3s
 #     Click Element                    ${NONPO_UPLOADS_TAB_PR}
@@ -88,7 +116,14 @@ Click Go Back On Incomplete Dialog
     Sleep    1s
 
 Verify Upload Success Toast
-    Wait Until Element Is Visible    ${NONPO_SUCCESS_TOAST}    10s
+    ${toast_found}=    Run Keyword And Return Status
+    ...    Wait Until Keyword Succeeds    20s    1s    Page Should Contain Element    ${NONPO_SUCCESS_TOAST}
+
+    IF    not ${toast_found}
+        Capture Page Screenshot
+        Log Source
+        Fail    Success toast not found after upload.
+    END
 
 Verify NonPO Invoice Upload Negative Then Positive
     # --- NEGATIVE: Invoice only, no PR ---

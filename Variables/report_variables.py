@@ -1,4 +1,11 @@
 # =========================
+# DATE RANGE PRESET FILTER
+# =========================
+
+DATE_PRESET_DROPDOWN        = "xpath=(//button[@role='combobox'])[2]"
+DATE_PRESET_LAST_MONTH      = "xpath=//div[@role='option'][normalize-space()='Last Month']"
+
+# =========================
 # REPORTS PAGE FILTERS
 # =========================
 
@@ -31,3 +38,40 @@ ROWS_PER_PAGE_25            = "xpath=//div[@role='option'][normalize-space()='25
 ROWS_PER_PAGE_50            = "xpath=//div[@role='option'][normalize-space()='50']"
 REPORTS_TABLE_ROWS          = "xpath=//table//tbody//tr"
 REPORTS_SHOWING_TEXT        = "xpath=//p[contains(text(),'Showing')]"
+
+# =========================
+# INVOICE DETAIL - EDIT & UPDATE STATUS
+# =========================
+
+# First invoice link in the reports table
+FIRST_INVOICE_LINK          = "xpath=(//table//tbody//tr//td[2]//span[contains(@class,'cursor-pointer')])[1]"
+
+# Edit button on the invoice detail page (OCR Extraction Results section)
+EDIT_BUTTON                 = "xpath=//button[normalize-space()='Edit']"
+
+# Save Changes button — appears/enabled after clicking Edit
+SAVE_CHANGES_BTN            = "xpath=//button[normalize-space()='Save Changes']"
+
+# Update Status button on the detail page (not inside the popup)
+UPDATE_STATUS_BTN           = "xpath=//button[normalize-space()='Update Status'][not(ancestor::*[@data-slot='dialog-content'])]"
+
+# Update Status button INSIDE the confirmation popup
+UPDATE_STATUS_POPUP_BTN     = "xpath=//*[@data-slot='dialog-content']//button[normalize-space()='Update Status']"
+
+# Success toast message that appears after saving
+SUCCESS_TOAST               = "xpath=//*[normalize-space()='Changes saved successfully']"
+
+# Editable ITC Data input fields (visible only when Edit mode is active)
+# TODO: Replace the [INDEX] with the correct number (1 through 19) based on the order on the screen.
+# For example, if CGST Amount is the 5th editable input on the screen, change it from [INDEX] to [5]
+EDIT_CGST_INPUT             = "xpath=(//input[@data-slot='input' and not(@disabled)])[1]"
+EDIT_DOC_TITLE_INPUT        = "xpath=(//input[@data-slot='input' and not(@disabled)])[3]"
+
+# =========================
+# SUMMARY PANEL TOGGLE
+# =========================
+
+HIDE_SUMMARY_BTN            = "xpath=//button[contains(., 'Hide Summary')]"
+SHOW_SUMMARY_BTN            = "xpath=//button[contains(., 'Show Summary')]"
+# Look for 'View Invoice' text inside the summary image area as an indicator if the panel is visible or not.
+SUMMARY_PANEL_INDICATOR     = "xpath=//*[normalize-space()='View Invoice']"

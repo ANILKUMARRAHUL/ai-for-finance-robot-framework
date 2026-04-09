@@ -49,8 +49,8 @@ CHOSEN_NUM, INVOICE_PDF_PATHS, PR_PDF_PATH = _pick_random_invoice_set()
 # UPLOADS PAGE LOCATORS
 # =========================
 NONPO_UPLOADS_TAB_INVOICE   = "xpath=//button[@role='tab'][normalize-space()='Invoices']"
-NONPO_UPLOADS_TAB_PR        = "xpath=//button[@role='tab'][normalize-space()='Payment Request']"
-
+NONPO_UPLOADS_TAB_PR        = "xpath=//button[@role='tab' and normalize-space()='Payment Request']"
+NONPO_ACTIVE_TAB_FILE_INPUT = "xpath=//div[@role='tabpanel' and not(@hidden)]//input[@type='file']"
 NONPO_FILE_INPUT            = "xpath=//input[@type='file']"
 
 NONPO_AGREEMENT_DROPDOWN    = "xpath=//input[@placeholder='Select agreement type']"

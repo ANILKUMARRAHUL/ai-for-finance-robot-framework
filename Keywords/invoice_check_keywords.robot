@@ -359,8 +359,8 @@ Get Random Start And End Date
     ${current_month}=           Set Variable        ${today_dt.month}
     ${current_year}=            Set Variable        ${today_dt.year}
 
-    # Random number of months to go back (6 to 10)
-    ${months_back}=             Evaluate    random.randint(6, 10)    modules=random
+    # Random number of months to go back (1 to 10)
+    ${months_back}=             Evaluate    random.randint(1, 10)    modules=random
 
     # Calculate start month and year
     ${total_start_month}=       Evaluate    ${current_month} - ${months_back}
@@ -468,28 +468,11 @@ Validate Custom Range Filter Combination
 
     Select Date Column Filter       ${date_column_option}
 
-    # Check if Custom Range is already selected — if so click date trigger directly
-    ${current_range}=    Get Text    ${DATE_RANGE_DROPDOWN}
-    ${is_custom}=        Run Keyword And Return Status
-    ...    Should Contain    ${current_range}    Custom Range
-
-    IF    ${is_custom}
-        Log To Console    Custom Range already selected — clicking date trigger directly
-        Wait Until Element Is Visible    ${CUSTOM_RANGE_DATE_TRIGGER}    10s
-        Click Element                    ${CUSTOM_RANGE_DATE_TRIGGER}
-        Sleep    2s
-        # Reset calendar position to current month first
-        FOR    ${i}    IN RANGE    ${clicks_needed}
-            Wait Until Page Contains Element    xpath=//button[@aria-label='Go to the Next Month']    10s
-            ${arrow}=    Get WebElement    xpath=//button[@aria-label='Go to the Next Month']
-            Execute JavaScript    arguments[0].click()    ARGUMENTS    ${arrow}
-            Sleep    0.5s
-        END
-        Sleep    1s
-    ELSE
-        Select Date Range Filter    ${DATE_RANGE_CUSTOM_RANGE}
-        Sleep    2s
-    END
+    # Always reset: switch to Month Till Date first, then back to Custom Range
+    Select Date Range Filter    ${DATE_RANGE_MONTH_TILL_DATE}
+    Sleep    1s
+    Select Date Range Filter    ${DATE_RANGE_CUSTOM_RANGE}
+    Sleep    2s
 
     Select Custom Date Range        ${start_data_day}    ${end_data_day}    ${clicks_needed}    ${right_clicks_needed}
 
