@@ -15,16 +15,17 @@ INVOICE_CHECK_MODULE_LOADED = "xpath=//a[contains(@href,'/invoice-check/dashboar
 # DASHBOARD KPI CARDS
 # =========================
 
-# DASHBOARD_KPI_CARDS = "xpath=//main//div[contains(@class,'h-40') and contains(@class,'cursor-pointer')]"
+# DASHBOARD_KPI_CARDS = "xpath=//main//div[contains(@class,'h-full') and contains(@class,'cursor-pointer')]"
 # CARD_TITLE_RELATIVE = "xpath=.//div[contains(@class,'uppercase')]"
 # CARD_VALUE_RELATIVE = "xpath=.//div[contains(@class,'text-4xl')]"
-DASHBOARD_KPI_CARDS     = "xpath=//main//div[contains(@class,'h-40') and contains(@class,'bg-card')]"
+DASHBOARD_KPI_CARDS     = "xpath=//main//div[contains(@class,'h-full') and contains(@class,'bg-card')]"
 CARD_TITLE_RELATIVE     = "xpath=.//div[contains(@class,'uppercase')]"
-CARD_VALUE_RELATIVE     = "xpath=.//div[contains(@class,'text-4xl')]"
+CARD_VALUE_RELATIVE     = "xpath=.//div[contains(@class,'text-2xl')]"
 
 # Excluded cards
 EXCLUDED_CARD_1 = "ITC RECEIVED"
 EXCLUDED_CARD_2 = "OCR FAILED"
+EXCLUDED_CARD_3 = "INVOICE NOT FOUND IN ITC"
 
 # Reports bottom count
 REPORTS_BOTTOM_TOTAL = "xpath=//main//p[@aria-live='polite']//span[last()]"
@@ -57,7 +58,22 @@ DATE_RANGE_YEAR_TILL_DATE = "xpath=//div[@role='option'][normalize-space()='Year
 # =========================
 # CUSTOM RANGE DATE PICKER
 # =========================
-DATE_RANGE_CUSTOM_RANGE = "xpath=//div[@role='option'][normalize-space()='Custom Range']"
+# DATE_RANGE_CUSTOM_RANGE = "xpath=//div[@role='option'][normalize-space()='Custom Range']"
+# New options
+DATE_RANGE_CUSTOM_MONTH_RANGE   = "xpath=//div[@role='option'][normalize-space()='Custom Month Range']"
+DATE_RANGE_CUSTOM_DATE_RANGE    = "xpath=//div[@role='option'][normalize-space()='Custom Date Range']"
+# Custom Month Range picker
+# CUSTOM_MONTH_FROM_MONTH         = "xpath=(//button[@role='combobox'])[4]"
+# CUSTOM_MONTH_FROM_YEAR          = "xpath=(//button[@role='combobox'])[5]"
+# CUSTOM_MONTH_TO_MONTH           = "xpath=(//button[@role='combobox'])[6]"
+# CUSTOM_MONTH_TO_YEAR            = "xpath=(//button[@role='combobox'])[7]"
+# CUSTOM_MONTH_APPLY_BUTTON       = "xpath=//button[normalize-space()='Apply']"
+CUSTOM_MONTH_FROM_MONTH = "xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]//button[@role='combobox']"
+CUSTOM_MONTH_FROM_YEAR  = "xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Year']]//button[@role='combobox']"
+CUSTOM_MONTH_TO_MONTH   = "xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='To Month']]//button[@role='combobox']"
+CUSTOM_MONTH_TO_YEAR    = "xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='To Year']]//button[@role='combobox']"
+CUSTOM_MONTH_APPLY_BUTTON = "xpath=//div[@data-slot='popover-content']//button[normalize-space()='Apply']"
+
 CUSTOM_RANGE_APPLY_BUTTON = "xpath=//button[normalize-space()='Apply']"
 CUSTOM_RANGE_CANCEL_BUTTON = "xpath=//button[normalize-space()='Cancel']"
 DASHBOARD_NO_DATA_MESSAGE = "xpath=//h3[normalize-space()='No Data Available']"

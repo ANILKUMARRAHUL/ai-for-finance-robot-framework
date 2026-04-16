@@ -1,7 +1,8 @@
 BASE_URL = "https://ai-finance.tkm.co.in/login"
 BROWSER = "chrome"
 TIMEOUT = 30
-VALID_USERNAME = "onetapp"
+VALID_USERNAME = "write.invoice-checker@onetapp.in"
+VALID_NON_PO_USERNAME = "onetapp"
 VALID_PASSWORD = "!Toyota2026Onetapp)"
 INVALID_USERNAME = "wronguser"
 INVALID_PASSWORD = "wrongpass"

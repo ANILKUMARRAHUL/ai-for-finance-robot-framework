@@ -204,23 +204,57 @@ Validate All Rows Per Page Options
     Validate Rows Per Page Option    ${ROWS_PER_PAGE_25}    25
     Validate Rows Per Page Option    ${ROWS_PER_PAGE_50}    50
 
+Click Element Safely
+    [Arguments]    ${locator}
+
+    Wait Until Element Is Visible    ${locator}    10s
+    Scroll Element Into View         ${locator}
+    Sleep    0.3s
+
+    # Remove any active focus / overlay
+    Click Element    xpath=//body
+    Sleep    0.3s
+
+    # Try normal click first
+    ${status}=    Run Keyword And Return Status    Click Element    ${locator}
+
+    # Fallback to JS click if intercepted
+    IF    '${status}' == 'False'
+        ${element}=    Get WebElement    ${locator}
+        Execute Javascript    arguments[0].click();    ${element}
+    END
+
 # ─────────────────────────────────────────────
 # EDIT INVOICE RECORD & UPDATE STATUS KEYWORDS
 # ─────────────────────────────────────────────
 
+# Select Date Preset Filter
+#     [Arguments]    ${option_locator}
+#     Scroll To Top
+#     Wait For Page To Stabilize
+#     Wait Until Element Is Visible    ${DATE_PRESET_DROPDOWN}    20s
+#     Click Element                    ${DATE_PRESET_DROPDOWN}
+#     Sleep    2s
+#     Wait Until Element Is Visible    ${option_locator}    10s
+#     Click Element                    ${option_locator}
+#     Sleep    3s
 Select Date Preset Filter
-    [Arguments]    ${option_locator}
+    [Arguments]    ${option_text}
     Scroll To Top
     Wait For Page To Stabilize
     Wait Until Element Is Visible    ${DATE_PRESET_DROPDOWN}    20s
     Click Element                    ${DATE_PRESET_DROPDOWN}
     Sleep    2s
-    Wait Until Element Is Visible    ${option_locator}    10s
-    Click Element                    ${option_locator}
+    ${option}=    Get WebElement    xpath=//div[@data-state='open']//div[@role='option'][normalize-space()='${option_text}']
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${option}
     Sleep    3s
 
+# Apply Reports Filters For Edit Test
+#     Select Date Preset Filter       ${DATE_PRESET_LAST_MONTH}
+#     Select Invoice Status Filter    ${STATUS_MATCHED}
+#     Wait For Page To Stabilize
 Apply Reports Filters For Edit Test
-    Select Date Preset Filter       ${DATE_PRESET_LAST_MONTH}
+    Select Date Preset Filter       Last Month
     Select Invoice Status Filter    ${STATUS_MATCHED}
     Wait For Page To Stabilize
 
@@ -238,7 +272,7 @@ Verify Edit Button Is Present And Click
     Wait Until Element Is Visible    ${EDIT_BUTTON}    20s
     Page Should Contain Element      ${EDIT_BUTTON}
     Log To Console    Edit button is present on the invoice detail page
-    Click Element    ${EDIT_BUTTON}
+    Click Element Safely    ${EDIT_BUTTON}
     Sleep    2s
 
 Edit Invoice ITC Fields With Test Values
@@ -247,7 +281,7 @@ Edit Invoice ITC Fields With Test Values
     Wait Until Element Is Visible    ${EDIT_CGST_INPUT}    15s
     ${orig_cgst}=       Get Value    ${EDIT_CGST_INPUT}
     Log To Console      Original CGST Amount: ${orig_cgst}
-    Click Element       ${EDIT_CGST_INPUT}
+    Click Element Safely       ${EDIT_CGST_INPUT}
     ${new_cgst}=        Evaluate
     ...    str(round(float('${orig_cgst}') - 1, 2)) if '${orig_cgst}' not in ['', 'N/A'] else '1'
     Input Text          ${EDIT_CGST_INPUT}    ${new_cgst}
@@ -258,7 +292,7 @@ Edit Invoice ITC Fields With Test Values
     Wait Until Element Is Visible    ${EDIT_DOC_TITLE_INPUT}    15s
     ${orig_title}=      Get Value    ${EDIT_DOC_TITLE_INPUT}
     Log To Console      Original Document Title: ${orig_title}
-    Click Element       ${EDIT_DOC_TITLE_INPUT}
+    Click Element Safely       ${EDIT_DOC_TITLE_INPUT}
     Input Text          ${EDIT_DOC_TITLE_INPUT}    Test Invoice Automation
     Log To Console      Updated Document Title to: Test Invoice Automation
     RETURN    ${orig_cgst}    ${orig_title}
@@ -266,15 +300,15 @@ Edit Invoice ITC Fields With Test Values
 Click Update Status And Confirm Without Changes In Popup
     Scroll To Top
     Wait Until Element Is Visible    ${UPDATE_STATUS_BTN}    20s
-    Click Element                    ${UPDATE_STATUS_BTN}
+    Click Element Safely                    ${UPDATE_STATUS_BTN}
     Wait Until Element Is Visible    ${UPDATE_STATUS_POPUP_BTN}    15s
     Log To Console    Update Status popup opened — not changing any values
-    Click Element                    ${UPDATE_STATUS_POPUP_BTN}
+    Click Element Safely                    ${UPDATE_STATUS_POPUP_BTN}
 
 Click Save Changes Button
     Scroll Element Into View         ${SAVE_CHANGES_BTN}
     Wait Until Element Is Visible    ${SAVE_CHANGES_BTN}    20s
-    Click Element                    ${SAVE_CHANGES_BTN}
+    Click Element Safely             ${SAVE_CHANGES_BTN}
     Log To Console    Save Changes button clicked
 
 Verify Success Toast Appears And Disappears

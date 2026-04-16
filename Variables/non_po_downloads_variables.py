@@ -35,10 +35,10 @@ NONPO_REPORT_GENERATION_TOAST         = "xpath=//div[@data-title][contains(.,'Re
 # =========================
 
 NONPO_DOWNLOADS_ROWS_PER_PAGE_DROPDOWN    = "xpath=(//button[@role='combobox'])[5]"
-NONPO_DOWNLOADS_ROWS_PER_PAGE_6           = "xpath=//div[@role='option'][normalize-space()='6']"
-NONPO_DOWNLOADS_ROWS_PER_PAGE_12          = "xpath=//div[@role='option'][normalize-space()='12']"
-NONPO_DOWNLOADS_ROWS_PER_PAGE_24          = "xpath=//div[@role='option'][normalize-space()='24']"
-NONPO_DOWNLOADS_ROWS_PER_PAGE_48          = "xpath=//div[@role='option'][normalize-space()='48']"
+NONPO_DOWNLOADS_ROWS_PER_PAGE_5           = "xpath=//div[@role='option'][normalize-space()='5']"
+NONPO_DOWNLOADS_ROWS_PER_PAGE_10          = "xpath=//div[@role='option'][normalize-space()='10']"
+NONPO_DOWNLOADS_ROWS_PER_PAGE_25          = "xpath=//div[@role='option'][normalize-space()='25']"
+NONPO_DOWNLOADS_ROWS_PER_PAGE_50          = "xpath=//div[@role='option'][normalize-space()='50']"
 NONPO_DOWNLOADS_TABLE_ROWS                = "xpath=//table//tbody//tr"
 NONPO_DOWNLOADS_SHOWING_TEXT              = "xpath=//p[contains(text(),'Showing')]"
 NONPO_DOWNLOADS_NO_DATA_MESSAGE = "xpath=//div[normalize-space()='No Reports Found']"

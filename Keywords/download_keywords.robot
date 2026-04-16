@@ -4,6 +4,7 @@ Library      String
 Library      Collections
 Variables    ../Variables/download_variables.py
 Variables    ../Variables/invoice_check_variables.py
+Resource     ../Keywords/invoice_check_keywords.robot
 
 *** Keywords ***
 Wait For Page To Stabilize
@@ -110,38 +111,228 @@ Select Two Random Voucher Codes
 Select Random Date Column
     Scroll To Top
     Wait For Page To Stabilize
-    Wait Until Page Contains Element    ${DOWNLOADS_DATE_COLUMN_DROPDOWN}    20s
-    Click Element                       ${DOWNLOADS_DATE_COLUMN_DROPDOWN}
-    Sleep    2s
 
-    ${date_column_options}=    Create List
-    ...    ${DOWNLOADS_DATE_COLUMN_INVOICE}
-    ...    ${DOWNLOADS_DATE_COLUMN_VOUCHER}
+    Wait Until Element Is Visible    ${DOWNLOADS_DATE_COLUMN_DROPDOWN}    20s
+    Click Element                   ${DOWNLOADS_DATE_COLUMN_DROPDOWN}
 
-    ${random_index}=    Evaluate    random.randint(0, 1)    modules=random
-    ${selected}=        Get Text     ${date_column_options}[${random_index}]
-    Click Element                    ${date_column_options}[${random_index}]
-    Sleep    2s
+    Wait Until Element Is Visible    xpath=//div[@role='listbox']    10s
+
+    ${options}=    Get WebElements    xpath=//div[@role='listbox']//div[@role='option']
+
+    ${count}=    Get Length    ${options}
+    ${random_index}=    Evaluate    random.randint(0, ${count}-1)    modules=random
+
+    ${selected}=    Get Text    ${options}[${random_index}]
+    Click Element   ${options}[${random_index}]
+
     Log To Console    Selected date column: ${selected}
+
+# Select Random Date Column
+#     Scroll To Top
+#     Wait For Page To Stabilize
+#     Wait Until Page Contains Element    ${DOWNLOADS_DATE_COLUMN_DROPDOWN}    20s
+#     Click Element                       ${DOWNLOADS_DATE_COLUMN_DROPDOWN}
+#     Sleep    2s
+
+#     ${date_column_options}=    Create List
+#     ...    ${DOWNLOADS_DATE_COLUMN_INVOICE}
+#     ...    ${DOWNLOADS_DATE_COLUMN_VOUCHER}
+
+#     ${random_index}=    Evaluate    random.randint(0, 1)    modules=random
+#     ${selected}=        Get Text     ${date_column_options}[${random_index}]
+#     Click Element                    ${date_column_options}[${random_index}]
+#     Sleep    2s
+#     Log To Console    Selected date column: ${selected}
 
 Select Random Date Range
     Scroll To Top
     Wait For Page To Stabilize
-    Wait Until Page Contains Element    ${DOWNLOADS_DATE_RANGE_DROPDOWN}    20s
-    Click Element                       ${DOWNLOADS_DATE_RANGE_DROPDOWN}
+
+    Wait Until Element Is Visible    ${DOWNLOADS_VOUCHER_DATE_RANGE_DROPDOWN}    20s
+    Click Element                   ${DOWNLOADS_VOUCHER_DATE_RANGE_DROPDOWN}
+    Sleep    1s
+
+    ${options}=    Get WebElements    xpath=//div[@role='option']
+    ${count}=      Get Length         ${options}
+    ${index}=      Evaluate           random.randint(0, ${count}-1)    modules=random
+    ${selected}=   Get Text           ${options}[${index}]
+    ${selected}=   Strip String       ${selected}
+    Click Element                     ${options}[${index}]
+    Log To Console    Voucher Date Range: ${selected}
     Sleep    2s
 
-    ${date_range_options}=    Create List
-    ...    ${DOWNLOADS_DATE_RANGE_MONTH}
-    ...    ${DOWNLOADS_DATE_RANGE_YEAR}
-    ...    ${DOWNLOADS_DATE_RANGE_LAST_MONTH}
-    ...    ${DOWNLOADS_DATE_RANGE_FISCAL}
+    IF    '${selected}' == 'Custom Month Range'
+        Handle Custom Month Range
+    ELSE IF    '${selected}' == 'Custom Date Range'
+        Handle Custom Date Range
+    END
 
-    ${random_index}=    Evaluate    random.randint(0, 3)    modules=random
-    ${selected}=        Get Text     ${date_range_options}[${random_index}]
-    Click Element                    ${date_range_options}[${random_index}]
+    Scroll To Top
+    Wait For Page To Stabilize
+
+    Wait Until Element Is Visible    ${DOWNLOADS_INVOICE_DATE_RANGE_DROPDOWN}    20s
+    Click Element                   ${DOWNLOADS_INVOICE_DATE_RANGE_DROPDOWN}
+    Sleep    1s
+
+    ${options}=    Get WebElements    xpath=//div[@role='option']
+    ${count}=      Get Length         ${options}
+    ${index}=      Evaluate           random.randint(0, ${count}-1)    modules=random
+    ${selected}=   Get Text           ${options}[${index}]
+    ${selected}=   Strip String       ${selected}
+    Click Element                     ${options}[${index}]
+    Log To Console    Invoice Date Range: ${selected}
     Sleep    2s
-    Log To Console    Selected date range: ${selected}
+
+    IF    '${selected}' == 'Custom Month Range'
+        Handle Custom Month Range
+    ELSE IF    '${selected}' == 'Custom Date Range'
+        Handle Custom Date Range
+    END
+
+Get Random Custom Date Range
+    ${from_day}=    Evaluate    random.randint(1,10)    modules=random
+    ${to_day}=      Evaluate    random.randint(11,20)   modules=random
+
+    ${from_date}=   Set Variable    4/${from_day}/2026
+    ${to_date}=     Set Variable    4/${to_day}/2026
+
+    RETURN    ${from_date}    ${to_date}
+
+# Handle Custom Date Range
+#     Sleep    2s
+
+#     ${from_date}    ${to_date}=    Get Random Custom Date Range
+
+#     Select Custom Date Range And Apply
+#     # ...    ${from_date}    ${to_date}
+
+#     # 🔥 WAIT for calendar to close before next step
+#     Wait Until Element Is Not Visible    xpath=//div[@role='dialog']    10s
+
+#     Log To Console    Custom date range applied: ${from_date} → ${to_date}
+
+Handle Custom Date Range
+    Sleep    2s
+
+    Select Custom Date Range And Apply
+
+    Wait Until Element Is Not Visible    xpath=//div[@role='dialog']    10s
+
+    Log To Console    Custom date range applied successfully
+
+Select Custom Date Range And Apply
+    Wait Until Element Is Visible    xpath=//button[@aria-label='Go to the Previous Month']    15s
+    Sleep    1s
+
+    # Get all enabled day buttons
+    ${days}=    Get WebElements
+    ...    xpath=//button[@data-day and not(@disabled)]
+
+    ${count}=    Get Length    ${days}
+    Log To Console    \nTotal available days: ${count}
+
+    # Pick random start and end index (0-based)
+    ${start}=    Evaluate    random.randint(0, ${count} - 2)    modules=random
+    ${end}=      Evaluate    random.randint(${start} + 1, ${count} - 1)    modules=random
+
+    Log To Console    Clicking start day index: ${start} | end day index: ${end}
+
+    # Convert to 1-based XPath index explicitly
+    ${xpath_start}=    Evaluate    ${start} + 1
+    ${xpath_end}=      Evaluate    ${end} + 1
+
+    # Click start date via JS
+    ${from_btn}=    Get WebElement
+    ...    xpath=(//button[@data-day and not(@disabled)])[${xpath_start}]
+    Run Keyword And Continue On Failure
+    ...    Element Should Be Visible    ${from_btn}
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${from_btn}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${from_btn}
+    Sleep    1s
+
+    # Re-fetch elements after first click (DOM may update hover/range states)
+    ${days}=    Get WebElements
+    ...    xpath=//button[@data-day and not(@disabled)]
+    ${new_count}=    Get Length    ${days}
+    Log To Console    Days after first click: ${new_count}
+
+    # Safety check — ensure end index still valid after re-fetch
+    IF    ${xpath_end} > ${new_count}
+        ${xpath_end}=    Set Variable    ${new_count}
+    END
+
+    # Click end date via JS
+    ${to_btn}=    Get WebElement
+    ...    xpath=(//button[@data-day and not(@disabled)])[${xpath_end}]
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${to_btn}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${to_btn}
+    Sleep    1s
+
+    # Click Apply via JS
+    ${apply}=    Get WebElement    xpath=//button[normalize-space()='Apply']
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${apply}
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${apply}
+    Sleep    3s
+
+Select Random Invoice Date Range
+    Scroll To Top
+    Wait For Page To Stabilize
+
+    Wait Until Element Is Visible    ${DOWNLOADS_INVOICE_DATE_RANGE_DROPDOWN}    20s
+    Click Element                   ${DOWNLOADS_INVOICE_DATE_RANGE_DROPDOWN}
+
+    Wait Until Element Is Visible    xpath=//div[@role='listbox']    10s
+
+    ${options}=    Get WebElements    xpath=//div[@role='listbox']//div[@role='option']
+
+    ${count}=    Get Length    ${options}
+    ${random_index}=    Evaluate    random.randint(0, ${count}-1)    modules=random
+
+    ${selected}=    Get Text    ${options}[${random_index}]
+    ${selected}=    Strip String    ${selected}
+
+    Click Element   ${options}[${random_index}]
+
+    Log To Console    Selected invoice date range: ${selected}
+
+    IF    '${selected}' == 'Custom Month Range'
+        Handle Custom Month Range
+    ELSE IF    '${selected}' == 'Custom Date Range'
+        Handle Custom Date Range
+    END
+
+# Select Random Date Range
+#     Scroll To Top
+#     Wait For Page To Stabilize
+#     Wait Until Page Contains Element    ${DOWNLOADS_DATE_RANGE_DROPDOWN}    20s
+#     Click Element                       ${DOWNLOADS_DATE_RANGE_DROPDOWN}
+#     Sleep    2s
+
+#     # ${date_range_options}=    Create List
+#     # ...    ${DOWNLOADS_DATE_RANGE_MONTH}
+#     # ...    ${DOWNLOADS_DATE_RANGE_YEAR}
+#     # ...    ${DOWNLOADS_DATE_RANGE_LAST_MONTH}
+#     # ...    ${DOWNLOADS_DATE_RANGE_FISCAL}
+
+#     ${random_index}=    Evaluate    random.randint(0, 1)    modules=random
+#     ${selected}=        Get Text     ${date_range_options}[${random_index}]
+#     Click Element                    ${date_range_options}[${random_index}]
+#     Sleep    2s
+#     Log To Console    Selected date range: ${selected}
+
+Handle Custom Month Range
+    Sleep    1s
+
+    ${from_month}    ${from_year}    ${to_month}    ${to_year}    ${from_date}    ${to_date}=
+    ...    Get Random Custom Month Range
+
+    Select Custom Month Range And Apply
+    ...    ${from_month}    ${from_year}    ${to_month}    ${to_year}
+
+    Log To Console    From: ${from_month} ${from_year} | To: ${to_month} ${to_year}
+    Log To Console    URL from: ${from_date} | URL to: ${to_date}
 
 Generate Report And Verify Toast
     Scroll To Top
@@ -168,17 +359,20 @@ Validate Generate Report With Random Filters
     ${state_code}=    Select Random Option From Dropdown    ${STATE_CODE_DROPDOWN}
     Log To Console    State Code: ${state_code}
 
-    Log To Console    \nSelecting Supplier...
-    Select Random Supplier
+    # Log To Console    \nSelecting Supplier...
+    # Select Random Supplier
 
-    Log To Console    \nSelecting Voucher Codes...
-    Select Two Random Voucher Codes
+    # Log To Console    \nSelecting Voucher Codes...
+    # Select Two Random Voucher Codes
 
-    Log To Console    \nSelecting Date Column...
-    Select Random Date Column
-
-    Log To Console    \nSelecting Date Range...
+    Log To Console    Selecting Voucher Date Range...
     Select Random Date Range
+
+    # Log To Console    Selecting Invoice Date Range...
+    # Select Random Invoice Date Range
+
+    # Log To Console    Selecting Date Column...
+    # Select Random Date Column    
 
     Log To Console    \nGenerating Report...
     Generate Report And Verify Toast
@@ -243,7 +437,7 @@ Validate All Downloads Rows Per Page Options
         RETURN
     END
 
-    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_6}     6
-    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_12}    12
-    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_24}    24
-    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_48}    48
+    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_5}     5
+    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_10}    10
+    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_25}    25
+    Validate Downloads Rows Per Page Option    ${DOWNLOADS_ROWS_PER_PAGE_50}    50

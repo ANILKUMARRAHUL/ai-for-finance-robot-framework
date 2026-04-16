@@ -2,14 +2,14 @@
 # DATE RANGE PRESET FILTER
 # =========================
 
-DATE_PRESET_DROPDOWN        = "xpath=(//button[@role='combobox'])[2]"
-DATE_PRESET_LAST_MONTH      = "xpath=//div[@role='option'][normalize-space()='Last Month']"
-
+DATE_PRESET_DROPDOWN        = "xpath=(//button[@data-slot='select-trigger'])[3]"
+# DATE_PRESET_LAST_MONTH      = "xpath=//div[@role='option'][normalize-space()='Last Month']"
+DATE_PRESET_LAST_MONTH = "xpath=//div[contains(@class,'select-content')]//div[normalize-space()='Last Month'] | //div[@data-state='open']//span[normalize-space()='Last Month']"
 # =========================
 # REPORTS PAGE FILTERS
 # =========================
 
-INVOICE_STATUS_DROPDOWN     = "xpath=(//button[@role='combobox'])[3]"
+INVOICE_STATUS_DROPDOWN     = "xpath=//label[contains(.,'Invoice Status')]//following::button[@role='combobox'][1]"
 
 # Invoice Status Options
 STATUS_ALL                  = "xpath=//div[@role='option'][normalize-space()='All']"
@@ -31,7 +31,7 @@ REPORTS_RESET_BUTTON        = "xpath=//button[@title='Reset filters to default']
 # ROWS PER PAGE
 # =========================
 
-ROWS_PER_PAGE_DROPDOWN      = "xpath=(//button[@role='combobox'])[4]"
+ROWS_PER_PAGE_DROPDOWN      = "xpath=(//button[@role='combobox'])[5]"
 ROWS_PER_PAGE_5             = "xpath=//div[@role='option'][normalize-space()='5']"
 ROWS_PER_PAGE_10            = "xpath=//div[@role='option'][normalize-space()='10']"
 ROWS_PER_PAGE_25            = "xpath=//div[@role='option'][normalize-space()='25']"

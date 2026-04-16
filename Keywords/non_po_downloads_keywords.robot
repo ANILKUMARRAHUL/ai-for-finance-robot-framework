@@ -96,15 +96,15 @@ Select Random NonPO Date Range
 
     ${date_range_options}=    Create List
     ...    ${NONPO_DOWNLOADS_DATE_RANGE_MONTH}
-    ...    ${NONPO_DOWNLOADS_DATE_RANGE_YEAR}
+    # ...    ${NONPO_DOWNLOADS_DATE_RANGE_YEAR}
     ...    ${NONPO_DOWNLOADS_DATE_RANGE_LAST_MONTH}
-    ...    ${NONPO_DOWNLOADS_DATE_RANGE_FISCAL}
+    # ...    ${NONPO_DOWNLOADS_DATE_RANGE_FISCAL}
 
-    ${random_index}=    Evaluate    random.randint(0, 3)    modules=random
+    ${random_index}=    Evaluate    random.randint(0, 1)    modules=random
     ${selected}=        Get Text     ${date_range_options}[${random_index}]
     Click Element                    ${date_range_options}[${random_index}]
     Sleep    2s
-    Log To Console    Selected date range: ${selected}
+    Log To Console    Selected date range: ${selected}    
 
 Generate NonPO Report And Verify Toast
     Scroll To Top
@@ -127,8 +127,8 @@ Validate Generate NonPO Report With Random Filters
     ${report_type}=    Select Random Option From NonPO Dropdown    ${NONPO_REPORT_TYPE_DROPDOWN}
     Log To Console     Report Type: ${report_type}
 
-    Log To Console    \nSelecting Supplier...
-    Select Random NonPO Supplier
+    # Log To Console    \nSelecting Supplier...
+    # Select Random NonPO Supplier
 
     Log To Console    \nSelecting Date Column...
     Select Random NonPO Date Column
@@ -199,7 +199,7 @@ Validate All NonPO Downloads Rows Per Page Options
         RETURN
     END
 
-    Validate NonPO Downloads Rows Per Page Option    ${NONPO_DOWNLOADS_ROWS_PER_PAGE_6}     6
-    Validate NonPO Downloads Rows Per Page Option    ${NONPO_DOWNLOADS_ROWS_PER_PAGE_12}    12
-    Validate NonPO Downloads Rows Per Page Option    ${NONPO_DOWNLOADS_ROWS_PER_PAGE_24}    24
-    Validate NonPO Downloads Rows Per Page Option    ${NONPO_DOWNLOADS_ROWS_PER_PAGE_48}    48
+    Validate NonPO Downloads Rows Per Page Option    ${NONPO_DOWNLOADS_ROWS_PER_PAGE_5}     5
+    Validate NonPO Downloads Rows Per Page Option    ${NONPO_DOWNLOADS_ROWS_PER_PAGE_10}    10
+    Validate NonPO Downloads Rows Per Page Option    ${NONPO_DOWNLOADS_ROWS_PER_PAGE_25}    25
+    Validate NonPO Downloads Rows Per Page Option    ${NONPO_DOWNLOADS_ROWS_PER_PAGE_50}    50

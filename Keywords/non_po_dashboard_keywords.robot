@@ -50,7 +50,7 @@ Verify NonPO Reports Page
 
 Wait For NonPO Dashboard Cards To Load
     Wait Until Element Is Visible    ${NONPO_DASHBOARD_KPI_CARDS}    60s
-    Wait Until Element Is Visible    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[1]//div[contains(@class,'text-4xl')]    30s
+    Wait Until Element Is Visible    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[1]//div[contains(@class,'text-2xl')]    30s
     Sleep    3s
 
 Select NonPO Date Column Filter
@@ -75,36 +75,36 @@ Select NonPO Date Range Filter
     Click Element                    ${option_locator}
     Sleep    3s
 
-Click First Available NonPO KPI Card
-    Wait For NonPO Dashboard Cards To Load
-    ${cards}=    Get WebElements    ${NONPO_DASHBOARD_KPI_CARDS}
-    ${total_cards}=    Get Length    ${cards}
+# Click First Available NonPO KPI Card
+#     Wait For NonPO Dashboard Cards To Load
+#     ${cards}=    Get WebElements    ${NONPO_DASHBOARD_KPI_CARDS}
+#     ${total_cards}=    Get Length    ${cards}
 
-    FOR    ${index}    IN RANGE    ${total_cards}
-        ${position}=    Evaluate    ${index} + 1
+#     FOR    ${index}    IN RANGE    ${total_cards}
+#         ${position}=    Evaluate    ${index} + 1
 
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-4xl')]
-        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]
+#         ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
+#         ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-4xl')]
+#         ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]
 
-        ${title}=    Get Text    ${title_locator}
-        ${title}=    Convert To Upper Case    ${title}
+#         ${title}=    Get Text    ${title_locator}
+#         ${title}=    Convert To Upper Case    ${title}
 
-        ${value}=           Get Text    ${value_locator}
-        ${clean_value}=     Clean Number Text    ${value}
+#         ${value}=           Get Text    ${value_locator}
+#         ${clean_value}=     Clean Number Text    ${value}
 
-        IF    '${clean_value}' == '0'
-            Log To Console    ${title} is 0, can't be clicked — skipping
-            CONTINUE
-        END
+#         IF    '${clean_value}' == '0'
+#             Log To Console    ${title} is 0, can't be clicked — skipping
+#             CONTINUE
+#         END
 
-        Log To Console    Clicking card: ${title}
-        Scroll Element Into View    ${click_card}
-        Sleep    1s
-        Click Element    ${click_card}
-        RETURN
-    END
-    Log To Console    All NonPO KPI cards have 0 data — nothing to click
+#         Log To Console    Clicking card: ${title}
+#         Scroll Element Into View    ${click_card}
+#         Sleep    1s
+#         Click Element    ${click_card}
+#         RETURN
+#     END
+#     Log To Console    All NonPO KPI cards have 0 data — nothing to click
 
 Validate NonPO Dashboard KPI Cards With Reports Count
     Wait For NonPO Dashboard Cards To Load
@@ -114,9 +114,9 @@ Validate NonPO Dashboard KPI Cards With Reports Count
     FOR    ${index}    IN RANGE    ${total_cards}
         ${position}=    Evaluate    ${index} + 1
 
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-4xl')]
-        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'text-2xl')]
+        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
@@ -201,8 +201,8 @@ Validate NonPO Dashboard Filter Combination
 
     FOR    ${index}    IN RANGE    ${total_cards}
         ${position}=    Evaluate    ${index} + 1
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-40') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-4xl')]
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'text-2xl')]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
@@ -431,7 +431,7 @@ Validate NonPO Custom Range Filter Combination
     # Always reset: switch to Month Till Date first, then back to Custom Range
     Select NonPO Date Range Filter    ${NONPO_DATE_RANGE_MONTH}
     Sleep    1s
-    Select NonPO Date Range Filter    ${NONPO_DATE_RANGE_CUSTOM}
+    Select NonPO Date Range Filter    ${NONPO_DATE_RANGE_CUSTOM_DATE}
     Sleep    2s
 
     Select NonPO Custom Date Range    ${start_data_day}    ${end_data_day}    ${clicks_needed}    ${right_clicks_needed}
@@ -473,5 +473,192 @@ Validate All NonPO Custom Range Filter Combinations
     ...    date_column=created_on
 
     Validate NonPO Custom Range Filter Combination
+    ...    ${NONPO_DATE_COLUMN_INVOICE}
+    ...    date_column=invoice_date
+
+
+Select NonPO Month From Custom Month Picker
+    [Arguments]    ${combobox_locator}    ${month_name}
+    Wait Until Element Is Visible    ${combobox_locator}    10s
+    ${btn}=    Get WebElement    ${combobox_locator}
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${btn}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
+    Sleep    1s
+    Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${month_name}' && el.children.length === 0).click()
+    Sleep    1s
+
+Select NonPO Year From Custom Month Picker
+    [Arguments]    ${combobox_locator}    ${year}
+    Wait Until Element Is Visible    ${combobox_locator}    10s
+    ${btn}=    Get WebElement    ${combobox_locator}
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${btn}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
+    Sleep    1s
+    Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${year}' && el.children.length === 0).click()
+    Sleep    1s
+
+Get NonPO Random Custom Month Range
+    ${today}=              Get Current Date    result_format=%Y-%m-%d
+    ${today_dt}=           Convert Date        ${today}    datetime
+    ${current_month}=      Set Variable        ${today_dt.month}
+    ${current_year}=       Set Variable        ${today_dt.year}
+    ${max_year}=           Evaluate    ${current_year} + 1
+
+    ${from_year}=          Evaluate    random.randint(2016, ${current_year})    modules=random
+
+    ${max_from_month}=     Evaluate    ${current_month} if ${from_year} == ${current_year} else 12
+    ${from_month_num}=     Evaluate    random.randint(1, ${max_from_month})    modules=random
+
+    ${to_year}=            Evaluate    random.randint(${from_year}, ${max_year})    modules=random
+
+    ${min_to_month}=       Evaluate    ${from_month_num} if ${to_year} == ${from_year} else 1
+    ${max_to_month}=       Evaluate    ${current_month} if ${to_year} == ${current_year} else 12
+    ${to_month_num}=       Evaluate    random.randint(${min_to_month}, ${max_to_month})    modules=random
+
+    ${months}=             Create List    January    February    March    April    May    June    July    August    September    October    November    December
+    ${from_month_name}=    Get From List    ${months}    ${from_month_num - 1}
+    ${to_month_name}=      Get From List    ${months}    ${to_month_num - 1}
+
+    ${from_month_padded}=  Evaluate    str(${from_month_num}).zfill(2)
+    ${to_month_padded}=    Evaluate    str(${to_month_num}).zfill(2)
+
+    ${last_day}=           Evaluate    calendar.monthrange(${to_year}, ${to_month_num})[1]    modules=calendar
+
+    ${from_date}=          Set Variable    ${from_year}-${from_month_padded}-01
+    ${to_date}=            Set Variable    ${to_year}-${to_month_padded}-${last_day}
+
+    Log To Console         \nFrom: ${from_month_name} ${from_year} | To: ${to_month_name} ${to_year}
+    Log To Console         URL from: ${from_date} | URL to: ${to_date}
+
+    RETURN    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}
+
+Select NonPO Custom Month Range And Apply
+    [Arguments]    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
+
+    Wait Until Element Is Visible    ${NONPO_CUSTOM_MONTH_FROM_MONTH}    15s
+    Sleep    1s
+
+    Select NonPO Month From Custom Month Picker    ${NONPO_CUSTOM_MONTH_FROM_MONTH}    ${from_month_name}
+    Select NonPO Year From Custom Month Picker     ${NONPO_CUSTOM_MONTH_FROM_YEAR}     ${from_year}
+    Select NonPO Month From Custom Month Picker    ${NONPO_CUSTOM_MONTH_TO_MONTH}      ${to_month_name}
+    Select NonPO Year From Custom Month Picker     ${NONPO_CUSTOM_MONTH_TO_YEAR}       ${to_year}
+
+    Wait Until Element Is Visible    ${NONPO_CUSTOM_MONTH_APPLY}    10s
+    ${apply}=    Get WebElement    ${NONPO_CUSTOM_MONTH_APPLY}
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${apply}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${apply}
+    Sleep    3s
+
+Click First Available NonPO KPI Card
+    Wait For NonPO Dashboard Cards To Load
+    ${cards}=    Get WebElements    ${NONPO_DASHBOARD_KPI_CARDS}
+    ${total_cards}=    Get Length    ${cards}
+
+    FOR    ${index}    IN RANGE    ${total_cards}
+        ${position}=    Evaluate    ${index} + 1
+
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'text-2xl')]
+        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]
+
+        ${title}=    Get Text    ${title_locator}
+        ${title}=    Convert To Upper Case    ${title}
+
+        ${value}=           Get Text    ${value_locator}
+        ${clean_value}=     Clean Number Text    ${value}
+
+        IF    '${clean_value}' == '0'
+            Log To Console    ${title} is 0, can't be clicked — skipping
+            CONTINUE
+        END
+
+        Log To Console    Clicking card: ${title}
+        Scroll Element Into View    ${click_card}
+        Sleep    1s
+        Click Element    ${click_card}
+        RETURN    CLICKED
+    END
+    Log To Console    All NonPO KPI cards have 0 data — nothing to click
+    RETURN    SKIPPED
+
+Reset NonPO Dashboard Filters
+    ${reset_btn_locator}=    Set Variable    xpath=(//button[@aria-label='Reset filters'])[1]
+    Wait Until Element Is Visible    ${reset_btn_locator}    20s
+    ${reset_btn}=    Get WebElement    ${reset_btn_locator}
+    Scroll Element Into View         ${reset_btn}
+    Sleep    0.5s
+    Click Element    ${reset_btn}
+    Sleep    2s
+    Wait For NonPO Dashboard Cards To Load
+
+Validate NonPO Dashboard Custom Month Range Filter Combination
+    [Arguments]    ${date_column_option}    ${expected_date_column}
+
+    Log To Console    \n--- Testing Custom Month Range: ${expected_date_column} ---
+
+    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
+    ...    Get NonPO Random Custom Month Range
+
+    Select NonPO Date Column Filter    ${date_column_option}
+    Select NonPO Date Range Filter     ${NONPO_DATE_RANGE_CUSTOM_MONTH}
+    Sleep    2s
+
+    Select NonPO Custom Month Range And Apply
+    ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
+
+    Wait Until Location Contains    date_preset=custom_month_range    20s
+    Wait Until Location Contains    ${expected_date_column}           20s
+    ${dashboard_url}=    Get Location
+    ${from_date}=    Fetch From Right    ${dashboard_url}    from=
+    ${from_date}=    Fetch From Left     ${from_date}         &
+    ${to_date}=      Fetch From Right    ${dashboard_url}    to=
+    Log To Console    \nFilter applied — URL confirmed | from=${from_date} | to=${to_date}
+
+    Wait For NonPO Dashboard Cards To Load
+
+    ${no_date}=    Run Keyword And Return Status
+    ...    Element Should Be Visible    ${NONPO_NO_DATA_MESSAGE}
+    IF    ${no_date}
+        Log To Console    \nNo data available for selected range — skipping
+        RETURN
+    END
+
+    ${clicked}=    Click First Available NonPO KPI Card
+    IF    '${clicked}' == 'SKIPPED'
+        Log To Console    All cards are 0 — nothing to verify on reports page
+        RETURN
+    END
+
+    Wait Until Location Contains    /non-po/reports    40s
+    Wait Until Element Is Visible   ${NONPO_REPORTS_HEADING}    20s
+    Sleep    2s
+
+    ${current_url}=    Get Location
+    Log To Console    \nCurrent URL: ${current_url}
+
+    Should Contain    ${current_url}    ${expected_date_column}
+    Should Contain    ${current_url}    date_preset=custom_month_range
+    Should Contain    ${current_url}    from=${from_date}
+    Should Contain    ${current_url}    to=${to_date}
+
+    Log To Console    URL verified for custom month range: ${from_date} to ${to_date}
+
+    Go Back
+    Wait Until Location Contains    /non-po/dashboard    20s
+    Wait Until Element Is Visible   ${NONPO_DASHBOARD_HEADING}    20s
+    Scroll To Top
+    Wait For NonPO Dashboard Cards To Load
+
+Validate All NonPO Dashboard Custom Month Range Combinations
+    Validate NonPO Dashboard Custom Month Range Filter Combination
+    ...    ${NONPO_DATE_COLUMN_UPLOAD}
+    ...    date_column=created_on
+
+    Reset NonPO Dashboard Filters
+
+    Validate NonPO Dashboard Custom Month Range Filter Combination
     ...    ${NONPO_DATE_COLUMN_INVOICE}
     ...    date_column=invoice_date

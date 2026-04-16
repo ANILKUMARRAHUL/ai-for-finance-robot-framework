@@ -16,7 +16,7 @@ NONPO_DOWNLOADS_HEADING     = "xpath=//h1[normalize-space()='Downloads']"
 # =========================
 # DASHBOARD KPI CARDS
 # =========================
-NONPO_DASHBOARD_KPI_CARDS   = "xpath=//main//div[contains(@class,'h-40') and contains(@class,'bg-card')]"
+NONPO_DASHBOARD_KPI_CARDS   = "xpath=//main//div[contains(@class,'h-full') and contains(@class,'bg-card') and contains(@class,'rounded-xl')]"
 
 # =========================
 # DASHBOARD FILTER DROPDOWNS
@@ -33,13 +33,22 @@ NONPO_DATE_RANGE_MONTH      = "xpath=//div[@role='option'][normalize-space()='Mo
 NONPO_DATE_RANGE_YEAR       = "xpath=//div[@role='option'][normalize-space()='Year Till Date']"
 NONPO_DATE_RANGE_LAST_MONTH = "xpath=//div[@role='option'][normalize-space()='Last Month']"
 NONPO_DATE_RANGE_FISCAL     = "xpath=//div[@role='option'][normalize-space()='Fiscal Year']"
-NONPO_DATE_RANGE_CUSTOM     = "xpath=//div[@role='option'][normalize-space()='Custom Range']"
+# NONPO_DATE_RANGE_CUSTOM     = "xpath=//div[@role='option'][normalize-space()='Custom Range']"
 
 # Custom Range
 NONPO_CUSTOM_RANGE_APPLY    = "xpath=//button[normalize-space()='Apply']"
 NONPO_DATE_TRIGGER          = "xpath=//button[@data-slot='popover-trigger' and @aria-haspopup='dialog']"
 NONPO_NO_DATA_MESSAGE       = "xpath=//h3[normalize-space()='No Data Available']"
+# New options
+NONPO_DATE_RANGE_CUSTOM_MONTH   = "xpath=//div[@role='option'][normalize-space()='Custom Month Range']"
+NONPO_DATE_RANGE_CUSTOM_DATE    = "xpath=//div[@role='option'][normalize-space()='Custom Date Range']"
 
+# Custom Month Range picker
+NONPO_CUSTOM_MONTH_FROM_MONTH   = "xpath=(//button[@role='combobox'])[4]"
+NONPO_CUSTOM_MONTH_FROM_YEAR    = "xpath=(//button[@role='combobox'])[5]"
+NONPO_CUSTOM_MONTH_TO_MONTH     = "xpath=(//button[@role='combobox'])[6]"
+NONPO_CUSTOM_MONTH_TO_YEAR      = "xpath=(//button[@role='combobox'])[7]"
+NONPO_CUSTOM_MONTH_APPLY        = "xpath=//button[normalize-space()='Apply']"
 # =========================
 # RECONCILIATION TABLE
 # =========================

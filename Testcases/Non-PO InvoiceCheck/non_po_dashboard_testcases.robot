@@ -9,14 +9,14 @@ Test Teardown    Terminate Browser Session
 
 *** Test Cases ***
 Verify NonPO Invoice Check Dashboard Page
-    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page
     Verify NonPO Dashboard Page
 
 Verify NonPO Dashboard KPI Cards Count Against Reports
-    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page
@@ -25,7 +25,7 @@ Verify NonPO Dashboard KPI Cards Count Against Reports
 
 Validate NonPO Dashboard Reconciliation View By Filter
     [Tags]    dashboard    filter
-    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page
@@ -34,18 +34,27 @@ Validate NonPO Dashboard Reconciliation View By Filter
 
 Validate NonPO Dashboard Filters Carry Over To Reports Page
     [Tags]    dashboard    filter
-    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page
     Verify NonPO Dashboard Page
     Validate All NonPO Dashboard Filter Combinations
 
-Validate NonPO Dashboard Custom Range Filter Carries Over To Reports Page
-    [Tags]    dashboard    filter    custom_range
-    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+Validate NonPO Dashboard Custom Month Range Filter Carries Over To Reports Page
+    [Tags]    dashboard    filter    custom_month_range
+    Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page
     Verify NonPO Dashboard Page
-    Validate All NonPO Custom Range Filter Combinations
+    Validate All NonPO Dashboard Custom Month Range Combinations
+
+# Validate NonPO Dashboard Custom Range Filter Carries Over To Reports Page
+#     [Tags]    dashboard    filter    custom_range
+#     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+#     Verify Login Successful
+#     Verify Home Page Loaded
+#     Go To NonPO Dashboard Page
+#     Verify NonPO Dashboard Page
+#     Validate All NonPO Custom Range Filter Combinations

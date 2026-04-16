@@ -10,7 +10,7 @@ Test Teardown    Terminate Browser Session
 
 *** Test Cases ***
 Verify Non-PO Invoice Check Downloads Page
-    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page
@@ -20,7 +20,7 @@ Verify Non-PO Invoice Check Downloads Page
 
 Validate Generate Report With Random Filters On Non-PO Downloads Page
     [Tags]    downloads    filter    generate
-    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page
@@ -31,7 +31,7 @@ Validate Generate Report With Random Filters On Non-PO Downloads Page
 
 Validate Rows Per Page On Non-PO Downloads Page
     [Tags]    downloads    rows
-    Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page

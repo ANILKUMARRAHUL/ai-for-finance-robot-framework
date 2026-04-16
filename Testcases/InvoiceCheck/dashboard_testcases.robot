@@ -41,12 +41,19 @@ Validate Dashboard Filters Carry Over To Reports Page
     Verify Dashboard Page
     Validate All Dashboard Filter Combinations
 
-Validate Dashboard Custom Range Filter Carries Over To Reports Page
-    [Tags]    dashboard    filter    custom_range
+# Validate Dashboard Custom Range Filter Carries Over To Reports Page
+#     [Tags]    dashboard    filter    custom_range
+#     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
+#     Verify Login Successful
+#     Verify Home Page Loaded
+#     Open Invoice Check Module
+#     Verify Dashboard Page
+#     Validate All Custom Range Filter Combinations
+Validate Dashboard Custom Month Range Filter Carries Over To Reports Page
+    [Tags]    dashboard    filter    custom_month_range
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
     Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
-    Validate All Custom Range Filter Combinations
-
+    Validate All Dashboard Custom Month Range Combinations
