@@ -10,3 +10,7 @@ VALID_NON_PO_USERNAME = os.getenv("VALID_NON_PO_USERNAME")
 VALID_PASSWORD = os.getenv("VALID_PASSWORD")
 INVALID_USERNAME = os.getenv("INVALID_USERNAME")
 INVALID_PASSWORD = os.getenv("INVALID_PASSWORD")
+USERNAME_FIELD = "xpath=//input[@placeholder='Enter username']"
+PASSWORD_FIELD = "xpath=//input[@placeholder='Enter password']"
+LOGIN_BUTTON = "xpath=//button[contains(text(),'Log in')]"
+ERROR_TOAST = "xpath=//div[contains(text(),'Login failed')]"
