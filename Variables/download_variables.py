@@ -33,7 +33,7 @@ DOWNLOADS_DATE_RANGE_LAST_MONTH = "xpath=//div[@role='option'][normalize-space()
 GENERATE_REPORT_BUTTON          = "xpath=//button[normalize-space()='Generate Report']"
 
 # Toast message
-REPORT_GENERATION_TOAST         = "xpath=//div[@data-title][contains(.,'Report generation started')]"
+REPORT_GENERATION_TOAST         = "xpath=//div[@data-title and contains(normalize-space(.),'Report generation started')]"
 # =========================
 # DOWNLOADS ROWS PER PAGE
 # =========================
@@ -46,3 +46,4 @@ DOWNLOADS_ROWS_PER_PAGE_50          = "xpath=//div[@role='option'][normalize-spa
 DOWNLOADS_TABLE_ROWS                = "xpath=//table//tbody//tr"
 DOWNLOADS_SHOWING_TEXT              = "xpath=//p[contains(text(),'Showing')]"
 DOWNLOADS_NO_DATA_MESSAGE = "xpath=//div[normalize-space()='No Reports Found']"
+REPORT_DUPLICATE_TOAST = "xpath=//div[@data-content]//div[contains(text(),'A report with the same filters')]"

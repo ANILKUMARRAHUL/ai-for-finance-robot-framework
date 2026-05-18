@@ -757,8 +757,87 @@ Validate All Dashboard Custom Month Range Combinations
     ...    ${DATE_COLUMN_VOUCHER_DATE}
     ...    date_column=voucher_date
 
+# Wait For Dashboard Cards To Load
+#     Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    60s
+#     # Wait until at least one card value is not empty — confirms visual load
+#     Wait Until Element Is Visible    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[1]//div[contains(@class,'text-2xl')]    30s
+#     Sleep    3s
 Wait For Dashboard Cards To Load
-    Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    60s
-    # Wait until at least one card value is not empty — confirms visual load
-    Wait Until Element Is Visible    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[1]//div[contains(@class,'text-2xl')]    30s
+    Wait Until Element Is Visible    xpath=//section[contains(@class,'bg-card')]    60s
     Sleep    3s
+
+
+Open State Code Dropdown
+    Wait Until Element Is Visible    ${STATE_CODE_DROPDOWN}    timeout=10s
+    Scroll Element Into View         ${STATE_CODE_DROPDOWN}
+    Sleep    1s
+    Click Element                    ${STATE_CODE_DROPDOWN}
+    Sleep    2s
+
+Get All State Options Count
+    Wait Until Element Is Visible    xpath=//*[@cmdk-item][@role='option']    10s
+    ${options}=    Get WebElements    xpath=//*[@cmdk-item][@role='option']
+    ${count}=      Get Length         ${options}
+    Log To Console    Total states found: ${count}
+    RETURN    ${count}
+
+Select State By Index
+    [Arguments]    ${index}
+    ${locator}=    Set Variable    xpath=(//*[@cmdk-item][@role='option'])[${index}]
+    Wait Until Element Is Visible    ${locator}    10s
+    ${option}=    Get WebElement    ${locator}
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${option}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${option}
+    Sleep    1s
+
+Get State Label By Index
+    [Arguments]    ${index}
+    ${locator}=    Set Variable    xpath=(//*[@cmdk-item][@role='option'])[${index}]
+    ${label}=    Get Text    ${locator}
+    RETURN    ${label}
+
+Close State Code Dropdown
+    Press Keys    None    ESCAPE
+    Sleep    1s
+
+Select Each State And Verify Data Loads
+    Open State Code Dropdown
+    ${total}=    Get All State Options Count
+
+    FOR    ${index}    IN RANGE    1    ${total + 1}
+        ${state_label}=    Get State Label By Index    ${index}
+        Log To Console    \nSelecting state [${index}/${total}]: ${state_label}
+
+        # Check
+        Select State By Index    ${index}
+
+        # Close to trigger filter
+        Close State Code Dropdown
+
+        # Wait for page to settle
+        Sleep    3s
+
+        # Check for no data
+        ${no_data}=    Run Keyword And Return Status
+        ...    Element Should Be Visible    ${DASHBOARD_NO_DATA_MESSAGE}
+        IF    ${no_data}
+            Log To Console    No data for: ${state_label} — skipping
+        ELSE
+            Wait Until Element Is Visible    xpath=//section[contains(@class,'bg-card')]    50s
+            Sleep    2s
+            Log To Console    Data loaded for: ${state_label}
+        END
+
+        # Re-open and uncheck
+        Open State Code Dropdown
+        Select State By Index    ${index}
+        Log To Console    Unchecked: ${state_label}
+
+        # Close and wait for reset
+        # Close State Code Dropdown
+        # Sleep    3s
+        Wait Until Element Is Visible    xpath=//section[contains(@class,'bg-card')]    50s
+        Sleep    2s
+    END
+    Log To Console    \nAll states validated successfully

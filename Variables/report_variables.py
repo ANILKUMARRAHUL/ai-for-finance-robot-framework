@@ -25,7 +25,7 @@ REPORTS_STATUS_CELLS        = "xpath=//table//tbody//tr//td[last()-1]"
 REPORTS_NEXT_PAGE_BUTTON    = "xpath=//a[@aria-label='Go to next page']"
 REPORTS_PAGINATION_TEXT     = "xpath=//p[@aria-live='polite']"
 REPORTS_NO_DATA_MESSAGE     = "xpath=//div[@data-slot='empty-title']"
-REPORTS_RESET_BUTTON        = "xpath=//button[@title='Reset filters to default']"
+REPORTS_RESET_BUTTON        = "xpath=//button[@data-slot='tooltip-trigger' and @data-size='icon']"
 
 # =========================
 # ROWS PER PAGE

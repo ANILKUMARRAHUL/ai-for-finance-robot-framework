@@ -338,15 +338,46 @@ Generate Report And Verify Toast
     Scroll To Top
     Wait For Page To Stabilize
     Wait Until Page Contains Element    ${GENERATE_REPORT_BUTTON}    20s
-    Click Element                       ${GENERATE_REPORT_BUTTON}
-    Sleep    1s
 
-    # Verify toast appears within 3 seconds
-    Wait Until Page Contains Element    ${REPORT_GENERATION_TOAST}    3s
-    ${toast_text}=    Get Text          ${REPORT_GENERATION_TOAST}
-    Log To Console    \nToast message: ${toast_text}
-    Should Contain    ${toast_text}     Report generation started
-    Log To Console    Toast verified successfully
+    Click Element    ${GENERATE_REPORT_BUTTON}
+
+    ${toast}=    Wait Until Keyword Succeeds    5x    500ms
+    ...    Get Text    xpath=//div[@data-title]
+
+    Log To Console    \nToast message: ${toast}
+
+    IF    'Report Generation' in '${toast}'
+        Log To Console    ✅ New report generated
+    ELSE IF    'already generated' in '${toast}'
+        Log To Console    ⚠️ Duplicate report
+    ELSE
+        Fail    ❌ Unexpected toast: ${toast}
+    END
+    # Immediately start waiting (no sleep)
+    # ${success_toast}=    Run Keyword And Return Status
+    # ...    Wait Until Page Contains Element
+    # ...    xpath=//div[@data-title and contains(.,'Report Generation')]
+    # ...    3s
+
+    # ${duplicate_toast}=    Run Keyword And Return Status
+    # ...    Wait Until Page Contains Element
+    # ...    xpath=//div[contains(.,'already generated')]
+    # ...    3s
+
+    # IF    ${success_toast}
+    #     ${toast_text}=    Get Text    xpath=//div[@data-title]
+    #     Log To Console    \nToast message: ${toast_text}
+    #     Should Contain    ${toast_text}    Report generation
+    #     Log To Console    ✅ New report generated
+
+    # ELSE IF    ${duplicate_toast}
+    #     ${toast_text}=    Get Text    xpath=//div[contains(.,'already generated')]
+    #     Log To Console    \nDuplicate toast: ${toast_text}
+    #     Log To Console    ⚠️ Duplicate report — skipping
+
+    # ELSE
+    #     Fail    ❌ No toast captured (too fast or not triggered)
+    # END
 
 Validate Generate Report With Random Filters
     Log To Console    \n--- Selecting Random Filters ---

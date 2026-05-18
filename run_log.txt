@@ -1,0 +1,233 @@
+==============================================================================
+Dashboard Testcases                                                           
+==============================================================================
+Validate State Wise Data Loading                                      [ WARN ] Keyword 'Capture Page Screenshot' could not be run on failure: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff7a1ed1e35+2e8d45]
+	chromedriver!GetHandleVerifier [0x7ff7a1bfe6c0+155d0]
+	chromedriver!(No symbol) [0x7ff7a194d366]
+	chromedriver!(No symbol) [0x7ff7a1998dd6]
+	chromedriver!(No symbol) [0x7ff7a19cfd72]
+	chromedriver!(No symbol) [0x7ff7a19c9baf]
+	chromedriver!(No symbol) [0x7ff7a19c9373]
+	chromedriver!(No symbol) [0x7ff7a1916325]
+	chromedriver!GetHandleVerifier [0x7ff7a1efdab9+3149c9]
+	chromedriver!GetHandleVerifier [0x7ff7a1ef802b+30ef3b]
+	chromedriver!GetHandleVerifier [0x7ff7a1f1c872+333782]
+	chromedriver!GetHandleVerifier [0x7ff7a1c1b785+32695]
+	chromedriver!GetHandleVerifier [0x7ff7a1c242bc+3b1cc]
+	chromedriver!(No symbol) [0x7ff7a19150bc]
+	chromedriver!GetHandleVerifier [0x7ff7a204dc58+464b68]
+	KERNEL32!BaseThreadInitThunk [0x7ffde6d9e957+17]
+	ntdll!RtlUserThreadStart [0x7ffde886427c+2c]
+
+==============================================================================
+Dashboard Testcases                                                           
+==============================================================================
+Validate State Wise Data Loading                                      Total states found: 14
+
+Selecting state [1/14]: Gujarat - (24) - 2002
+Data loaded for: Gujarat - (24) - 2002
+Unchecked: Gujarat - (24) - 2002
+
+Selecting state [2/14]: Karnataka - (29) - 1001
+Data loaded for: Karnataka - (29) - 1001
+Unchecked: Karnataka - (29) - 1001
+
+Selecting state [3/14]: Maharashtra GF - (27) - 2003
+No data for: Maharashtra GF - (27) - 2003 — skipping
+Unchecked: Maharashtra GF - (27) - 2003
+
+Selecting state [4/14]: Karnataka ISD - (29) - ISD1
+No data for: Karnataka ISD - (29) - ISD1 — skipping
+Unchecked: Karnataka ISD - (29) - ISD1
+
+Selecting state [5/14]: Haryana - (06) - 3002
+No data for: Haryana - (06) - 3002 — skipping
+Unchecked: Haryana - (06) - 3002
+
+Selecting state [6/14]: Punjab - (03) - 3005
+No data for: Punjab - (03) - 3005 — skipping
+Unchecked: Punjab - (03) - 3005
+
+Selecting state [7/14]: Maharashtra - (27) - 2001
+No data for: Maharashtra - (27) - 2001 — skipping
+Unchecked: Maharashtra - (27) - 2001
+
+Selecting state [8/14]: Rajasthan - (08) - 3001
+No data for: Rajasthan - (08) - 3001 — skipping
+Unchecked: Rajasthan - (08) - 3001
+
+Selecting state [9/14]: West Bengal - (19) - 4001
+No data for: West Bengal - (19) - 4001 — skipping
+Unchecked: West Bengal - (19) - 4001
+
+Selecting state [10/14]: Assam - (18) - 4002
+No data for: Assam - (18) - 4002 — skipping
+Unchecked: Assam - (18) - 4002
+
+Selecting state [11/14]: Tamil Nadu - (33) - 1002
+No data for: Tamil Nadu - (33) - 1002 — skipping
+Unchecked: Tamil Nadu - (33) - 1002
+
+Selecting state [12/14]: Uttar Pradesh - (09) - 3003
+No data for: Uttar Pradesh - (09) - 3003 — skipping
+Unchecked: Uttar Pradesh - (09) - 3003
+
+Selecting state [13/14]: Andhra Pradesh - (37) - 1003
+No data for: Andhra Pradesh - (37) - 1003 — skipping
+Unchecked: Andhra Pradesh - (37) - 1003
+
+Selecting state [14/14]: Delhi - (07) - 3004
+No data for: Delhi - (07) - 3004 — skipping
+Unchecked: Delhi - (07) - 3004
+
+All states validated successfully
+| PASS |
+------------------------------------------------------------------------------
+Dashboard Testcases                                                   | PASS |
+1 test, 1 passed, 0 failed
+==============================================================================
+Output:  D:\AI For Finance\results\output.xml
+Log:     D:\AI For Finance\results\log.html
+Report:  D:\AI For Finance\results\report.html
+==============================================================================
+Dashboard Testcases                                                           
+==============================================================================
+Validate State Wise Data Loading                                      Total states found: 14
+
+Selecting state [1/14]: Gujarat - (24) - 2002
+No data for: Gujarat - (24) - 2002 — skipping
+Unchecked: Gujarat - (24) - 2002
+
+Selecting state [2/14]: Karnataka - (29) - 1001
+Data loaded for: Karnataka - (29) - 1001
+Unchecked: Karnataka - (29) - 1001
+
+Selecting state [3/14]: Maharashtra GF - (27) - 2003
+No data for: Maharashtra GF - (27) - 2003 — skipping
+Unchecked: Maharashtra GF - (27) - 2003
+
+Selecting state [4/14]: Karnataka ISD - (29) - ISD1
+No data for: Karnataka ISD - (29) - ISD1 — skipping
+Unchecked: Karnataka ISD - (29) - ISD1
+
+Selecting state [5/14]: Haryana - (06) - 3002
+No data for: Haryana - (06) - 3002 — skipping
+Unchecked: Haryana - (06) - 3002
+
+Selecting state [6/14]: Punjab - (03) - 3005
+No data for: Punjab - (03) - 3005 — skipping
+Unchecked: Punjab - (03) - 3005
+
+Selecting state [7/14]: Maharashtra - (27) - 2001
+No data for: Maharashtra - (27) - 2001 — skipping
+Unchecked: Maharashtra - (27) - 2001
+
+Selecting state [8/14]: Rajasthan - (08) - 3001
+No data for: Rajasthan - (08) - 3001 — skipping
+Unchecked: Rajasthan - (08) - 3001
+
+Selecting state [9/14]: West Bengal - (19) - 4001
+No data for: West Bengal - (19) - 4001 — skipping
+Unchecked: West Bengal - (19) - 4001
+
+Selecting state [10/14]: Assam - (18) - 4002
+No data for: Assam - (18) - 4002 — skipping
+Unchecked: Assam - (18) - 4002
+
+Selecting state [11/14]: Tamil Nadu - (33) - 1002
+No data for: Tamil Nadu - (33) - 1002 — skipping
+Unchecked: Tamil Nadu - (33) - 1002
+
+Selecting state [12/14]: Uttar Pradesh - (09) - 3003
+No data for: Uttar Pradesh - (09) - 3003 — skipping
+Unchecked: Uttar Pradesh - (09) - 3003
+
+Selecting state [13/14]: Andhra Pradesh - (37) - 1003
+No data for: Andhra Pradesh - (37) - 1003 — skipping
+Unchecked: Andhra Pradesh - (37) - 1003
+
+Selecting state [14/14]: Delhi - (07) - 3004
+No data for: Delhi - (07) - 3004 — skipping
+Unchecked: Delhi - (07) - 3004
+
+All states validated successfully
+| PASS |
+------------------------------------------------------------------------------
+Dashboard Testcases                                                   | PASS |
+1 test, 1 passed, 0 failed
+==============================================================================
+Output:  D:\AI For Finance\results\output.xml
+Log:     D:\AI For Finance\results\log.html
+Report:  D:\AI For Finance\results\report.html
+==============================================================================
+Dashboard Testcases                                                           
+==============================================================================
+Validate State Wise Data Loading                                      Total states found: 14
+
+Selecting state [1/14]: Gujarat - (24) - 2002
+No data for: Gujarat - (24) - 2002 — skipping
+Unchecked: Gujarat - (24) - 2002
+
+Selecting state [2/14]: Karnataka - (29) - 1001
+Data loaded for: Karnataka - (29) - 1001
+Unchecked: Karnataka - (29) - 1001
+
+Selecting state [3/14]: Maharashtra GF - (27) - 2003
+No data for: Maharashtra GF - (27) - 2003 — skipping
+Unchecked: Maharashtra GF - (27) - 2003
+
+Selecting state [4/14]: Karnataka ISD - (29) - ISD1
+No data for: Karnataka ISD - (29) - ISD1 — skipping
+Unchecked: Karnataka ISD - (29) - ISD1
+
+Selecting state [5/14]: Haryana - (06) - 3002
+No data for: Haryana - (06) - 3002 — skipping
+Unchecked: Haryana - (06) - 3002
+
+Selecting state [6/14]: Punjab - (03) - 3005
+No data for: Punjab - (03) - 3005 — skipping
+Unchecked: Punjab - (03) - 3005
+
+Selecting state [7/14]: Maharashtra - (27) - 2001
+No data for: Maharashtra - (27) - 2001 — skipping
+Unchecked: Maharashtra - (27) - 2001
+
+Selecting state [8/14]: Rajasthan - (08) - 3001
+No data for: Rajasthan - (08) - 3001 — skipping
+Unchecked: Rajasthan - (08) - 3001
+
+Selecting state [9/14]: West Bengal - (19) - 4001
+No data for: West Bengal - (19) - 4001 — skipping
+Unchecked: West Bengal - (19) - 4001
+
+Selecting state [10/14]: Assam - (18) - 4002
+No data for: Assam - (18) - 4002 — skipping
+Unchecked: Assam - (18) - 4002
+
+Selecting state [11/14]: Tamil Nadu - (33) - 1002
+No data for: Tamil Nadu - (33) - 1002 — skipping
+Unchecked: Tamil Nadu - (33) - 1002
+
+Selecting state [12/14]: Uttar Pradesh - (09) - 3003
+No data for: Uttar Pradesh - (09) - 3003 — skipping
+Unchecked: Uttar Pradesh - (09) - 3003
+
+Selecting state [13/14]: Andhra Pradesh - (37) - 1003
+No data for: Andhra Pradesh - (37) - 1003 — skipping
+Unchecked: Andhra Pradesh - (37) - 1003
+
+Selecting state [14/14]: Delhi - (07) - 3004
+No data for: Delhi - (07) - 3004 — skipping
+Unchecked: Delhi - (07) - 3004
+
+All states validated successfully
+| PASS |
+------------------------------------------------------------------------------
+Dashboard Testcases                                                   | PASS |
+1 test, 1 passed, 0 failed
+==============================================================================
+Output:  D:\AI For Finance\results\output.xml
+Log:     D:\AI For Finance\results\log.html
+Report:  D:\AI For Finance\results\report.html

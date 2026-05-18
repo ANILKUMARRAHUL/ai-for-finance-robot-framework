@@ -9,7 +9,7 @@ Variables    ../Variables/download_variables.py
 Variables    ../Variables/non_po_invoice_check_variables.py
 
 *** Variables ***
-${HEADLESS}    False
+${HEADLESS}    True
 
 *** Keywords ***
 Open Browser With Options

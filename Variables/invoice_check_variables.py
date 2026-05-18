@@ -1,7 +1,7 @@
 # Sidebar
 SIDENAV_DASHBOARD = "xpath=//a[contains(@href,'/invoice-check/dashboard') and contains(.,'Dashboard')]"
 SIDENAV_REPORTS = "xpath=//a[contains(@href,'/invoice-check/reports') and contains(.,'Reports')]"
-SIDENAV_DOWNLOADS = "xpath=//a[contains(@href,'/invoice-check/downloads') and contains(.,'Downloads')]"
+SIDENAV_DOWNLOADS = "xpath=//a[@data-slot='sidebar-menu-button' and @href='/invoice-check/downloads']"
 
 # Page headings
 DASHBOARD_HEADING = "xpath=//main//h1[normalize-space()='Invoice Check Overview']"
@@ -18,7 +18,7 @@ INVOICE_CHECK_MODULE_LOADED = "xpath=//a[contains(@href,'/invoice-check/dashboar
 # DASHBOARD_KPI_CARDS = "xpath=//main//div[contains(@class,'h-full') and contains(@class,'cursor-pointer')]"
 # CARD_TITLE_RELATIVE = "xpath=.//div[contains(@class,'uppercase')]"
 # CARD_VALUE_RELATIVE = "xpath=.//div[contains(@class,'text-4xl')]"
-DASHBOARD_KPI_CARDS     = "xpath=//main//div[contains(@class,'h-full') and contains(@class,'bg-card')]"
+DASHBOARD_KPI_CARDS = "xpath=//section[contains(@class,'bg-card')]"
 CARD_TITLE_RELATIVE     = "xpath=.//div[contains(@class,'uppercase')]"
 CARD_VALUE_RELATIVE     = "xpath=.//div[contains(@class,'text-2xl')]"
 
@@ -42,7 +42,9 @@ RECON_DYNAMIC_COLUMN_HEADER = "xpath=(//table//thead//th[normalize-space()='Outc
 # =========================
 # DASHBOARD FILTER DROPDOWNS
 # =========================
-
+STATE_CODE_DROPDOWN = "xpath=//div[@role='combobox']"
+STATE_CODE_CHECKBOXES    = "xpath=//*[@cmdk-item][@role='option']"
+STATE_CODE_CHECKBOX_ITEM = "xpath=(//*[@cmdk-item][@role='option'])[{index}]"
 DATE_COLUMN_DROPDOWN = "xpath=(//button[@role='combobox'])[1]"
 DATE_RANGE_DROPDOWN = "xpath=(//button[@role='combobox'])[2]"
 
