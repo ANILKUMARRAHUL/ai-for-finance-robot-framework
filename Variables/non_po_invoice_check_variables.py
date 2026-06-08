@@ -16,7 +16,7 @@ NONPO_DOWNLOADS_HEADING     = "xpath=//h1[normalize-space()='Downloads']"
 # =========================
 # DASHBOARD KPI CARDS
 # =========================
-NONPO_DASHBOARD_KPI_CARDS   = "xpath=//main//div[contains(@class,'h-full') and contains(@class,'bg-card') and contains(@class,'rounded-xl')]"
+NONPO_DASHBOARD_KPI_CARDS   = "xpath=//div[contains (@class,'h-full p-5')]"
 
 # =========================
 # DASHBOARD FILTER DROPDOWNS
@@ -44,10 +44,10 @@ NONPO_DATE_RANGE_CUSTOM_MONTH   = "xpath=//div[@role='option'][normalize-space()
 NONPO_DATE_RANGE_CUSTOM_DATE    = "xpath=//div[@role='option'][normalize-space()='Custom Date Range']"
 
 # Custom Month Range picker
-NONPO_CUSTOM_MONTH_FROM_MONTH   = "xpath=(//button[@role='combobox'])[4]"
-NONPO_CUSTOM_MONTH_FROM_YEAR    = "xpath=(//button[@role='combobox'])[5]"
-NONPO_CUSTOM_MONTH_TO_MONTH     = "xpath=(//button[@role='combobox'])[6]"
-NONPO_CUSTOM_MONTH_TO_YEAR      = "xpath=(//button[@role='combobox'])[7]"
+NONPO_CUSTOM_MONTH_FROM_MONTH   = "xpath=(//button[@role='combobox'])[5]"
+NONPO_CUSTOM_MONTH_FROM_YEAR    = "xpath=(//button[@role='combobox'])[6]"
+NONPO_CUSTOM_MONTH_TO_MONTH     = "xpath=(//button[@role='combobox'])[7]"
+NONPO_CUSTOM_MONTH_TO_YEAR      = "xpath=(//button[@role='combobox'])[8]"
 NONPO_CUSTOM_MONTH_APPLY        = "xpath=//button[normalize-space()='Apply']"
 # =========================
 # RECONCILIATION TABLE

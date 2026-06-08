@@ -62,6 +62,7 @@ Clean Number Text
     RETURN    ${clean}
     
 Validate Dashboard KPI Cards With Reports Count
+    Sleep   3s
     Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    20s
     ${cards}=    Get WebElements    ${DASHBOARD_KPI_CARDS}
     ${total_cards}=    Get Length    ${cards}
@@ -71,9 +72,14 @@ Validate Dashboard KPI Cards With Reports Count
 
         Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    20s
 
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-2xl')]
-        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]
+        ${title_locator}=    Set Variable
+        ...    (${DASHBOARD_KPI_CARDS})[${position}]//div[contains(@class,'uppercase')]
+
+        ${value_locator}=    Set Variable
+        ...    (${DASHBOARD_KPI_CARDS})[${position}]//span[contains(@class,'font-bold')]
+
+        ${click_card}=    Set Variable
+        ...    (${DASHBOARD_KPI_CARDS})[${position}]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
@@ -224,9 +230,14 @@ Click First Available KPI Card
     FOR    ${index}    IN RANGE    ${total_cards}
         ${position}=    Evaluate    ${index} + 1
 
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-2xl')]
-        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]
+        ${title_locator}=    Set Variable
+        ...    (${DASHBOARD_KPI_CARDS})[${position}]//div[contains(@class,'uppercase')]
+
+        ${value_locator}=    Set Variable
+        ...    (${DASHBOARD_KPI_CARDS})[${position}]//span[contains(@class,'font-bold')]
+
+        ${click_card}=    Set Variable
+        ...    (${DASHBOARD_KPI_CARDS})[${position}]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
@@ -282,8 +293,14 @@ Validate Dashboard Filter Combination
 
     FOR    ${index}    IN RANGE    ${total_cards}
         ${position}=    Evaluate    ${index} + 1
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[${position}]//div[contains(@class,'text-2xl')]
+        ${title_locator}=    Set Variable
+        ...    (${DASHBOARD_KPI_CARDS})[${position}]//div[contains(@class,'uppercase')]
+
+        ${value_locator}=    Set Variable
+        ...    (${DASHBOARD_KPI_CARDS})[${position}]//span[contains(@class,'font-bold')]
+
+        
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//span[contains(@class,'font-bold')]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
@@ -325,9 +342,6 @@ Validate All Dashboard Filter Combinations
     ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
     ...    date_column=invoice_date       date_preset=month_till_date
 
-    # Validate Dashboard Filter Combination
-    # ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_YEAR_TILL_DATE}
-    # ...    date_column=invoice_date       date_preset=year_till_date
 
     Validate Dashboard Filter Combination
     ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_LAST_MONTH}
@@ -341,210 +355,9 @@ Validate All Dashboard Filter Combinations
     ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
     ...    date_column=voucher_date       date_preset=month_till_date
 
-    # Validate Dashboard Filter Combination
-    # ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_YEAR_TILL_DATE}
-    # ...    date_column=voucher_date       date_preset=year_till_date
-
     Validate Dashboard Filter Combination
     ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_LAST_MONTH}
     ...    date_column=voucher_date       date_preset=last_month
-
-    # Validate Dashboard Filter Combination
-    # ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_FISCAL_YEAR}
-    # ...    date_column=voucher_date       date_preset=fiscal_year
-
-# Get Random Start And End Date
-#     ${today}=                   Get Current Date    result_format=%Y-%m-%d
-#     ${today_dt}=                Convert Date        ${today}    datetime
-#     ${current_day}=             Set Variable        ${today_dt.day}
-#     ${current_month}=           Set Variable        ${today_dt.month}
-#     ${current_year}=            Set Variable        ${today_dt.year}
-
-#     # Random number of months to go back (1 to 10)
-#     ${months_back}=             Evaluate    random.randint(1, 10)    modules=random
-
-#     # Calculate start month and year
-#     ${total_start_month}=       Evaluate    ${current_month} - ${months_back}
-#     ${start_year}=              Evaluate    ${current_year} if ${total_start_month} > 0 else ${current_year} - 1
-#     ${start_month}=             Evaluate    ${total_start_month} if ${total_start_month} > 0 else ${total_start_month} + 12
-
-#     # Get max days in start month to pick valid random day
-#     ${max_start_day}=           Evaluate    calendar.monthrange(${start_year}, ${start_month})[1]    modules=calendar
-#     ${start_day}=               Evaluate    random.randint(1, ${max_start_day})    modules=random
-
-#     # Random number of months after start month for end month (1 to months_back)
-#     ${months_forward}=          Evaluate    random.randint(1, ${months_back})    modules=random
-#     ${total_end_month}=         Evaluate    ${start_month} + ${months_forward}
-#     ${end_year}=                Evaluate    ${start_year} if ${total_end_month} <= 12 else ${start_year} + 1
-#     ${end_month}=               Evaluate    ${total_end_month} if ${total_end_month} <= 12 else ${total_end_month} - 12
-
-#     # Make sure end month does not exceed current month
-#     ${end_month}=               Evaluate    ${current_month} if (${end_year} == ${current_year} and ${end_month} > ${current_month}) else ${end_month}
-#     ${end_year}=                Evaluate    ${current_year} if ${end_year} > ${current_year} else ${end_year}
-
-#     # Get max days in end month — if end is current month, cap at today
-#     ${max_end_day}=             Evaluate    calendar.monthrange(${end_year}, ${end_month})[1]    modules=calendar
-#     ${max_end_day}=             Evaluate    ${current_day} if (${end_year} == ${current_year} and ${end_month} == ${current_month}) else ${max_end_day}
-#     ${end_day}=                 Evaluate    random.randint(1, ${max_end_day})    modules=random
-
-#     # Format for URL verification (YYYY-MM-DD)
-#     ${start_month_padded}=      Evaluate    str(${start_month}).zfill(2)
-#     ${end_month_padded}=        Evaluate    str(${end_month}).zfill(2)
-#     ${start_day_padded}=        Evaluate    str(${start_day}).zfill(2)
-#     ${end_day_padded}=          Evaluate    str(${end_day}).zfill(2)
-
-#     ${from_date}=               Set Variable    ${start_year}-${start_month_padded}-${start_day_padded}
-#     ${to_date}=                 Set Variable    ${end_year}-${end_month_padded}-${end_day_padded}
-
-#     # Format for data-day attribute (M/D/YYYY) — no zero padding
-#     ${start_data_day}=          Set Variable    ${start_month}/${start_day}/${start_year}
-#     ${end_data_day}=            Set Variable    ${end_month}/${end_day}/${end_year}
-
-#     # Calculate how many times to click left arrow from current month to reach start month
-#     ${clicks_needed}=           Evaluate    (${current_year} - ${start_year}) * 12 + (${current_month} - ${start_month})
-
-#     # Calculate how many times to click right arrow from start month to reach end month
-#     ${right_clicks_needed}=     Evaluate    (${end_year} - ${start_year}) * 12 + (${end_month} - ${start_month})
-
-#     Log To Console              \nMonths back: ${months_back} | Start: ${from_date} | End: ${to_date}
-#     Log To Console              Left arrow clicks: ${clicks_needed} | Right arrow clicks: ${right_clicks_needed}
-
-#     RETURN    ${from_date}    ${to_date}    ${start_data_day}    ${end_data_day}    ${clicks_needed}    ${right_clicks_needed}
-
-# Select Custom Date Range
-#     [Arguments]    ${start_data_day}    ${end_data_day}    ${clicks_needed}    ${right_clicks_needed}
-
-#     ${prev_arrow}=    Set Variable    xpath=//button[@aria-label='Go to the Previous Month']
-#     ${next_arrow}=    Set Variable    xpath=//button[@aria-label='Go to the Next Month']
-
-#     Execute JavaScript    window.scrollTo(0, 0)
-#     Sleep    2s
-
-#     Wait Until Page Contains Element    ${prev_arrow}    30s
-#     Sleep    1s
-
-#     # Navigate back to start month
-#     FOR    ${i}    IN RANGE    ${clicks_needed}
-#         Wait Until Page Contains Element    ${prev_arrow}    10s
-#         ${arrow}=    Get WebElement    ${prev_arrow}
-#         Execute JavaScript    arguments[0].click()    ARGUMENTS    ${arrow}
-#         Sleep    0.5s
-#     END
-
-#     # Pick start date
-#     ${start_locator}=    Set Variable    xpath=//button[@data-day='${start_data_day}']
-#     Wait Until Page Contains Element    ${start_locator}    10s
-#     ${start_btn}=    Get WebElement    ${start_locator}
-#     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${start_btn}
-#     Sleep    1s
-
-#     # Navigate right to end month
-#     FOR    ${i}    IN RANGE    ${right_clicks_needed}
-#         Wait Until Page Contains Element    ${next_arrow}    10s
-#         ${arrow}=    Get WebElement    ${next_arrow}
-#         Execute JavaScript    arguments[0].click()    ARGUMENTS    ${arrow}
-#         Sleep    0.5s
-#     END
-
-#     # Pick end date
-#     ${end_locator}=    Set Variable    xpath=//button[@data-day='${end_data_day}']
-#     Wait Until Page Contains Element    ${end_locator}    10s
-#     ${end_btn}=    Get WebElement    ${end_locator}
-#     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${end_btn}
-#     Sleep    1s
-
-#     # Click apply
-#     Wait Until Page Contains Element    ${CUSTOM_RANGE_APPLY_BUTTON}    10s
-#     ${apply_btn}=    Get WebElement    ${CUSTOM_RANGE_APPLY_BUTTON}
-#     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${apply_btn}
-#     Sleep    3s
-
-# Validate Custom Range Filter Combination
-#     [Arguments]    ${date_column_option}    ${expected_date_column}
-
-#     Log To Console    \n--- Testing Custom Range: ${expected_date_column} ---
-
-#     ${from_date}    ${to_date}    ${start_data_day}    ${end_data_day}    ${clicks_needed}    ${right_clicks_needed}=
-#     ...    Get Random Start And End Date
-
-#     Select Date Column Filter       ${date_column_option}
-
-#     # Always reset: switch to Month Till Date first, then back to Custom Range
-#     Select Date Range Filter    ${DATE_RANGE_MONTH_TILL_DATE}
-#     Sleep    1s
-#     Select Date Range Filter    ${DATE_RANGE_CUSTOM_RANGE}
-#     Sleep    2s
-
-#     Select Custom Date Range        ${start_data_day}    ${end_data_day}    ${clicks_needed}    ${right_clicks_needed}
-
-#     # Wait for dashboard cards to fully load visually
-#     Wait For Dashboard Cards To Load
-
-#     # Check if no data available for selected range
-#     ${no_data}=    Run Keyword And Return Status
-#     ...    Element Should Be Visible    ${DASHBOARD_NO_DATA_MESSAGE}
-#     IF    ${no_data}
-#         Log To Console    \nNo data available for selected range: ${from_date} to ${to_date} — skipping
-#         RETURN
-#     END
-
-#     Click First Available KPI Card
-
-#     Wait Until Location Contains    /invoice-check/reports    40s
-#     Wait Until Element Is Visible   ${REPORTS_HEADING}        20s
-#     Sleep    2s
-
-#     ${current_url}=    Get Location
-#     Log To Console    \nCurrent URL: ${current_url}
-
-#     Should Contain    ${current_url}    ${expected_date_column}
-#     Should Contain    ${current_url}    date_preset=custom_range
-#     Should Contain    ${current_url}    from=${from_date}
-#     Should Contain    ${current_url}    to=${to_date}
-
-#     Log To Console    URL verified for custom range: ${from_date} to ${to_date}
-
-#     Go Back
-#     Wait Until Location Contains    /invoice-check/dashboard    20s
-#     Wait Until Element Is Visible   ${DASHBOARD_HEADING}        20s
-#     Scroll To Top
-#     Wait For Dashboard Cards To Load
-
-# Validate All Custom Range Filter Combinations
-#     Validate Custom Range Filter Combination
-#     ...    ${DATE_COLUMN_INVOICE_DATE}
-#     ...    date_column=invoice_date
-
-#     Validate Custom Range Filter Combination
-#     ...    ${DATE_COLUMN_VOUCHER_DATE}
-#     ...    date_column=voucher_date
-
-# Select Month From Custom Month Picker
-#     [Arguments]    ${combobox_locator}    ${month_name}
-#     Wait Until Element Is Visible    ${combobox_locator}    10s
-#     Click Element                    ${combobox_locator}
-#     Sleep    1s
-#     Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${month_name}' && el.children.length === 0).click()
-#     Sleep    1s
-
-# Select Year From Custom Month Picker
-#     [Arguments]    ${combobox_locator}    ${year}
-#     Wait Until Element Is Visible    ${combobox_locator}    10s
-#     Click Element                    ${combobox_locator}
-#     Sleep    1s
-#     Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${year}' && el.children.length === 0).click()
-#     Sleep    1s
-
-# Select Month From Custom Month Picker
-#     [Arguments]    ${combobox_locator}    ${month_name}
-#     Wait Until Element Is Visible    ${combobox_locator}    10s
-#     ${btn}=    Get WebElement    ${combobox_locator}
-#     Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${btn}
-#     Sleep    0.5s
-#     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
-#     Sleep    1s
-#     Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${month_name}' && el.children.length === 0).click()
-#     Sleep    1s
 
 Select Month From Custom Month Picker
     [Arguments]    ${combobox_locator}    ${month_name}
@@ -557,17 +370,6 @@ Select Month From Custom Month Picker
     ${option}=    Get WebElement    xpath=//div[@data-state='open']//div[@role='option'][normalize-space()='${month_name}']
     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${option}
     Sleep    1s
-
-# Select Year From Custom Month Picker
-#     [Arguments]    ${combobox_locator}    ${year}
-#     Wait Until Element Is Visible    ${combobox_locator}    10s
-#     ${btn}=    Get WebElement    ${combobox_locator}
-#     Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${btn}
-#     Sleep    0.5s
-#     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
-#     Sleep    1s
-#     Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${year}' && el.children.length === 0).click()
-#     Sleep    1s
 
 Select Year From Custom Month Picker
     [Arguments]    ${combobox_locator}    ${year}
@@ -653,30 +455,6 @@ Select Custom Month Range And Apply
     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${apply}
     Sleep    3s
     
-# Select Custom Month Range And Apply
-#     [Arguments]    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
-
-#     # Open Custom Month Range picker trigger
-#     Wait Until Element Is Visible    ${CUSTOM_RANGE_DATE_TRIGGER}    10s
-#     Click Element                    ${CUSTOM_RANGE_DATE_TRIGGER}
-#     Sleep    2s
-
-#     # Select From Month
-#     Select Month From Custom Month Picker    ${CUSTOM_MONTH_FROM_MONTH}    ${from_month_name}
-
-#     # Select From Year
-#     Select Year From Custom Month Picker    ${CUSTOM_MONTH_FROM_YEAR}    ${from_year}
-
-#     # Select To Month
-#     Select Month From Custom Month Picker    ${CUSTOM_MONTH_TO_MONTH}    ${to_month_name}
-
-#     # Select To Year
-#     Select Year From Custom Month Picker    ${CUSTOM_MONTH_TO_YEAR}    ${to_year}
-
-#     # Click Apply
-#     Wait Until Element Is Visible    ${CUSTOM_MONTH_APPLY_BUTTON}    10s
-#     Click Element                    ${CUSTOM_MONTH_APPLY_BUTTON}
-#     Sleep    3s
 
 Validate Dashboard Custom Month Range Filter Combination
     [Arguments]    ${date_column_option}    ${expected_date_column}
@@ -757,11 +535,6 @@ Validate All Dashboard Custom Month Range Combinations
     ...    ${DATE_COLUMN_VOUCHER_DATE}
     ...    date_column=voucher_date
 
-# Wait For Dashboard Cards To Load
-#     Wait Until Element Is Visible    ${DASHBOARD_KPI_CARDS}    60s
-#     # Wait until at least one card value is not empty — confirms visual load
-#     Wait Until Element Is Visible    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'bg-card')])[1]//div[contains(@class,'text-2xl')]    30s
-#     Sleep    3s
 Wait For Dashboard Cards To Load
     Wait Until Element Is Visible    xpath=//section[contains(@class,'bg-card')]    60s
     Sleep    3s
@@ -802,42 +575,118 @@ Close State Code Dropdown
     Sleep    1s
 
 Select Each State And Verify Data Loads
-    Open State Code Dropdown
-    ${total}=    Get All State Options Count
+    ${state_labels}=    Get All State Labels
+    ${total}=    Get Length    ${state_labels}
 
-    FOR    ${index}    IN RANGE    1    ${total + 1}
-        ${state_label}=    Get State Label By Index    ${index}
-        Log To Console    \nSelecting state [${index}/${total}]: ${state_label}
+    FOR    ${index}    IN RANGE    ${total}
 
-        # Check
-        Select State By Index    ${index}
+        ${state_label}=    Get From List    ${state_labels}    ${index}
 
-        # Close to trigger filter
-        Close State Code Dropdown
+        Log To Console
+        ...    \nSelecting state [${index + 1}/${total}] : ${state_label}
 
-        # Wait for page to settle
-        Sleep    3s
+        # Open dropdown
+        Open State Code Dropdown
 
-        # Check for no data
+        # Select state
+        Select State By Label    ${state_label}
+
+        # Apply filter
+        Click State Filter Apply Button
+
+        # Wait for dashboard reload
+        Wait For Dashboard Reload After Filter
+
+        # Validate data / no data
         ${no_data}=    Run Keyword And Return Status
         ...    Element Should Be Visible    ${DASHBOARD_NO_DATA_MESSAGE}
+
         IF    ${no_data}
-            Log To Console    No data for: ${state_label} — skipping
+            Log To Console
+            ...    No data available for: ${state_label}
         ELSE
-            Wait Until Element Is Visible    xpath=//section[contains(@class,'bg-card')]    50s
-            Sleep    2s
-            Log To Console    Data loaded for: ${state_label}
+            Log To Console
+            ...    Data loaded successfully for: ${state_label}
         END
 
-        # Re-open and uncheck
-        Open State Code Dropdown
-        Select State By Index    ${index}
-        Log To Console    Unchecked: ${state_label}
+        # Remove applied filter
+        Remove Applied State Filter
 
-        # Close and wait for reset
-        # Close State Code Dropdown
-        # Sleep    3s
-        Wait Until Element Is Visible    xpath=//section[contains(@class,'bg-card')]    50s
-        Sleep    2s
+        Log To Console
+        ...    Removed filter for: ${state_label}
+
     END
-    Log To Console    \nAll states validated successfully
+
+    Log To Console
+    ...    \nAll state validations completed successfully
+
+Click State Filter Apply Button
+    Wait Until Element Is Visible    ${STATE_FILTER_APPLY_BUTTON}    10s
+
+    ${apply_btn}=    Get WebElement    ${STATE_FILTER_APPLY_BUTTON}
+
+    Execute JavaScript
+    ...    arguments[0].scrollIntoView({block:'center'})
+    ...    ARGUMENTS    ${apply_btn}
+
+    Sleep    0.5s
+
+    Execute JavaScript
+    ...    arguments[0].click()
+    ...    ARGUMENTS    ${apply_btn}
+
+    Sleep    2s
+
+Wait For Dashboard Reload After Filter
+    Wait Until Element Is Visible    ${DASHBOARD_CARDS_SECTION}    60s
+
+    # Small stabilization wait for API/UI rendering
+    Sleep    3s
+
+Remove Applied State Filter
+    Wait Until Element Is Visible    ${REMOVE_SELECTED_STATE_BUTTON}    10s
+    Scroll Element Into View    ${REMOVE_SELECTED_STATE_BUTTON}
+    Sleep    1s
+    Click Element    ${REMOVE_SELECTED_STATE_BUTTON}
+    Sleep    2s
+    Wait For Dashboard Reload After Filter
+
+Select State By Label
+    [Arguments]    ${state_label}
+    ${locator}=    Set Variable
+    ...    xpath=//*[@cmdk-item][@role='option'][normalize-space()='${state_label}']
+    Wait Until Element Is Visible    ${locator}    10s
+    ${option}=    Get WebElement    ${locator}
+    Execute JavaScript
+    ...    arguments[0].scrollIntoView({block:'center'})
+    ...    ARGUMENTS    ${option}
+    Sleep    0.5s
+    Execute JavaScript
+    ...    arguments[0].click()
+    ...    ARGUMENTS    ${option}
+    Sleep    1s
+
+Get All State Labels
+    Open State Code Dropdown
+
+    Wait Until Element Is Visible    ${STATE_OPTIONS}    10s
+
+    ${elements}=    Get WebElements    ${STATE_OPTIONS}
+
+    ${state_labels}=    Create List
+
+    FOR    ${element}    IN    @{elements}
+        ${label}=    Get Text    ${element}
+        ${label}=    Strip String    ${label}
+
+        IF    '${label}' != ''
+            Append To List    ${state_labels}    ${label}
+        END
+    END
+
+    Log To Console    \nStates Found: ${state_labels}
+
+    Close State Code Dropdown
+
+    RETURN    ${state_labels}
+

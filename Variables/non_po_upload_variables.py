@@ -56,9 +56,9 @@ NONPO_FILE_INPUT            = "xpath=//input[@type='file']"
 NONPO_AGREEMENT_DROPDOWN    = "xpath=//input[@placeholder='Select agreement type']"
 NONPO_AGREEMENT_OPTIONS     = "xpath=//div[@role='option']"
 
-NONPO_REVIEWER_DROPDOWN     = "xpath=//button[@role='combobox'][@aria-required='true']"
-NONPO_REVIEWER_LISTBOX      = "xpath=//div[@role='listbox' and @data-state='open']"
-NONPO_REVIEWER_OPTIONS      = "xpath=//div[@role='listbox' and @data-state='open']//div[@role='option']"
+NONPO_REVIEWER_DROPDOWN     = "xpath=//input[@placeholder='Search and select a reviewer']"
+NONPO_REVIEWER_LISTBOX      = "xpath=//div[@role='option']"
+NONPO_REVIEWER_OPTIONS      = "xpath=(//div[@role='listbox'])[last()]//div[@role='option']"
 
 NONPO_UPLOAD_DOCUMENTS_BTN  = "xpath=//button[normalize-space()='Upload Documents']"
 NONPO_CANCEL_BTN            = "xpath=//button[normalize-space()='Cancel']"

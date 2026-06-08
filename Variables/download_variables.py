@@ -2,7 +2,7 @@
 # DOWNLOADS PAGE
 # =========================
 
-DOWNLOADS_HEADING               = "xpath=//main//h1[normalize-space()='Downloads']"
+DOWNLOADS_HEADING               = "xpath=//main//h1[normalize-space()='Invoice Downloads']"
 
 # Filter Dropdowns
 REPORT_TYPE_DROPDOWN            = "xpath=(//button[@role='combobox'])[1]"

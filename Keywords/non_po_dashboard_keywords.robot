@@ -50,7 +50,7 @@ Verify NonPO Reports Page
 
 Wait For NonPO Dashboard Cards To Load
     Wait Until Element Is Visible    ${NONPO_DASHBOARD_KPI_CARDS}    60s
-    Wait Until Element Is Visible    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[1]//div[contains(@class,'text-2xl')]    30s
+    Wait Until Element Is Visible    xpath=//div[contains (@class,'h-full p-5')]    30s
     Sleep    3s
 
 Select NonPO Date Column Filter
@@ -114,10 +114,12 @@ Validate NonPO Dashboard KPI Cards With Reports Count
     FOR    ${index}    IN RANGE    ${total_cards}
         ${position}=    Evaluate    ${index} + 1
 
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'text-2xl')]
-        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]
-
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//span[contains(@class,'font-bold')]
+        ${click_card}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]
+        Wait Until Element Is Visible    ${title_locator}    50s
+        Wait Until Element Is Visible    ${value_locator}    50s
+        Wait Until Element Is Visible    ${click_card}    50s
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
 
@@ -201,8 +203,8 @@ Validate NonPO Dashboard Filter Combination
 
     FOR    ${index}    IN RANGE    ${total_cards}
         ${position}=    Evaluate    ${index} + 1
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'text-2xl')]
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//span[contains(@class,'font-bold')]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
@@ -485,8 +487,20 @@ Select NonPO Month From Custom Month Picker
     Sleep    0.5s
     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
     Sleep    1s
-    Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${month_name}' && el.children.length === 0).click()
-    Sleep    1s
+    # Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${month_name}' && el.children.length === 0).click()
+    # Sleep    1s
+    ${month_found}=    Execute JavaScript
+    ...    const els = Array.from(document.querySelectorAll('*'));
+    ...    const el = els.find(e =>
+    ...        e.textContent.trim() === '${month_name}'
+    ...        && e.offsetParent !== null
+    ...    );
+    ...    if(el){
+    ...        el.click();
+    ...        return true;
+    ...    }
+    ...    return false;
+    Should Be True    ${month_found}
 
 Select NonPO Year From Custom Month Picker
     [Arguments]    ${combobox_locator}    ${year}
@@ -496,43 +510,129 @@ Select NonPO Year From Custom Month Picker
     Sleep    0.5s
     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
     Sleep    1s
-    Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${year}' && el.children.length === 0).click()
-    Sleep    1s
+    # Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${year}' && el.children.length === 0).click()
+    # Sleep    1s
+    ${year_found}=    Execute JavaScript
+    ...    const els = Array.from(document.querySelectorAll('*'));
+    ...    const el = els.find(e =>
+    ...        e.textContent.trim() === '${year}'
+    ...        && e.offsetParent !== null
+    ...    );
+    ...    if(el){
+    ...        el.click();
+    ...        return true;
+    ...    }
+    ...    return false;
+
+    Should Be True    ${year_found}
+
+# Get NonPO Random Custom Month Range
+#     ${today}=              Get Current Date    result_format=%Y-%m-%d
+#     ${today_dt}=           Convert Date        ${today}    datetime
+#     ${current_month}=      Set Variable        ${today_dt.month}
+#     ${current_year}=       Set Variable        ${today_dt.year}
+#     ${max_year}=           Evaluate    ${current_year} + 1
+
+#     ${from_year}=          Evaluate    random.randint(2016, ${current_year})    modules=random
+
+#     ${max_from_month}=     Evaluate    ${current_month} if ${from_year} == ${current_year} else 12
+#     ${from_month_num}=     Evaluate    random.randint(1, ${max_from_month})    modules=random
+
+#     ${to_year}=            Evaluate    random.randint(${from_year}, ${max_year})    modules=random
+
+#     ${min_to_month}=       Evaluate    ${from_month_num} if ${to_year} == ${from_year} else 1
+#     ${max_to_month}=       Evaluate    ${current_month} if ${to_year} == ${current_year} else 12
+#     ${to_month_num}=       Evaluate    random.randint(${min_to_month}, ${max_to_month})    modules=random
+
+#     ${months}=             Create List    January    February    March    April    May    June    July    August    September    October    November    December
+#     ${from_month_name}=    Get From List    ${months}    ${from_month_num - 1}
+#     ${to_month_name}=      Get From List    ${months}    ${to_month_num - 1}
+
+#     ${from_month_padded}=  Evaluate    str(${from_month_num}).zfill(2)
+#     ${to_month_padded}=    Evaluate    str(${to_month_num}).zfill(2)
+
+#     ${last_day}=           Evaluate    calendar.monthrange(${to_year}, ${to_month_num})[1]    modules=calendar
+
+#     ${from_date}=          Set Variable    ${from_year}-${from_month_padded}-01
+#     ${to_date}=            Set Variable    ${to_year}-${to_month_padded}-${last_day}
+
+#     Log To Console         \nFrom: ${from_month_name} ${from_year} | To: ${to_month_name} ${to_year}
+#     Log To Console         URL from: ${from_date} | URL to: ${to_date}
+
+#     RETURN    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}
 
 Get NonPO Random Custom Month Range
     ${today}=              Get Current Date    result_format=%Y-%m-%d
     ${today_dt}=           Convert Date        ${today}    datetime
+
     ${current_month}=      Set Variable        ${today_dt.month}
     ${current_year}=       Set Variable        ${today_dt.year}
-    ${max_year}=           Evaluate    ${current_year} + 1
 
+    # FROM YEAR
     ${from_year}=          Evaluate    random.randint(2016, ${current_year})    modules=random
 
+    # FROM MONTH
     ${max_from_month}=     Evaluate    ${current_month} if ${from_year} == ${current_year} else 12
     ${from_month_num}=     Evaluate    random.randint(1, ${max_from_month})    modules=random
 
-    ${to_year}=            Evaluate    random.randint(${from_year}, ${max_year})    modules=random
+    # TO YEAR
+    ${to_year}=            Evaluate    random.randint(${from_year}, ${current_year})    modules=random
 
+    # TO MONTH
     ${min_to_month}=       Evaluate    ${from_month_num} if ${to_year} == ${from_year} else 1
-    ${max_to_month}=       Evaluate    ${current_month} if ${to_year} == ${current_year} else 12
-    ${to_month_num}=       Evaluate    random.randint(${min_to_month}, ${max_to_month})    modules=random
 
-    ${months}=             Create List    January    February    March    April    May    June    July    August    September    October    November    December
+    ${max_to_month}=       Evaluate
+    ...    ${current_month} if ${to_year} == ${current_year} else 12
+
+    ${to_month_num}=       Evaluate
+    ...    random.randint(${min_to_month}, ${max_to_month})
+    ...    modules=random
+
+    # MONTH NAMES
+    ${months}=             Create List
+    ...    January
+    ...    February
+    ...    March
+    ...    April
+    ...    May
+    ...    June
+    ...    July
+    ...    August
+    ...    September
+    ...    October
+    ...    November
+    ...    December
+
     ${from_month_name}=    Get From List    ${months}    ${from_month_num - 1}
     ${to_month_name}=      Get From List    ${months}    ${to_month_num - 1}
 
+    # FORMAT
     ${from_month_padded}=  Evaluate    str(${from_month_num}).zfill(2)
     ${to_month_padded}=    Evaluate    str(${to_month_num}).zfill(2)
 
-    ${last_day}=           Evaluate    calendar.monthrange(${to_year}, ${to_month_num})[1]    modules=calendar
+    ${last_day}=           Evaluate
+    ...    calendar.monthrange(${to_year}, ${to_month_num})[1]
+    ...    modules=calendar
 
-    ${from_date}=          Set Variable    ${from_year}-${from_month_padded}-01
-    ${to_date}=            Set Variable    ${to_year}-${to_month_padded}-${last_day}
+    ${from_date}=          Set Variable
+    ...    ${from_year}-${from_month_padded}-01
 
-    Log To Console         \nFrom: ${from_month_name} ${from_year} | To: ${to_month_name} ${to_year}
-    Log To Console         URL from: ${from_date} | URL to: ${to_date}
+    ${to_date}=            Set Variable
+    ...    ${to_year}-${to_month_padded}-${last_day}
 
-    RETURN    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}
+    Log To Console
+    ...    \nFrom: ${from_month_name} ${from_year} | To: ${to_month_name} ${to_year}
+
+    Log To Console
+    ...    URL from: ${from_date} | URL to: ${to_date}
+
+    RETURN
+    ...    ${from_month_name}
+    ...    ${from_year}
+    ...    ${to_month_name}
+    ...    ${to_year}
+    ...    ${from_date}
+    ...    ${to_date}
 
 Select NonPO Custom Month Range And Apply
     [Arguments]    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
@@ -560,9 +660,9 @@ Click First Available NonPO KPI Card
     FOR    ${index}    IN RANGE    ${total_cards}
         ${position}=    Evaluate    ${index} + 1
 
-        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'uppercase')]
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]//div[contains(@class,'text-2xl')]
-        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'h-full') and contains(@class,'h-full')])[${position}]
+        ${title_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//div[contains(@class,'uppercase')]
+        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//span[contains(@class,'font-bold')]
+        ${click_card}=       Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}

@@ -5,8 +5,8 @@ SIDENAV_DOWNLOADS = "xpath=//a[@data-slot='sidebar-menu-button' and @href='/invo
 
 # Page headings
 DASHBOARD_HEADING = "xpath=//main//h1[normalize-space()='Invoice Check Overview']"
-REPORTS_HEADING = "xpath=//main//h1[normalize-space()='Reports']"
-DOWNLOADS_HEADING = "xpath=//main//h1[normalize-space()='Downloads']"
+REPORTS_HEADING = "xpath=//main//h1[normalize-space()='Invoice Downloads']"
+DOWNLOADS_HEADING = "xpath=//main//h1[normalize-space()='Reports Downloads']"
 
 # Common module verification
 INVOICE_CHECK_MODULE_LOADED = "xpath=//a[contains(@href,'/invoice-check/dashboard') and contains(.,'Dashboard')]"
@@ -18,7 +18,7 @@ INVOICE_CHECK_MODULE_LOADED = "xpath=//a[contains(@href,'/invoice-check/dashboar
 # DASHBOARD_KPI_CARDS = "xpath=//main//div[contains(@class,'h-full') and contains(@class,'cursor-pointer')]"
 # CARD_TITLE_RELATIVE = "xpath=.//div[contains(@class,'uppercase')]"
 # CARD_VALUE_RELATIVE = "xpath=.//div[contains(@class,'text-4xl')]"
-DASHBOARD_KPI_CARDS = "xpath=//section[contains(@class,'bg-card')]"
+DASHBOARD_KPI_CARDS = "(//main//div[contains(@class,'grid-cols-2') and contains(@class,'gap-4')])[1]//section[contains(@class,'rounded-xl') and contains(@class,'border') and .//div[contains(@class,'uppercase')]]"
 CARD_TITLE_RELATIVE     = "xpath=.//div[contains(@class,'uppercase')]"
 CARD_VALUE_RELATIVE     = "xpath=.//div[contains(@class,'text-2xl')]"
 
@@ -37,7 +37,7 @@ VIEW_BY_MONTH_OPTION = "xpath=//div[@role='option'][normalize-space()='Month']"
 VIEW_BY_QUARTER_OPTION = "xpath=//div[@role='option'][normalize-space()='Quarter']"
 VIEW_BY_YEAR_OPTION = "xpath=//div[@role='option'][normalize-space()='Year']"
 
-RECON_DYNAMIC_COLUMN_HEADER = "xpath=(//table//thead//th[normalize-space()='Outcome']/following-sibling::th)[1]"
+RECON_DYNAMIC_COLUMN_HEADER = "xpath=(//table//thead//tr/th[@colspan='6'])[1]"
 
 # =========================
 # DASHBOARD FILTER DROPDOWNS
@@ -47,6 +47,14 @@ STATE_CODE_CHECKBOXES    = "xpath=//*[@cmdk-item][@role='option']"
 STATE_CODE_CHECKBOX_ITEM = "xpath=(//*[@cmdk-item][@role='option'])[{index}]"
 DATE_COLUMN_DROPDOWN = "xpath=(//button[@role='combobox'])[1]"
 DATE_RANGE_DROPDOWN = "xpath=(//button[@role='combobox'])[2]"
+# State Filter
+STATE_FILTER_APPLY_BUTTON = "xpath=//button[normalize-space()='Apply']"
+# Selected state chip remove/cross button
+REMOVE_SELECTED_STATE_BUTTON = "xpath=//div[contains(@class,'gap-1.5')]//*[contains(@class,'lucide-x')]"
+# Dashboard cards loader/check
+DASHBOARD_CARDS_SECTION = "xpath=//section[contains(@class,'bg-card')]"
+# State dropdown options
+STATE_OPTIONS = "xpath=//*[@cmdk-item][@role='option']"
 
 # Date Column Options
 DATE_COLUMN_INVOICE_DATE = "xpath=//div[@role='option'][normalize-space()='Invoice Date']"

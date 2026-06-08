@@ -1,4 +1,4 @@
-name: Invoice Check Daily Run
+name: Invoice Check 7AM IST
 
 on:
   schedule:

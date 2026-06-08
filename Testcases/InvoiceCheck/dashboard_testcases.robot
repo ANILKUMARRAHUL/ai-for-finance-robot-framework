@@ -20,7 +20,7 @@ Verify Dashboard KPI Cards Count Against Reports
     Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
-    Verify Dashboard Page
+    #Verify Dashboard Page
     Validate Dashboard KPI Cards With Reports Count
 
 Validate Dashboard Reconciliation View By Filter

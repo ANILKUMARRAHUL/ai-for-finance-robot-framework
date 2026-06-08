@@ -105,7 +105,7 @@ Upload File To PR Tab
 
 Fill Upload Form
     Select Random Dropdown Option    ${NONPO_AGREEMENT_DROPDOWN}    ${NONPO_AGREEMENT_OPTIONS}
-    Select Random Reviewer Option
+    Select Random Reviewer Option   
 
 Verify Incomplete Upload Dialog
     Wait Until Element Is Visible    ${NONPO_INCOMPLETE_DIALOG}    10s
