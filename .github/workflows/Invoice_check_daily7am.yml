@@ -2,7 +2,7 @@ name: Invoice Check 7AM IST
 
 on:
   schedule:
-    - cron: "30 1 * * *" # 7:00 AM IST
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 jobs:
