@@ -35,6 +35,13 @@ jobs:
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
 
+      - name: Print Trigger Time
+        run: |
+          echo "UTC:"
+          date -u
+          echo "Runner Time:"
+          date
+
       - name: Run Robot Framework test
         run: |
           robot --variable HEADLESS:True -d results -t "Validate State Wise Data Loading" Testcases/InvoiceCheck/dashboard_testcases.robot
