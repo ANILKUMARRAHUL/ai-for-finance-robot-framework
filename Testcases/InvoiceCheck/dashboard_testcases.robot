@@ -65,4 +65,4 @@ Validate State Wise Data Loading
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
-    Select Each State And Verify Data Loads
+    Validate State Wise Data Loading For All Filter Combinations

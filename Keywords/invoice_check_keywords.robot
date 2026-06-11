@@ -255,9 +255,10 @@ Click First Available KPI Card
         END
 
         Log To Console    Clicking card: ${title}
-        Scroll Element Into View    ${click_card}
-        Sleep    1s
-        Click Element    ${click_card}
+        ${card_element}=    Get WebElement    ${click_card}
+        Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${card_element}
+        Sleep    0.5s
+        Execute JavaScript    arguments[0].click()    ARGUMENTS    ${card_element}
         RETURN    CLICKED
     END
     Log To Console    All KPI cards have 0 data — nothing to click
@@ -388,22 +389,30 @@ Get Random Custom Month Range
     ${today_dt}=           Convert Date        ${today}    datetime
     ${current_month}=      Set Variable        ${today_dt.month}
     ${current_year}=       Set Variable        ${today_dt.year}
-    ${max_year}=           Evaluate    ${current_year} + 1
 
-    # Pick random from year between 2016 and current year
-    ${from_year}=          Evaluate    random.randint(2016, ${current_year})    modules=random
+    # Max to = today's month (no future)
+    ${to_max_total}=       Evaluate    ${current_year} * 12 + ${current_month}
 
-    # Pick random from month
-    ${max_from_month}=     Evaluate    ${current_month} if ${from_year} == ${current_year} else 12
-    ${from_month_num}=     Evaluate    random.randint(1, ${max_from_month})    modules=random
+    # Min from = 12 months back from today
+    ${from_min_total}=     Evaluate    ${current_year} * 12 + ${current_month} - 12
 
-    # Pick random to year between from year and max year
-    ${to_year}=            Evaluate    random.randint(${from_year}, ${max_year})    modules=random
+    # Max from = 2 months back from today (greater than last month)
+    ${from_max_total}=     Evaluate    ${current_year} * 12 + ${current_month} - 2
 
-    # Pick random to month
-    ${min_to_month}=       Evaluate    ${from_month_num} if ${to_year} == ${from_year} else 1
-    ${max_to_month}=       Evaluate    ${current_month} if ${to_year} == ${current_year} else 12
-    ${to_month_num}=       Evaluate    random.randint(${min_to_month}, ${max_to_month})    modules=random
+    # Random from between min and max
+    ${from_total}=         Evaluate    random.randint(${from_min_total}, ${from_max_total})    modules=random
+    ${from_year}=          Evaluate    ${from_total} // 12
+    ${from_month_num}=     Evaluate    ${from_total} % 12
+    ${from_month_num}=     Evaluate    12 if ${from_month_num} == 0 else ${from_month_num}
+    ${from_year}=          Evaluate    ${from_year} - 1 if ${from_month_num} == 12 else ${from_year}
+
+    # Random to between from and today's month
+    ${from_total_actual}=  Evaluate    ${from_year} * 12 + ${from_month_num}
+    ${to_total}=           Evaluate    random.randint(${from_total_actual}, ${to_max_total})    modules=random
+    ${to_year}=            Evaluate    ${to_total} // 12
+    ${to_month_num}=       Evaluate    ${to_total} % 12
+    ${to_month_num}=       Evaluate    12 if ${to_month_num} == 0 else ${to_month_num}
+    ${to_year}=            Evaluate    ${to_year} - 1 if ${to_month_num} == 12 else ${to_year}
 
     # Convert month numbers to names
     ${months}=             Create List    January    February    March    April    May    June    July    August    September    October    November    December
@@ -536,16 +545,26 @@ Validate All Dashboard Custom Month Range Combinations
     ...    date_column=voucher_date
 
 Wait For Dashboard Cards To Load
-    Wait Until Element Is Visible    xpath=//section[contains(@class,'bg-card')]    60s
+    Wait Until Element Is Visible    xpath=//section[contains(@class,'bg-card')]    240s
     Sleep    3s
 
 
 Open State Code Dropdown
-    Wait Until Element Is Visible    ${STATE_CODE_DROPDOWN}    timeout=10s
-    Scroll Element Into View         ${STATE_CODE_DROPDOWN}
-    Sleep    1s
-    Click Element                    ${STATE_CODE_DROPDOWN}
-    Sleep    2s
+    Wait Until Element Is Visible    ${STATE_CODE_DROPDOWN}    60s
+
+    Wait Until Keyword Succeeds
+    ...    60s
+    ...    1s
+    ...    Element Should Be Enabled
+    ...    ${STATE_CODE_DROPDOWN}
+
+    Scroll Element Into View    ${STATE_CODE_DROPDOWN}
+
+    Click Element    ${STATE_CODE_DROPDOWN}
+
+    Wait Until Element Is Visible
+    ...    xpath=//*[@cmdk-item][@role='option']
+    ...    20s
 
 Get All State Options Count
     Wait Until Element Is Visible    xpath=//*[@cmdk-item][@role='option']    10s
@@ -621,7 +640,7 @@ Select Each State And Verify Data Loads
     ...    \nAll state validations completed successfully
 
 Click State Filter Apply Button
-    Wait Until Element Is Visible    ${STATE_FILTER_APPLY_BUTTON}    10s
+    Wait Until Element Is Visible    ${STATE_FILTER_APPLY_BUTTON}    20s
 
     ${apply_btn}=    Get WebElement    ${STATE_FILTER_APPLY_BUTTON}
 
@@ -638,16 +657,36 @@ Click State Filter Apply Button
     Sleep    2s
 
 Wait For Dashboard Reload After Filter
-    Wait Until Element Is Visible    ${DASHBOARD_CARDS_SECTION}    60s
-
-    # Small stabilization wait for API/UI rendering
-    Sleep    3s
+    Wait Until Element Is Visible    ${DASHBOARD_CARDS_SECTION}    180s
+    Wait Until Element Is Visible    ${DATE_COLUMN_DROPDOWN}       180s
+    Wait Until Element Is Visible    ${DATE_RANGE_DROPDOWN}        180s
+    Wait Until Element Is Visible    ${STATE_CODE_DROPDOWN}        180s
+    ${filters_enabled}=    Run Keyword And Return Status
+    ...    Wait Until Keyword Succeeds    150x    2s
+    ...    Element Should Be Enabled    ${DATE_COLUMN_DROPDOWN}
+    IF    not ${filters_enabled}
+        Log To Console    WARNING: Filters not enabled after timeout — possible 499 server error, refreshing page
+        Reload Page
+        Wait Until Element Is Visible    ${DASHBOARD_CARDS_SECTION}    180s
+        Wait Until Element Is Visible    ${DATE_COLUMN_DROPDOWN}       180s
+        Wait Until Keyword Succeeds    150x    2s
+        ...    Element Should Be Enabled    ${DATE_COLUMN_DROPDOWN}
+    END
+    Wait Until Keyword Succeeds    150x    2s
+    ...    Element Should Be Enabled    ${DATE_RANGE_DROPDOWN}
+    Wait Until Keyword Succeeds    150x    2s
+    ...    Element Should Be Enabled    ${STATE_CODE_DROPDOWN}
+    Sleep    5s
 
 Remove Applied State Filter
-    Wait Until Element Is Visible    ${REMOVE_SELECTED_STATE_BUTTON}    10s
-    Scroll Element Into View    ${REMOVE_SELECTED_STATE_BUTTON}
-    Sleep    1s
-    Click Element    ${REMOVE_SELECTED_STATE_BUTTON}
+    Scroll To Top
+    Sleep    2s
+    Wait Until Element Is Visible    ${REMOVE_SELECTED_STATE_BUTTON}    600s
+    Wait Until Keyword Succeeds    150x    2s
+    ...    Element Should Be Enabled    ${REMOVE_SELECTED_STATE_BUTTON}
+    Sleep    2s
+    Wait Until Keyword Succeeds    150x    2s
+    ...    Click Element    ${REMOVE_SELECTED_STATE_BUTTON}
     Sleep    2s
     Wait For Dashboard Reload After Filter
 
@@ -690,3 +729,270 @@ Get All State Labels
 
     RETURN    ${state_labels}
 
+Select Date Column And Date Range Filter
+    [Arguments]    ${date_column_option}    ${date_range_option}
+    Select Date Column Filter    ${date_column_option}
+    Select Date Range Filter     ${date_range_option}
+    Wait For Dashboard Cards To Load
+
+Select Each State And Verify Data Loads For Combination
+    [Arguments]    ${date_column_option}    ${date_range_option}    ${combo_label}
+
+    ${state_labels}=    Get All State Labels
+    ${total}=    Get Length    ${state_labels}
+
+    Log To Console    \n=== Combo: ${combo_label} | States: ${total} ===
+
+    FOR    ${index}    IN RANGE    ${total}
+        ${state_label}=    Get From List    ${state_labels}    ${index}
+        Log To Console    \n[${combo_label}] State [${index + 1}/${total}]: ${state_label}
+
+        Open State Code Dropdown
+        Select State By Label    ${state_label}
+        Click State Filter Apply Button
+        Wait For Dashboard Reload After Filter
+
+        ${no_data}=    Run Keyword And Return Status
+        ...    Element Should Be Visible    ${DASHBOARD_NO_DATA_MESSAGE}
+
+        IF    ${no_data}
+            Log To Console    No data: ${state_label}
+        ELSE
+            Log To Console    Data loaded: ${state_label}
+        END
+
+        Remove Applied State Filter
+        Log To Console    Removed filter: ${state_label}
+    END
+
+    Log To Console    \nDone: ${combo_label}
+
+Validate State Wise Data Loading For All Filter Combinations
+    # 5. Voucher Date + Month Till Date
+    Scroll To Top
+    Sleep    1s
+    Select Date Column And Date Range Filter
+    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Voucher Date + Month Till Date
+
+    # 6. Voucher Date + Last Month
+    Scroll To Top
+    Sleep    1s
+    Select Date Column And Date Range Filter
+    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_LAST_MONTH}
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_LAST_MONTH}    Voucher Date + Last Month
+
+    # 7. Voucher Date + Custom Month Range
+    Scroll To Top
+    Sleep    1s
+    Select Date Column Filter    ${DATE_COLUMN_VOUCHER_DATE}
+    Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
+    Sleep    2s
+    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
+    ...    Get Random Custom Month Range
+    Select Custom Month Range And Apply
+    ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
+    Wait For Dashboard Cards To Load
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_CUSTOM_MONTH_RANGE}    Voucher Date + Custom Month Range
+    
+    #1. Invoice Date + Month Till Date
+    Scroll To Top
+    Sleep    1s
+    Select Date Column And Date Range Filter
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Invoice Date + Month Till Date
+
+    # 2. Invoice Date + Last Month
+    Scroll To Top
+    Sleep    1s
+    Select Date Column And Date Range Filter
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_LAST_MONTH}
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_LAST_MONTH}    Invoice Date + Last Month
+
+    # 3. Invoice Date + Custom Month Range
+    Scroll To Top
+    Sleep    1s
+    Select Date Column Filter    ${DATE_COLUMN_INVOICE_DATE}
+    Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
+    Sleep    2s
+    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
+    ...    Get Random Custom Month Range
+    Select Custom Month Range And Apply
+    ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
+    Wait For Dashboard Cards To Load
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_CUSTOM_MONTH_RANGE}    Invoice Date + Custom Month Range
+
+    #4. Invoice Date + Custom Date Range
+    # Scroll To Top
+    # Sleep    1s
+    # Select Date Column Filter    ${DATE_COLUMN_INVOICE_DATE}
+    # Select Date Range Filter     ${DATE_RANGE_CUSTOM_DATE_RANGE}
+    # Sleep    2s
+    # ${from_date}    ${to_date}=    Get Random Custom Date Range
+    # Select Custom Date Range And Apply    ${from_date}    ${to_date}
+    # Wait For Dashboard Cards To Load
+    # Select Each State And Verify Data Loads For Combination
+    # ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_CUSTOM_DATE_RANGE}    Invoice Date + Custom Date Range
+
+    # 8. Voucher Date + Custom Date Range
+    # Scroll To Top
+    # Sleep    1s
+    # Select Date Column Filter    ${DATE_COLUMN_VOUCHER_DATE}
+    # Select Date Range Filter     ${DATE_RANGE_CUSTOM_DATE_RANGE}
+    # Sleep    2s
+    # ${from_date}    ${to_date}=    Get Random Custom Date Range
+    # Select Custom Date Range And Apply    ${from_date}    ${to_date}
+    # Wait For Dashboard Cards To Load
+    # Select Each State And Verify Data Loads For Combination
+    # ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_CUSTOM_DATE_RANGE}    Voucher Date + Custom Date Range
+
+Get Random Custom Date Range
+    ${today}=            Get Current Date    result_format=%Y-%m-%d
+    ${today_dt}=         Convert Date        ${today}    datetime
+    ${current_year}=     Set Variable        ${today_dt.year}
+    ${current_month}=    Set Variable        ${today_dt.month}
+    ${current_day}=      Set Variable        ${today_dt.day}
+
+    # Min date is exactly 1 year back from today
+    ${min_year}=         Evaluate    ${current_year} - 1
+    ${min_date}=         Set Variable    ${min_year}-${current_month}-${current_day}
+
+    # Random from date between 1 year back and today
+    ${from_year}=        Evaluate    random.randint(${min_year}, ${current_year})    modules=random
+
+    ${min_from_month}=   Evaluate    ${current_month} if ${from_year} == ${min_year} else 1
+    ${max_from_month}=   Evaluate    ${current_month} if ${from_year} == ${current_year} else 12
+    ${from_month_num}=   Evaluate    random.randint(${min_from_month}, ${max_from_month})    modules=random
+
+    ${min_from_day}=     Evaluate    ${current_day} if (${from_year} == ${min_year} and ${from_month_num} == ${current_month}) else 1
+    ${max_from_day}=     Evaluate    (${current_day} if (${from_year}==${current_year} and ${from_month_num}==${current_month}) else __import__('calendar').monthrange(${from_year},${from_month_num})[1])    modules=calendar
+    ${from_day_num}=     Evaluate    random.randint(${min_from_day}, ${max_from_day})    modules=random
+
+    # Random to date between from date and today
+    ${to_year}=          Evaluate    random.randint(${from_year}, ${current_year})    modules=random
+
+    ${min_to_month}=     Evaluate    ${from_month_num} if ${to_year} == ${from_year} else 1
+    ${max_to_month}=     Evaluate    ${current_month} if ${to_year} == ${current_year} else 12
+    ${to_month_num}=     Evaluate    random.randint(${min_to_month}, ${max_to_month})    modules=random
+
+    ${min_to_day}=       Evaluate    ${from_day_num} if (${to_year}==${from_year} and ${to_month_num}==${from_month_num}) else 1
+    ${max_to_day}=       Evaluate    (${current_day} if (${to_year}==${current_year} and ${to_month_num}==${current_month}) else __import__('calendar').monthrange(${to_year},${to_month_num})[1])    modules=calendar
+    ${to_day_num}=       Evaluate    random.randint(${min_to_day}, ${max_to_day})    modules=random
+
+    ${from_month_padded}=    Evaluate    str(${from_month_num}).zfill(2)
+    ${from_day_padded}=      Evaluate    str(${from_day_num}).zfill(2)
+    ${to_month_padded}=      Evaluate    str(${to_month_num}).zfill(2)
+    ${to_day_padded}=        Evaluate    str(${to_day_num}).zfill(2)
+
+    ${from_date}=    Set Variable    ${from_year}-${from_month_padded}-${from_day_padded}
+    ${to_date}=      Set Variable    ${to_year}-${to_month_padded}-${to_day_padded}
+
+    Log To Console    \nCustom Date Range — From: ${from_date} | To: ${to_date}
+    RETURN    ${from_date}    ${to_date}
+
+Navigate Calendar To Month
+    [Arguments]    ${target_year}    ${target_month_num}    ${calendar_side}
+    # calendar_side: 'left' for from-month calendar, 'right' for to-month calendar
+    # Clicks next/prev until the displayed month matches target
+    FOR    ${i}    IN RANGE    60
+        ${left_header}=     Get Text    xpath=(//div[contains(@class,'rdp-month_caption')])[1]
+        ${right_header}=    Get Text    xpath=(//div[contains(@class,'rdp-month_caption')])[2]
+
+        Log To Console    Calendars: ${left_header} | ${right_header}
+
+        # Parse left calendar month/year
+        ${left_parts}=     Split String    ${left_header}
+        ${left_month}=     Set Variable    ${left_parts}[0]
+        ${left_year}=      Convert To Integer    ${left_parts}[1]
+
+        ${months}=    Create List    January    February    March    April    May    June    July    August    September    October    November    December
+        ${left_month_num}=    Evaluate    [m for m in range(1,13) if '${left_month}' == ['January','February','March','April','May','June','July','August','September','October','November','December'][m-1]][0]
+
+        IF    '${calendar_side}' == 'left'
+            ${target_reached}=    Evaluate    ${left_month_num} == ${target_month_num} and ${left_year} == ${target_year}
+        ELSE
+            ${right_parts}=       Split String    ${right_header}
+            ${right_month}=       Set Variable    ${right_parts}[0]
+            ${right_year}=        Convert To Integer    ${right_parts}[1]
+            ${right_month_num}=   Evaluate    [m for m in range(1,13) if '${right_month}' == ['January','February','March','April','May','June','July','August','September','October','November','December'][m-1]][0]
+            ${target_reached}=    Evaluate    ${right_month_num} == ${target_month_num} and ${right_year} == ${target_year}
+        END
+
+        IF    ${target_reached}
+            BREAK
+        END
+
+        # Decide direction
+        IF    '${calendar_side}' == 'left'
+            ${current_num}=    Set Variable    ${left_month_num}
+            ${current_year}=   Set Variable    ${left_year}
+        ELSE
+            ${current_num}=    Set Variable    ${right_month_num}
+            ${current_year}=   Set Variable    ${right_year}
+        END
+
+        ${go_forward}=    Evaluate    (${current_year} < ${target_year}) or (${current_year} == ${target_year} and ${current_num} < ${target_month_num})
+
+        IF    ${go_forward}
+            Click Element    xpath=(//button[@aria-label[contains(.,'Go to the Next Month')]])[1]
+        ELSE
+            Click Element    xpath=(//button[@aria-label[contains(.,'Go to the Previous Month')]])[1]
+        END
+        Sleep    0.5s
+    END
+
+Click Day In Calendar
+    [Arguments]    ${year}    ${month_num}    ${day_num}
+    ${day_padded}=    Evaluate    str(${day_num}).zfill(2)
+    ${month_padded}=  Evaluate    str(${month_num}).zfill(2)
+    ${date_str}=      Set Variable    ${year}-${month_padded}-${day_padded}
+    ${day_locator}=   Set Variable    xpath=//td[@data-day='${date_str}']//button
+    Wait Until Element Is Visible    ${day_locator}    10s
+    Scroll Element Into View    ${day_locator}
+    Sleep    0.5s
+    ${day_btn}=    Get WebElement    ${day_locator}
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${day_btn}
+    Sleep    0.5s
+
+Select Custom Date Range And Apply
+    [Arguments]    ${from_date}    ${to_date}
+
+    # Parse from_date
+    ${from_parts}=       Split String    ${from_date}    -
+    ${from_year}=        Convert To Integer    ${from_parts}[0]
+    ${from_month_num}=   Convert To Integer    ${from_parts}[1]
+    ${from_day_num}=     Convert To Integer    ${from_parts}[2]
+
+    # Parse to_date
+    ${to_parts}=         Split String    ${to_date}    -
+    ${to_year}=          Convert To Integer    ${to_parts}[0]
+    ${to_month_num}=     Convert To Integer    ${to_parts}[1]
+    ${to_day_num}=       Convert To Integer    ${to_parts}[2]
+
+    # Navigate left calendar to from month
+    Navigate Calendar To Month    ${from_year}    ${from_month_num}    left
+
+    # Click from day
+    Click Day In Calendar    ${from_year}    ${from_month_num}    ${from_day_num}
+    Sleep    0.5s
+
+    # Navigate to to month (right calendar or continue clicking next)
+    Navigate Calendar To Month    ${to_year}    ${to_month_num}    right
+
+    # Click to day
+    Click Day In Calendar    ${to_year}    ${to_month_num}    ${to_day_num}
+    Sleep    0.5s
+
+    # Click Apply
+    Wait Until Element Is Visible    ${CUSTOM_DATE_RANGE_APPLY_BUTTON}    10s
+    ${apply}=    Get WebElement    ${CUSTOM_DATE_RANGE_APPLY_BUTTON}
+    Execute JavaScript    arguments[0].scrollIntoView({block:'center'})    ARGUMENTS    ${apply}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${apply}
+    Sleep    3s

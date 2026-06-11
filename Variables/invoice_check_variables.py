@@ -89,3 +89,8 @@ CUSTOM_RANGE_CANCEL_BUTTON = "xpath=//button[normalize-space()='Cancel']"
 DASHBOARD_NO_DATA_MESSAGE = "xpath=//h3[normalize-space()='No Data Available']"
 CARD_TOOLTIP = "xpath=//div[contains(text(),'Exact Value:')]"
 CUSTOM_RANGE_DATE_TRIGGER = "xpath=//button[@data-slot='popover-trigger' and @aria-haspopup='dialog']"
+
+# Custom Date Range picker
+CUSTOM_DATE_RANGE_APPLY_BUTTON  = "xpath=//div[@data-slot='calendar']//ancestor::div[contains(@class,'rdp-root')]//following-sibling::div//button[normalize-space()='Apply']"
+CUSTOM_DATE_RANGE_CANCEL_BUTTON = "xpath=//div[@data-slot='calendar']//ancestor::div[contains(@class,'rdp-root')]//following-sibling::div//button[normalize-space()='Cancel']"
+CUSTOM_DATE_RANGE_RESET_BUTTON  = "xpath=//div[@data-slot='calendar']//ancestor::div[contains(@class,'rdp-root')]//following-sibling::div//button[normalize-space()='Reset']"
