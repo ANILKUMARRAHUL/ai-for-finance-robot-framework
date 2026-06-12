@@ -1,5 +1,5 @@
 *** Settings ***
-Resource    ../Settings/Settings.robot
+Resource    ../Settings/settings.robot
 Resource    ../Keywords/login_keywords.robot
 
 Test Setup       Open Browser With Options
