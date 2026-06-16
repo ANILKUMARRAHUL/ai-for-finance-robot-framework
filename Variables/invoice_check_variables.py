@@ -94,3 +94,4 @@ CUSTOM_RANGE_DATE_TRIGGER = "xpath=//button[@data-slot='popover-trigger' and @ar
 CUSTOM_DATE_RANGE_APPLY_BUTTON  = "xpath=//div[@data-slot='calendar']//ancestor::div[contains(@class,'rdp-root')]//following-sibling::div//button[normalize-space()='Apply']"
 CUSTOM_DATE_RANGE_CANCEL_BUTTON = "xpath=//div[@data-slot='calendar']//ancestor::div[contains(@class,'rdp-root')]//following-sibling::div//button[normalize-space()='Cancel']"
 CUSTOM_DATE_RANGE_RESET_BUTTON  = "xpath=//div[@data-slot='calendar']//ancestor::div[contains(@class,'rdp-root')]//following-sibling::div//button[normalize-space()='Reset']"
+RESET_BUTTON = "xpath=//button[@aria-label='Reset filters']"

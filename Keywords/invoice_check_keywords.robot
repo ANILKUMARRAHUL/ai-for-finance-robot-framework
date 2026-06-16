@@ -462,7 +462,8 @@ Select Custom Month Range And Apply
     Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${apply}
     Sleep    0.5s
     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${apply}
-    Sleep    3s
+    Wait For Dashboard Reload After Filter
+    Sleep   10s
     
 
 Validate Dashboard Custom Month Range Filter Combination
@@ -550,6 +551,7 @@ Wait For Dashboard Cards To Load
 
 
 Open State Code Dropdown
+    Wait For Dashboard Reload After Filter
     Wait Until Element Is Visible    ${STATE_CODE_DROPDOWN}    60s
 
     Wait Until Keyword Succeeds
@@ -561,10 +563,13 @@ Open State Code Dropdown
     Scroll Element Into View    ${STATE_CODE_DROPDOWN}
 
     Click Element    ${STATE_CODE_DROPDOWN}
+    Sleep   2s
+    
+    Wait Until Element Is Visible    xpath=//*[@cmdk-item][@role='option']    20s
 
-    Wait Until Element Is Visible
-    ...    xpath=//*[@cmdk-item][@role='option']
-    ...    20s
+    ${count}=    Get Element Count    xpath=//*[@cmdk-item][@role='option']
+
+    Log To Console    OPTIONS FOUND: ${count}
 
 Get All State Options Count
     Wait Until Element Is Visible    xpath=//*[@cmdk-item][@role='option']    10s
@@ -692,18 +697,27 @@ Remove Applied State Filter
 
 Select State By Label
     [Arguments]    ${state_label}
+
     ${locator}=    Set Variable
     ...    xpath=//*[@cmdk-item][@role='option'][normalize-space()='${state_label}']
+
+    Log To Console    Waiting for option...
+
     Wait Until Element Is Visible    ${locator}    10s
-    ${option}=    Get WebElement    ${locator}
-    Execute JavaScript
-    ...    arguments[0].scrollIntoView({block:'center'})
-    ...    ARGUMENTS    ${option}
-    Sleep    0.5s
-    Execute JavaScript
-    ...    arguments[0].click()
-    ...    ARGUMENTS    ${option}
+
+    Log To Console    Option visible
+
+    ${text}=    Get Text    ${locator}
+    Log To Console    Found option: ${text}
+
+    Click Element    ${locator}
+
+    Log To Console    Clicked option
+
     Sleep    1s
+
+    ${value}=    Get Text    ${STATE_CODE_DROPDOWN}
+    Log To Console    Selected value: ${value}
 
 Get All State Labels
     Open State Code Dropdown
@@ -746,11 +760,13 @@ Select Each State And Verify Data Loads For Combination
     FOR    ${index}    IN RANGE    ${total}
         ${state_label}=    Get From List    ${state_labels}    ${index}
         Log To Console    \n[${combo_label}] State [${index + 1}/${total}]: ${state_label}
-
+        Log To Console    Before clickable wait
+        Wait Until Element Is Clickable    ${RESET_BUTTON}
+        Log To Console    After clickable wait
         Open State Code Dropdown
         Select State By Label    ${state_label}
         Click State Filter Apply Button
-        Wait For Dashboard Reload After Filter
+        Wait Until Element Is Clickable    ${RESET_BUTTON}
 
         ${no_data}=    Run Keyword And Return Status
         ...    Element Should Be Visible    ${DASHBOARD_NO_DATA_MESSAGE}
@@ -762,10 +778,37 @@ Select Each State And Verify Data Loads For Combination
         END
 
         Remove Applied State Filter
+        Wait Until Element Is Clickable    ${RESET_BUTTON}
         Log To Console    Removed filter: ${state_label}
     END
 
     Log To Console    \nDone: ${combo_label}
+
+Wait Until Element Is Clickable
+    [Arguments]    ${locator}
+
+    Wait Until Keyword Succeeds    120x    2s
+    ...    Element Should Be Clickable    ${locator}
+
+Element Should Be Clickable
+    [Arguments]    ${locator}
+
+    ${element}=    Get WebElement    ${locator}
+
+    Execute Javascript
+    ...    arguments[0].scrollIntoView({block:'center'});
+    ...    ARGUMENTS
+    ...    ${element}
+
+    ${clickable}=    Execute Javascript
+    ...    var e = arguments[0];
+    ...    var r = e.getBoundingClientRect();
+    ...    var el = document.elementFromPoint(r.left + r.width/2, r.top + r.height/2);
+    ...    return e === el || e.contains(el);
+    ...    ARGUMENTS
+    ...    ${element}
+
+    Should Be True    ${clickable}
 
 Validate State Wise Data Loading For All Filter Combinations
     # 5. Voucher Date + Month Till Date
@@ -776,7 +819,7 @@ Validate State Wise Data Loading For All Filter Combinations
     Select Each State And Verify Data Loads For Combination
     ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Voucher Date + Month Till Date
 
-    # 6. Voucher Date + Last Month
+    # # 6. Voucher Date + Last Month
     Scroll To Top
     Sleep    1s
     Select Date Column And Date Range Filter
@@ -789,6 +832,10 @@ Validate State Wise Data Loading For All Filter Combinations
     Sleep    1s
     Select Date Column Filter    ${DATE_COLUMN_VOUCHER_DATE}
     Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
+    Capture Page Screenshot
+    Wait Until Element Is Visible
+    ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
+    ...    15s
     Sleep    2s
     ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
     ...    Get Random Custom Month Range
@@ -815,16 +862,52 @@ Validate State Wise Data Loading For All Filter Combinations
     ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_LAST_MONTH}    Invoice Date + Last Month
 
     # 3. Invoice Date + Custom Month Range
+    # Scroll To Top
+    # Sleep    1s
+    # Select Date Column Filter    ${DATE_COLUMN_INVOICE_DATE}
+    # Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
+    # Capture Page Screenshot
+    # Wait Until Element Is Visible
+    # ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
+    # ...    15s
+    # Sleep    2s
+    # ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
+    # ...    Get Random Custom Month Range
+    # Select Custom Month Range And Apply
+    # ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
+    # Wait For Dashboard Cards To Load
+    # Select Each State And Verify Data Loads For Combination
+    # ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_CUSTOM_MONTH_RANGE}    Invoice Date + Custom Month Range
+
+    # 3. Invoice Date + Custom Month Range
     Scroll To Top
     Sleep    1s
+    Reset Dashboard Filters
+    Wait For Dashboard Reload After Filter
+
     Select Date Column Filter    ${DATE_COLUMN_INVOICE_DATE}
+
+    # IMPORTANT
+    Wait For Dashboard Reload After Filter
+    Sleep    3s
+    Press Keys    None    ESCAPE
+    Sleep    1s
+
     Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
+
+    Wait Until Element Is Visible
+    ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
+    ...    30s
     Sleep    2s
     ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
     ...    Get Random Custom Month Range
+
     Select Custom Month Range And Apply
     ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
-    Wait For Dashboard Cards To Load
+
+    Wait For Dashboard Reload After Filter
+    Sleep    15s
+
     Select Each State And Verify Data Loads For Combination
     ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_CUSTOM_MONTH_RANGE}    Invoice Date + Custom Month Range
 
