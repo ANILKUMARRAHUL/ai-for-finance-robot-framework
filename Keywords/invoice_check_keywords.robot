@@ -204,6 +204,7 @@ Validate Reconciliation View By Filters
 Select Date Column Filter
     Log To Console    CLICKING DATE COLUMN
     [Arguments]    ${option_locator}
+    Sleep   30s
     Wait Until Element Is Visible    ${DATE_COLUMN_DROPDOWN}    20s
     Scroll Element Into View         ${DATE_COLUMN_DROPDOWN}
     Click Element                    ${DATE_COLUMN_DROPDOWN}
