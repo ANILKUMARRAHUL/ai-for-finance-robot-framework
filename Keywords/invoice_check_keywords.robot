@@ -202,6 +202,7 @@ Validate Reconciliation View By Filters
     Validate View By Filter Change    Year       ${VIEW_BY_YEAR_OPTION}       20
 
 Select Date Column Filter
+    Log To Console    CLICKING DATE COLUMN
     [Arguments]    ${option_locator}
     Wait Until Element Is Visible    ${DATE_COLUMN_DROPDOWN}    20s
     Scroll Element Into View         ${DATE_COLUMN_DROPDOWN}
@@ -841,10 +842,15 @@ Validate State Wise Data Loading For All Filter Combinations
     ...    Get Random Custom Month Range
     Select Custom Month Range And Apply
     ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
+    Sleep    30s
     Wait For Dashboard Cards To Load
     Select Each State And Verify Data Loads For Combination
     ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_CUSTOM_MONTH_RANGE}    Voucher Date + Custom Month Range
-    
+    Log To Console    COMBO FINISHED
+
+    Sleep    20s
+
+    Log To Console    STARTING NEXT COMBO
     #1. Invoice Date + Month Till Date
     Scroll To Top
     Sleep    1s
