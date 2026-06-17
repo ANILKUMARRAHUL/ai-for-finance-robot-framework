@@ -216,11 +216,12 @@ Select Date Column Filter
 
     Scroll Element Into View    ${DATE_COLUMN_DROPDOWN}
 
-    Wait Until Keyword Succeeds
-    ...    10x
-    ...    10s
-    ...    Click Element
-    ...    ${DATE_COLUMN_DROPDOWN}
+    ${element}=    Get WebElement    ${DATE_COLUMN_DROPDOWN}
+
+    Execute Javascript
+    ...    arguments[0].click();
+    ...    ARGUMENTS
+    ...    ${element}
 
     Sleep    3s
 
