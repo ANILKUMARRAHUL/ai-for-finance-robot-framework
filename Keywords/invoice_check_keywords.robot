@@ -203,6 +203,8 @@ Validate Reconciliation View By Filters
 
 Select Date Column Filter
     [Arguments]    ${option_locator}
+    Wait Until Element Is Clickable    ${DATE_COLUMN_DROPDOWN}
+    Wait Until Element Is Clickable    ${RESET_BUTTON}
 
     Log To Console    CLICKING DATE COLUMN
 
@@ -867,41 +869,6 @@ Validate State Wise Data Loading For All Filter Combinations
 
     Sleep    20s
 
-    Log To Console    STARTING NEXT COMBO
-    #1. Invoice Date + Month Till Date
-    Scroll To Top
-    Sleep    1s
-    Select Date Column And Date Range Filter
-    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
-    Select Each State And Verify Data Loads For Combination
-    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Invoice Date + Month Till Date
-
-    # 2. Invoice Date + Last Month
-    Scroll To Top
-    Sleep    1s
-    Select Date Column And Date Range Filter
-    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_LAST_MONTH}
-    Select Each State And Verify Data Loads For Combination
-    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_LAST_MONTH}    Invoice Date + Last Month
-
-    # 3. Invoice Date + Custom Month Range
-    # Scroll To Top
-    # Sleep    1s
-    # Select Date Column Filter    ${DATE_COLUMN_INVOICE_DATE}
-    # Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
-    # Capture Page Screenshot
-    # Wait Until Element Is Visible
-    # ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
-    # ...    15s
-    # Sleep    2s
-    # ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
-    # ...    Get Random Custom Month Range
-    # Select Custom Month Range And Apply
-    # ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
-    # Wait For Dashboard Cards To Load
-    # Select Each State And Verify Data Loads For Combination
-    # ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_CUSTOM_MONTH_RANGE}    Invoice Date + Custom Month Range
-
     # 3. Invoice Date + Custom Month Range
     Scroll To Top
     Sleep    1s
@@ -934,6 +901,45 @@ Validate State Wise Data Loading For All Filter Combinations
     Select Each State And Verify Data Loads For Combination
     ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_CUSTOM_MONTH_RANGE}    Invoice Date + Custom Month Range
 
+
+    Log To Console    STARTING NEXT COMBO
+
+    #1. Invoice Date + Month Till Date
+    Scroll To Top
+    Sleep    1s
+    Select Date Column And Date Range Filter
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Invoice Date + Month Till Date
+    Log To Console    STARTING NEXT COMBO
+
+    # 2. Invoice Date + Last Month
+    Scroll To Top
+    Sleep    1s
+    Select Date Column And Date Range Filter
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_LAST_MONTH}
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_LAST_MONTH}    Invoice Date + Last Month
+
+    # 3. Invoice Date + Custom Month Range
+    # Scroll To Top
+    # Sleep    1s
+    # Select Date Column Filter    ${DATE_COLUMN_INVOICE_DATE}
+    # Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
+    # Capture Page Screenshot
+    # Wait Until Element Is Visible
+    # ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
+    # ...    15s
+    # Sleep    2s
+    # ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
+    # ...    Get Random Custom Month Range
+    # Select Custom Month Range And Apply
+    # ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
+    # Wait For Dashboard Cards To Load
+    # Select Each State And Verify Data Loads For Combination
+    # ...    ${DATE_COLUMN_INVOICE_DATE}    ${DATE_RANGE_CUSTOM_MONTH_RANGE}    Invoice Date + Custom Month Range
+
+    
     #4. Invoice Date + Custom Date Range
     # Scroll To Top
     # Sleep    1s
