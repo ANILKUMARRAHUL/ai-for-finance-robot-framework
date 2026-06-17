@@ -202,15 +202,30 @@ Validate Reconciliation View By Filters
     Validate View By Filter Change    Year       ${VIEW_BY_YEAR_OPTION}       20
 
 Select Date Column Filter
-    Log To Console    CLICKING DATE COLUMN
     [Arguments]    ${option_locator}
-    Sleep   30s
+
+    Log To Console    CLICKING DATE COLUMN
+
     Wait Until Element Is Visible    ${DATE_COLUMN_DROPDOWN}    20s
-    Scroll Element Into View         ${DATE_COLUMN_DROPDOWN}
-    Click Element                    ${DATE_COLUMN_DROPDOWN}
+
+    ${class}=    Get Element Attribute
+    ...    xpath=//div[contains(@class,'flex-wrap') and contains(@class,'justify-between')]
+    ...    class
+
+        Log To Console    FILTER_CONTAINER=${class}
+
+    Scroll Element Into View    ${DATE_COLUMN_DROPDOWN}
+
+    Wait Until Keyword Succeeds
+    ...    10x
+    ...    10s
+    ...    Click Element
+    ...    ${DATE_COLUMN_DROPDOWN}
+
     Sleep    3s
+
     Wait Until Element Is Visible    ${option_locator}    10s
-    Click Element                    ${option_locator}
+    Click Element    ${option_locator}
     Sleep    3s
 
 Select Date Range Filter
@@ -664,25 +679,25 @@ Click State Filter Apply Button
     Sleep    2s
 
 Wait For Dashboard Reload After Filter
-    Wait Until Element Is Visible    ${DASHBOARD_CARDS_SECTION}    180s
-    Wait Until Element Is Visible    ${DATE_COLUMN_DROPDOWN}       180s
-    Wait Until Element Is Visible    ${DATE_RANGE_DROPDOWN}        180s
-    Wait Until Element Is Visible    ${STATE_CODE_DROPDOWN}        180s
+    Wait Until Element Is Clickable    ${DASHBOARD_CARDS_SECTION}
+    Wait Until Element Is Clickable    ${DATE_COLUMN_DROPDOWN}
+    Wait Until Element Is Clickable    ${DATE_RANGE_DROPDOWN}
+    Wait Until Element Is Clickable    ${STATE_CODE_DROPDOWN}
     ${filters_enabled}=    Run Keyword And Return Status
     ...    Wait Until Keyword Succeeds    150x    2s
-    ...    Element Should Be Enabled    ${DATE_COLUMN_DROPDOWN}
+    ...    Wait Until Element Is Clickable    ${DATE_COLUMN_DROPDOWN}
     IF    not ${filters_enabled}
         Log To Console    WARNING: Filters not enabled after timeout — possible 499 server error, refreshing page
         Reload Page
-        Wait Until Element Is Visible    ${DASHBOARD_CARDS_SECTION}    180s
-        Wait Until Element Is Visible    ${DATE_COLUMN_DROPDOWN}       180s
+        Wait Until Element Is Clickable    ${DASHBOARD_CARDS_SECTION}
+        Wait Until Element Is Clickable    ${DATE_COLUMN_DROPDOWN}
         Wait Until Keyword Succeeds    150x    2s
-        ...    Element Should Be Enabled    ${DATE_COLUMN_DROPDOWN}
+        ...    Element Should Be Clickable    ${DATE_COLUMN_DROPDOWN}
     END
     Wait Until Keyword Succeeds    150x    2s
-    ...    Element Should Be Enabled    ${DATE_RANGE_DROPDOWN}
+    ...    Element Should Be Clickable    ${DATE_RANGE_DROPDOWN}
     Wait Until Keyword Succeeds    150x    2s
-    ...    Element Should Be Enabled    ${STATE_CODE_DROPDOWN}
+    ...    Element Should Be Clickable    ${STATE_CODE_DROPDOWN}
     Sleep    5s
 
 Remove Applied State Filter
