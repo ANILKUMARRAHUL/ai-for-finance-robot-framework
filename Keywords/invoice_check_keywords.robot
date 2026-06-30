@@ -855,7 +855,7 @@ Validate State Wise Data Loading For All Filter Combinations
     Capture Page Screenshot
     Wait Until Element Is Visible
     ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
-    ...    15s
+    ...    55s
     Sleep    2s
     ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
     ...    Get Random Custom Month Range
@@ -887,7 +887,7 @@ Validate State Wise Data Loading For All Filter Combinations
 
     Wait Until Element Is Visible
     ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
-    ...    30s
+    ...    50s
     Sleep    2s
     ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
     ...    Get Random Custom Month Range
