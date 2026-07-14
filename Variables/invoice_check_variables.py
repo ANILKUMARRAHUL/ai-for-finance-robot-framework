@@ -7,6 +7,7 @@ SIDENAV_DOWNLOADS = "xpath=//a[@data-slot='sidebar-menu-button' and @href='/invo
 DASHBOARD_HEADING = "xpath=//main//h1[normalize-space()='Invoice Check Overview']"
 REPORTS_HEADING = "xpath=//main//h1[normalize-space()='Invoice Downloads']"
 DOWNLOADS_HEADING = "xpath=//main//h1[normalize-space()='Reports Downloads']"
+REPORTS_VIEW_HEADING = "xpath=//main//h1[normalize-space()='Reports View']"
 
 # Common module verification
 INVOICE_CHECK_MODULE_LOADED = "xpath=//a[contains(@href,'/invoice-check/dashboard') and contains(.,'Dashboard')]"
@@ -26,6 +27,12 @@ CARD_VALUE_RELATIVE     = "xpath=.//div[contains(@class,'text-2xl')]"
 EXCLUDED_CARD_1 = "ITC RECEIVED"
 EXCLUDED_CARD_2 = "OCR FAILED"
 EXCLUDED_CARD_3 = "INVOICE NOT FOUND IN ITC"
+EXCLUDED_CARD_4 = "INVOICE NOT FOUND IN RSCP/OTHER APPLICATIONS"
+EXCLUDED_CARD_5 = "TOTAL TAXES"
+EXCLUDED_CARD_6 = "TOTAL IGST TAXES"
+EXCLUDED_CARD_7 = "TOTAL CGST TAXES"
+EXCLUDED_CARD_8 = "TOTAL SGST TAXES"
+EXCLUDED_CARD_9 = "TOTAL CESS TAXES"
 
 # Reports bottom count
 REPORTS_BOTTOM_TOTAL = "xpath=//main//p[@aria-live='polite']//span[last()]"

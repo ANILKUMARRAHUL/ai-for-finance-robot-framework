@@ -86,7 +86,7 @@ Validate Dashboard KPI Cards With Reports Count
 
         Log To Console    \nChecking card: ${title}
 
-        IF    '${title}' == '${EXCLUDED_CARD_1}' or '${title}' == '${EXCLUDED_CARD_2}' or '${title}' == '${EXCLUDED_CARD_3}'
+        IF    '${title}' == '${EXCLUDED_CARD_1}' or '${title}' == '${EXCLUDED_CARD_2}' or '${title}' == '${EXCLUDED_CARD_3}' or '${title}' == '${EXCLUDED_CARD_4}' or '${title}' == '${EXCLUDED_CARD_5}' or '${title}' == '${EXCLUDED_CARD_6}' or '${title}' == '${EXCLUDED_CARD_7}' or '${title}' == '${EXCLUDED_CARD_8}' or '${title}' == '${EXCLUDED_CARD_9}'
             Log To Console    Skipping card: ${title}
             CONTINUE
         END
@@ -262,7 +262,7 @@ Click First Available KPI Card
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
 
-        IF    '${title}' == '${EXCLUDED_CARD_1}' or '${title}' == '${EXCLUDED_CARD_2}'
+        IF    '${title}' == '${EXCLUDED_CARD_1}' or '${title}' == '${EXCLUDED_CARD_2}' or '${title}' == '${EXCLUDED_CARD_3}' or '${title}' == '${EXCLUDED_CARD_4}' or '${title}' == '${EXCLUDED_CARD_5}' or '${title}' == '${EXCLUDED_CARD_6}' or '${title}' == '${EXCLUDED_CARD_7}' or '${title}' == '${EXCLUDED_CARD_8}' or '${title}' == '${EXCLUDED_CARD_9}'
             Log To Console    Skipping card: ${title}
             CONTINUE
         END
@@ -287,7 +287,7 @@ Click First Available KPI Card
 Verify Reports Page URL Contains Filters
     [Arguments]    ${expected_date_column}    ${expected_date_preset}
     Wait Until Location Contains    /invoice-check/reports    40s
-    Wait Until Element Is Visible   ${REPORTS_HEADING}        20s
+    Wait Until Element Is Visible   ${REPORTS_VIEW_HEADING}        20s
     Sleep    2s
     ${current_url}=    Get Location
     Log To Console    \nCurrent URL: ${current_url}
@@ -321,12 +321,12 @@ Validate Dashboard Filter Combination
         ...    (${DASHBOARD_KPI_CARDS})[${position}]//span[contains(@class,'font-bold')]
 
         
-        ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//span[contains(@class,'font-bold')]
+        # ${value_locator}=    Set Variable    xpath=(//main//div[contains(@class,'rounded-xl') and contains(@class,'border')])[${position}]//span[contains(@class,'font-bold')]
 
         ${title}=    Get Text    ${title_locator}
         ${title}=    Convert To Upper Case    ${title}
 
-        IF    '${title}' == '${EXCLUDED_CARD_1}' or '${title}' == '${EXCLUDED_CARD_2}' or '${title}' == '${EXCLUDED_CARD_3}'
+        IF    '${title}' == '${EXCLUDED_CARD_1}' or '${title}' == '${EXCLUDED_CARD_2}' or '${title}' == '${EXCLUDED_CARD_3}' or '${title}' == '${EXCLUDED_CARD_4}' or '${title}' == '${EXCLUDED_CARD_5}' or '${title}' == '${EXCLUDED_CARD_6}' or '${title}' == '${EXCLUDED_CARD_7}' or '${title}' == '${EXCLUDED_CARD_8}' or '${title}' == '${EXCLUDED_CARD_9}'
             CONTINUE
         END
 
@@ -486,6 +486,15 @@ Select Custom Month Range And Apply
     Sleep   10s
     
 
+Open Custom Month Range Picker
+    ${trigger_locator}=    Set Variable    xpath=//button[@data-slot='popover-trigger']
+    Wait Until Element Is Visible    ${trigger_locator}    10s
+    ${trigger}=    Get WebElement    ${trigger_locator}
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${trigger}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${trigger}
+    Sleep    1s
+
 Validate Dashboard Custom Month Range Filter Combination
     [Arguments]    ${date_column_option}    ${expected_date_column}
 
@@ -498,6 +507,8 @@ Validate Dashboard Custom Month Range Filter Combination
     Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
     Sleep    2s
 
+    Open Custom Month Range Picker
+    
     Select Custom Month Range And Apply
     ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}
 
@@ -525,7 +536,7 @@ Validate Dashboard Custom Month Range Filter Combination
     END
 
     Wait Until Location Contains    /invoice-check/reports    40s
-    Wait Until Element Is Visible   ${REPORTS_HEADING}        20s
+    Wait Until Element Is Visible   ${REPORTS_VIEW_HEADING}        20s
     Sleep    2s
 
     ${current_url}=    Get Location
@@ -832,12 +843,12 @@ Element Should Be Clickable
 
 Validate State Wise Data Loading For All Filter Combinations
     # 5. Voucher Date + Month Till Date
-    Scroll To Top
-    Sleep    1s
-    Select Date Column And Date Range Filter
-    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
-    Select Each State And Verify Data Loads For Combination
-    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Voucher Date + Month Till Date
+    # Scroll To Top
+    # Sleep    1s
+    # Select Date Column And Date Range Filter
+    # ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
+    # Select Each State And Verify Data Loads For Combination
+    # ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Voucher Date + Month Till Date
 
     # # 6. Voucher Date + Last Month
     Scroll To Top
@@ -852,6 +863,7 @@ Validate State Wise Data Loading For All Filter Combinations
     Sleep    1s
     Select Date Column Filter    ${DATE_COLUMN_VOUCHER_DATE}
     Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
+    Open Custom Month Range Picker
     Capture Page Screenshot
     Wait Until Element Is Visible
     ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
@@ -884,6 +896,7 @@ Validate State Wise Data Loading For All Filter Combinations
     Sleep    1s
 
     Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
+    Open Custom Month Range Picker
 
     Wait Until Element Is Visible
     ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]

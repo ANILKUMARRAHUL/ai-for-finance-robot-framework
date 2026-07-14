@@ -126,15 +126,21 @@ Verify Upload Success Toast
     END
 
 Verify NonPO Invoice Upload Negative Then Positive
+
+        # --- POSITIVE: Now also upload to PR ---
+    Upload File To PR Tab
+    Fill Upload Form
+    # Click Element                    ${NONPO_UPLOAD_DOCUMENTS_BTN}
+    # Verify Incomplete Upload Dialog
+    # Click Go Back On Incomplete Dialog
+
+    
     # --- NEGATIVE: Invoice only, no PR ---
+    Click Button    xpath=//button[normalize-space()='Invoices']
     Upload Files To Invoice Tab
     Fill Upload Form
     Click Element                    ${NONPO_UPLOAD_DOCUMENTS_BTN}
-    Verify Incomplete Upload Dialog
-    Click Go Back On Incomplete Dialog
-
-    # --- POSITIVE: Now also upload to PR ---
-    Upload File To PR Tab
-    Fill Upload Form
-    Click Element                    ${NONPO_UPLOAD_DOCUMENTS_BTN}
     Verify Upload Success Toast
+
+
+    

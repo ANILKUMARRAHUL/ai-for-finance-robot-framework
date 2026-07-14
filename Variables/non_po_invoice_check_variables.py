@@ -9,8 +9,8 @@ NONPO_SIDENAV_DOWNLOADS     = "xpath=//span[normalize-space()='Downloads']"
 # =========================
 # PAGE HEADINGS
 # =========================
-NONPO_DASHBOARD_HEADING     = "xpath=//h1[normalize-space()='Non PO Invoice Overview']"
-NONPO_REPORTS_HEADING       = "xpath=//h1[normalize-space()='Reports']"
+NONPO_DASHBOARD_HEADING     = "xpath=//h1[normalize-space()='Non PO Overview']"
+NONPO_REPORTS_HEADING       = "xpath=//h1[normalize-space()='Payment Request Invoices']"
 NONPO_DOWNLOADS_HEADING     = "xpath=//h1[normalize-space()='Downloads']"
 
 # =========================
@@ -44,6 +44,7 @@ NONPO_DATE_RANGE_CUSTOM_MONTH   = "xpath=//div[@role='option'][normalize-space()
 NONPO_DATE_RANGE_CUSTOM_DATE    = "xpath=//div[@role='option'][normalize-space()='Custom Date Range']"
 
 # Custom Month Range picker
+NONPO_CUSTOM_MONTH_CALANDAR    = "xpath=//button[@data-slot='popover-trigger']"
 NONPO_CUSTOM_MONTH_FROM_MONTH   = "xpath=(//button[@role='combobox'])[5]"
 NONPO_CUSTOM_MONTH_FROM_YEAR    = "xpath=(//button[@role='combobox'])[6]"
 NONPO_CUSTOM_MONTH_TO_MONTH     = "xpath=(//button[@role='combobox'])[7]"

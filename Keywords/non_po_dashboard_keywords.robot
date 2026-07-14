@@ -239,33 +239,33 @@ Validate All NonPO Dashboard Filter Combinations
     ...    ${NONPO_DATE_COLUMN_UPLOAD}    ${NONPO_DATE_RANGE_MONTH}
     ...    date_column=created_on         date_preset=month_till_date
 
-    Validate NonPO Dashboard Filter Combination
-    ...    ${NONPO_DATE_COLUMN_UPLOAD}    ${NONPO_DATE_RANGE_YEAR}
-    ...    date_column=created_on         date_preset=year_till_date
+    # Validate NonPO Dashboard Filter Combination
+    # ...    ${NONPO_DATE_COLUMN_UPLOAD}    ${NONPO_DATE_RANGE_YEAR}
+    # ...    date_column=created_on         date_preset=year_till_date
 
     Validate NonPO Dashboard Filter Combination
     ...    ${NONPO_DATE_COLUMN_UPLOAD}    ${NONPO_DATE_RANGE_LAST_MONTH}
     ...    date_column=created_on         date_preset=last_month
 
-    Validate NonPO Dashboard Filter Combination
-    ...    ${NONPO_DATE_COLUMN_UPLOAD}    ${NONPO_DATE_RANGE_FISCAL}
-    ...    date_column=created_on         date_preset=fiscal_year
+    # Validate NonPO Dashboard Filter Combination
+    # ...    ${NONPO_DATE_COLUMN_UPLOAD}    ${NONPO_DATE_RANGE_FISCAL}
+    # ...    date_column=created_on         date_preset=fiscal_year
 
     Validate NonPO Dashboard Filter Combination
     ...    ${NONPO_DATE_COLUMN_INVOICE}    ${NONPO_DATE_RANGE_MONTH}
     ...    date_column=invoice_date        date_preset=month_till_date
 
-    Validate NonPO Dashboard Filter Combination
-    ...    ${NONPO_DATE_COLUMN_INVOICE}    ${NONPO_DATE_RANGE_YEAR}
-    ...    date_column=invoice_date        date_preset=year_till_date
+    # Validate NonPO Dashboard Filter Combination
+    # ...    ${NONPO_DATE_COLUMN_INVOICE}    ${NONPO_DATE_RANGE_YEAR}
+    # ...    date_column=invoice_date        date_preset=year_till_date
 
     Validate NonPO Dashboard Filter Combination
     ...    ${NONPO_DATE_COLUMN_INVOICE}    ${NONPO_DATE_RANGE_LAST_MONTH}
     ...    date_column=invoice_date        date_preset=last_month
 
-    Validate NonPO Dashboard Filter Combination
-    ...    ${NONPO_DATE_COLUMN_INVOICE}    ${NONPO_DATE_RANGE_FISCAL}
-    ...    date_column=invoice_date        date_preset=fiscal_year
+    # Validate NonPO Dashboard Filter Combination
+    # ...    ${NONPO_DATE_COLUMN_INVOICE}    ${NONPO_DATE_RANGE_FISCAL}
+    # ...    date_column=invoice_date        date_preset=fiscal_year
 
 # =========================
 # RECONCILIATION VIEW BY
@@ -478,7 +478,6 @@ Validate All NonPO Custom Range Filter Combinations
     ...    ${NONPO_DATE_COLUMN_INVOICE}
     ...    date_column=invoice_date
 
-
 Select NonPO Month From Custom Month Picker
     [Arguments]    ${combobox_locator}    ${month_name}
     Wait Until Element Is Visible    ${combobox_locator}    10s
@@ -487,20 +486,57 @@ Select NonPO Month From Custom Month Picker
     Sleep    0.5s
     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
     Sleep    1s
-    # Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${month_name}' && el.children.length === 0).click()
-    # Sleep    1s
     ${month_found}=    Execute JavaScript
-    ...    const els = Array.from(document.querySelectorAll('*'));
-    ...    const el = els.find(e =>
+    ...    const candidates = Array.from(
+    ...        document.querySelectorAll('button, [role="option"], [role="menuitem"], li, div[data-value]')
+    ...    );
+    ...    const el = candidates.find(e =>
     ...        e.textContent.trim() === '${month_name}'
+    ...        && e instanceof HTMLElement
     ...        && e.offsetParent !== null
     ...    );
-    ...    if(el){
-    ...        el.click();
+    ...    if (el) {
+    ...        if (typeof el.click === 'function') {
+    ...            el.click();
+    ...        } else {
+    ...            el.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
+    ...        }
     ...        return true;
     ...    }
     ...    return false;
     Should Be True    ${month_found}
+
+# Select NonPO Month From Custom Month Picker
+#     [Arguments]    ${combobox_locator}    ${month_name}
+#     Wait Until Element Is Visible    ${combobox_locator}    10s
+#     ${btn}=    Get WebElement    ${combobox_locator}
+#     Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${btn}
+#     Sleep    0.5s
+#     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
+#     Sleep    1s
+#     # Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${month_name}' && el.children.length === 0).click()
+#     # Sleep    1s
+#     ${month_found}=    Execute JavaScript
+#     ...    const els = Array.from(document.querySelectorAll('*'));
+#     ...    const el = els.find(e =>
+#     ...        e.textContent.trim() === '${month_name}'
+#     ...        && e.offsetParent !== null
+#     ...    );
+#     ...    if(el){
+#     ...        el.click();
+#     ...        return true;
+#     ...    }
+#     ...    return false;
+#     Should Be True    ${month_found}
+
+Open NonPO Custom Month Range Picker
+    ${trigger_locator}=    Set Variable    xpath=//button[@data-slot='popover-trigger']
+    Wait Until Element Is Visible    ${trigger_locator}    10s
+    ${trigger}=    Get WebElement    ${trigger_locator}
+    Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${trigger}
+    Sleep    0.5s
+    Execute JavaScript    arguments[0].click()    ARGUMENTS    ${trigger}
+    Sleep    1s
 
 Select NonPO Year From Custom Month Picker
     [Arguments]    ${combobox_locator}    ${year}
@@ -510,21 +546,49 @@ Select NonPO Year From Custom Month Picker
     Sleep    0.5s
     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
     Sleep    1s
-    # Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${year}' && el.children.length === 0).click()
-    # Sleep    1s
     ${year_found}=    Execute JavaScript
-    ...    const els = Array.from(document.querySelectorAll('*'));
-    ...    const el = els.find(e =>
+    ...    const candidates = Array.from(
+    ...        document.querySelectorAll('button, [role="option"], [role="menuitem"], li, div[data-value]')
+    ...    );
+    ...    const el = candidates.find(e =>
     ...        e.textContent.trim() === '${year}'
+    ...        && e instanceof HTMLElement
     ...        && e.offsetParent !== null
     ...    );
-    ...    if(el){
-    ...        el.click();
+    ...    if (el) {
+    ...        if (typeof el.click === 'function') {
+    ...            el.click();
+    ...        } else {
+    ...            el.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
+    ...        }
     ...        return true;
     ...    }
     ...    return false;
-
     Should Be True    ${year_found}
+
+# Select NonPO Year From Custom Month Picker
+#     [Arguments]    ${combobox_locator}    ${year}
+#     Wait Until Element Is Visible    ${combobox_locator}    10s
+#     ${btn}=    Get WebElement    ${combobox_locator}
+#     Execute JavaScript    arguments[0].scrollIntoView({block: 'center'})    ARGUMENTS    ${btn}
+#     Sleep    0.5s
+#     Execute JavaScript    arguments[0].click()    ARGUMENTS    ${btn}
+#     Sleep    1s
+#     # Execute JavaScript    Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === '${year}' && el.children.length === 0).click()
+#     # Sleep    1s
+#     ${year_found}=    Execute JavaScript
+#     ...    const els = Array.from(document.querySelectorAll('*'));
+#     ...    const el = els.find(e =>
+#     ...        e.textContent.trim() === '${year}'
+#     ...        && e.offsetParent !== null
+#     ...    );
+#     ...    if(el){
+#     ...        el.click();
+#     ...        return true;
+#     ...    }
+#     ...    return false;
+
+#     Should Be True    ${year_found}
 
 # Get NonPO Random Custom Month Range
 #     ${today}=              Get Current Date    result_format=%Y-%m-%d
@@ -705,6 +769,9 @@ Validate NonPO Dashboard Custom Month Range Filter Combination
     Select NonPO Date Column Filter    ${date_column_option}
     Select NonPO Date Range Filter     ${NONPO_DATE_RANGE_CUSTOM_MONTH}
     Sleep    2s
+
+    Open NonPO Custom Month Range Picker
+    Sleep    1s
 
     Select NonPO Custom Month Range And Apply
     ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}

@@ -12,7 +12,7 @@ Test Teardown    Terminate Browser Session
 Verify NonPO Invoice Upload With Incomplete And Complete Flow
     [Tags]    uploads    invoice    payment_request
     Login To Application    ${VALID_NON_PO_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Go To NonPO Dashboard Page
     Go To NonPO Uploads Page

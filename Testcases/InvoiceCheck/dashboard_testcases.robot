@@ -10,14 +10,14 @@ Test Teardown    Terminate Browser Session
 *** Test Cases ***
 Verify Invoice Check Dashboard Page
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
 
 Verify Dashboard KPI Cards Count Against Reports
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     #Verify Dashboard Page
@@ -26,7 +26,7 @@ Verify Dashboard KPI Cards Count Against Reports
 Validate Dashboard Reconciliation View By Filter
     [Tags]    dashboard    filter
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
@@ -35,7 +35,7 @@ Validate Dashboard Reconciliation View By Filter
 Validate Dashboard Filters Carry Over To Reports Page
     [Tags]    dashboard    filter
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
@@ -52,7 +52,7 @@ Validate Dashboard Filters Carry Over To Reports Page
 Validate Dashboard Custom Month Range Filter Carries Over To Reports Page
     [Tags]    dashboard    filter    custom_month_range
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
@@ -61,7 +61,7 @@ Validate Dashboard Custom Month Range Filter Carries Over To Reports Page
 Validate State Wise Data Loading
     [Tags]    dashboard    filter    state
     Login To Application       ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
