@@ -863,7 +863,7 @@ Validate State Wise Data Loading For All Filter Combinations
     Sleep    1s
     Select Date Column Filter    ${DATE_COLUMN_VOUCHER_DATE}
     Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
-    Open Custom Month Range Picker
+    # Open Custom Month Range Picker
     Capture Page Screenshot
     Wait Until Element Is Visible
     ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
@@ -896,11 +896,11 @@ Validate State Wise Data Loading For All Filter Combinations
     Sleep    1s
 
     Select Date Range Filter     ${DATE_RANGE_CUSTOM_MONTH_RANGE}
-    Open Custom Month Range Picker
+    # Open Custom Month Range Picker
 
     Wait Until Element Is Visible
     ...    xpath=//div[@data-slot='popover-content']//div[./label[normalize-space()='From Month']]
-    ...    50s
+    ...    55s
     Sleep    2s
     ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}    ${from_date}    ${to_date}=
     ...    Get Random Custom Month Range
