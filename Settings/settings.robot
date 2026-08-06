@@ -26,7 +26,10 @@ Open Browser With Options
         Add Cookie    access_token    ${access_token}    domain=20.235.55.214    path=/
         Add Cookie    refresh_token    ${refresh_token}    domain=20.235.55.214    path=/
         Go To    ${BASE_URL}/non-po/dashboard?date_preset=month_till_date&date_column=created_on
-        Sleep    3s
+
+        Wait Until Keyword Succeeds    20x    1s
+        ...    Element Should Be Visible    xpath=//*[contains(text(),'Non PO Overview')]
+
         Capture Page Screenshot    after_cookie_login.png
     ELSE
         Go To    ${BASE_URL}
