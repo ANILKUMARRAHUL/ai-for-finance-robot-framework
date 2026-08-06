@@ -16,8 +16,10 @@ Open Browser With Options
     ${options}=    Evaluate
     ...    (lambda opts: [opts.add_argument("--headless=new") if ${HEADLESS} else None, opts.add_argument("--window-size=1920,1080"), opts.add_argument("--force-device-scale-factor=0.80"), opts.add_argument("--disable-gpu"), opts.add_argument("--no-sandbox"), opts.add_argument("--disable-dev-shm-usage"), opts][-1])(sys.modules['selenium.webdriver'].ChromeOptions())
     ...    sys, selenium.webdriver
-
     Create WebDriver    Chrome    options=${options}
+    Go To    ${BASE_URL}
+    Add Cookie    access_token    ${ACCESS_TOKEN}    domain=20.235.55.214    path=/
+    Add Cookie    refresh_token    ${REFRESH_TOKEN}    domain=20.235.55.214    path=/
     Go To    ${BASE_URL}
     Run Keyword If    not ${HEADLESS}    Maximize Browser Window
     Set Selenium Timeout    20s
