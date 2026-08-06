@@ -770,8 +770,8 @@ Validate NonPO Dashboard Custom Month Range Filter Combination
     Select NonPO Date Range Filter     ${NONPO_DATE_RANGE_CUSTOM_MONTH}
     Sleep    2s
 
-    Open NonPO Custom Month Range Picker
-    Sleep    1s
+    # Open NonPO Custom Month Range Picker
+    # Sleep    1s
 
     Select NonPO Custom Month Range And Apply
     ...    ${from_month_name}    ${from_year}    ${to_month_name}    ${to_year}

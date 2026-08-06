@@ -5,6 +5,7 @@ Library      Collections
 Variables    ../Variables/download_variables.py
 Variables    ../Variables/invoice_check_variables.py
 Resource     ../Keywords/invoice_check_keywords.robot
+Variables    ../Variables/report_variables.py
 
 *** Keywords ***
 Wait For Page To Stabilize
@@ -154,7 +155,7 @@ Select Random Date Range
 
     ${options}=    Get WebElements    xpath=//div[@role='option']
     ${count}=      Get Length         ${options}
-    ${index}=      Evaluate           random.randint(0, ${count}-1)    modules=random
+    ${index}=      Evaluate           random.randint(1, ${count}-1)    modules=random
     ${selected}=   Get Text           ${options}[${index}]
     ${selected}=   Strip String       ${selected}
     Click Element                     ${options}[${index}]
@@ -176,7 +177,7 @@ Select Random Date Range
 
     ${options}=    Get WebElements    xpath=//div[@role='option']
     ${count}=      Get Length         ${options}
-    ${index}=      Evaluate           random.randint(0, ${count}-1)    modules=random
+    ${index}=      Evaluate           random.randint(1, ${count}-1)    modules=random
     ${selected}=   Get Text           ${options}[${index}]
     ${selected}=   Strip String       ${selected}
     Click Element                     ${options}[${index}]
@@ -387,7 +388,7 @@ Validate Generate Report With Random Filters
     Log To Console     Report Type: ${report_type}
 
     Log To Console    \nSelecting State Code...
-    ${state_code}=    Select Random Option From Dropdown    ${STATE_CODE_DROPDOWN}
+    ${state_code}=    Select Random Option From Dropdown    ${STATE_CODE_DROPDOWN_REPORTS_VIEW}
     Log To Console    State Code: ${state_code}
 
     # Log To Console    \nSelecting Supplier...

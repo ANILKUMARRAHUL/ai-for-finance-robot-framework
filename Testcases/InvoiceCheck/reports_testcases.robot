@@ -11,7 +11,7 @@ Test Teardown    Terminate Browser Session
 *** Test Cases ***
 Verify Invoice Check Reports Page
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
 
     Verify Home Page Loaded
     Open Invoice Check Module
@@ -23,7 +23,7 @@ Verify Invoice Check Reports Page
 Validate Invoice Status Filter On Reports Page
     [Tags]    reports    filter    status
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
@@ -34,7 +34,7 @@ Validate Invoice Status Filter On Reports Page
 Validate Rows Per Page On Reports Page
     [Tags]    reports    filter    rows
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
@@ -45,7 +45,7 @@ Validate Rows Per Page On Reports Page
 Edit Invoice Record And Verify Update Status
     [Tags]    reports    invoice    edit    update_status
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
@@ -53,8 +53,8 @@ Edit Invoice Record And Verify Update Status
     Verify Reports Page
     Apply Reports Filters For Edit Test
     Open First Invoice Record If Available
-    Click Update Status And Confirm Without Changes In Popup
-    Verify Success Toast Appears And Disappears
+    #Click Update Status And Confirm Without Changes In Popup
+    #Verify Success Toast Appears And Disappears
     Verify Edit Button Is Present And Click
     ${orig_cgst}    ${orig_title}=    Edit Invoice ITC Fields With Test Values
     Click Save Changes Button

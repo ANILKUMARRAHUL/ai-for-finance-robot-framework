@@ -79,6 +79,8 @@ Validate Invoice Status Filter
     Log To Console    \n--- Testing Invoice Status Filter: ${expected_status} ---
 
     Select Invoice Status Filter    ${option_locator}
+    Sleep   1s
+    Click Element                   ${APPLY_BUTTON}
     Wait For Page To Stabilize
 
     ${current_url}=    Get Location
@@ -256,6 +258,7 @@ Select Date Preset Filter
 Apply Reports Filters For Edit Test
     Select Date Preset Filter       Last Month
     Select Invoice Status Filter    ${STATUS_MATCHED}
+    Click Element     ${APPLY_BUTTON}
     Wait For Page To Stabilize
 
 Open First Invoice Record If Available
@@ -283,7 +286,7 @@ Edit Invoice ITC Fields With Test Values
     Log To Console      Original CGST Amount: ${orig_cgst}
     Click Element Safely       ${EDIT_CGST_INPUT}
     ${new_cgst}=        Evaluate
-    ...    str(round(float('${orig_cgst}') - 1, 2)) if '${orig_cgst}' not in ['', 'N/A'] else '1'
+    ...    str(int('${orig_cgst}') + 1) if '${orig_cgst}' not in ['', 'N/A'] else '1'
     Input Text          ${EDIT_CGST_INPUT}    ${new_cgst}
     Log To Console      Updated CGST Amount to: ${new_cgst}
 

@@ -26,7 +26,7 @@ Go To Reports Page
 
 Verify Reports Page
     Wait Until Location Contains    /invoice-check/reports    40s
-    Wait Until Element Is Visible    ${REPORTS_HEADING}    40s
+    Wait Until Element Is Visible    ${REPORTS_VIEW_HEADING}    40s
     Wait For Page To Stabilize
     Slow Scroll To Bottom
 

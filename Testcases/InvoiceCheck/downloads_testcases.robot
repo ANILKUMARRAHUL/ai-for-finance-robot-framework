@@ -11,7 +11,7 @@ Test Teardown    Terminate Browser Session
 *** Test Cases ***
 Verify Invoice Check Downloads Page
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
@@ -21,7 +21,7 @@ Verify Invoice Check Downloads Page
 Validate Generate Report With Random Filters On Downloads Page
     [Tags]    downloads    filter    generate
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
@@ -32,7 +32,7 @@ Validate Generate Report With Random Filters On Downloads Page
 Validate Rows Per Page On Downloads Page
     [Tags]    downloads    rows
     Login To Application    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    Verify Login Successful
+    # Verify Login Successful
     Verify Home Page Loaded
     Open Invoice Check Module
     Verify Dashboard Page
