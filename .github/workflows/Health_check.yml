@@ -1,19 +1,9 @@
-name: Invoice Check Health Check - Daily 8AM IST
-
+name: Invoice Check 7AM IST
 on:
   schedule:
-    - cron: "0 * * * *" # 8:00 AM IST daily
+    - cron: "*/15 * * * *"
   workflow_dispatch:
-
 jobs:
-  show-ip:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get public IP
-        run: |
-          curl https://api.ipify.org
-          echo
-
   run-tests:
     runs-on: ubuntu-latest
     env:
@@ -23,7 +13,6 @@ jobs:
       VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
       BROWSER: ${{ secrets.BROWSER }}
       TIMEOUT: ${{ secrets.TIMEOUT }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,13 +36,35 @@ jobs:
           echo "Runner Time:"
           date
 
-      - name: Run Health Check
+      - name: Get Auth Tokens
         run: |
-          robot --variable HEADLESS:True -d results -t "Verify Valid Login" Testcases/login_testcases.robot
+          RESPONSE_HEADERS=$(curl -s -D - -o /dev/null -X POST "http://20.235.55.214/api/v1/account/login/" \
+            -H "Content-Type: application/json" \
+            -d "{\"username\": \"${VALID_USERNAME}\", \"password\": \"${VALID_PASSWORD}\"}")
+
+          ACCESS_TOKEN=$(echo "$RESPONSE_HEADERS" | grep -i '^set-cookie: access_token=' | sed -E 's/^[Ss]et-[Cc]ookie: access_token=([^;]+);.*/\1/' | tr -d '\r')
+          REFRESH_TOKEN=$(echo "$RESPONSE_HEADERS" | grep -i '^set-cookie: refresh_token=' | sed -E 's/^[Ss]et-[Cc]ookie: refresh_token=([^;]+);.*/\1/' | tr -d '\r')
+
+          if [ -z "$ACCESS_TOKEN" ] || [ -z "$REFRESH_TOKEN" ]; then
+            echo "Failed to extract tokens from login response headers"
+            exit 1
+          fi
+
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "::add-mask::$REFRESH_TOKEN"
+          echo "ACCESS_TOKEN=$ACCESS_TOKEN" >> "$GITHUB_ENV"
+          echo "REFRESH_TOKEN=$REFRESH_TOKEN" >> "$GITHUB_ENV"
+
+      - name: Run State Wise Data Loading Test
+        run: |
+          robot --variable HEADLESS:True \
+                --variable ACCESS_TOKEN:${{ env.ACCESS_TOKEN }} \
+                --variable REFRESH_TOKEN:${{ env.REFRESH_TOKEN }} \
+                -d results -t "Validate State Wise Data Loading" Testcases/InvoiceCheck/dashboard_testcases.robot
 
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: health-check-results
+          name: state-wise-data-load-results
           path: results/
