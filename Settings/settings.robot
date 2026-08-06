@@ -17,23 +17,19 @@ Open Browser With Options
     ...    (lambda opts: [opts.add_argument("--headless=new") if ${HEADLESS} else None, opts.add_argument("--window-size=1920,1080"), opts.add_argument("--force-device-scale-factor=0.80"), opts.add_argument("--disable-gpu"), opts.add_argument("--no-sandbox"), opts.add_argument("--disable-dev-shm-usage"), opts][-1])(sys.modules['selenium.webdriver'].ChromeOptions())
     ...    sys, selenium.webdriver
     Create WebDriver    Chrome    options=${options}
-    Go To    ${BASE_URL}
 
     ${access_token}=     Get Variable Value    ${ACCESS_TOKEN}    ${EMPTY}
     ${refresh_token}=    Get Variable Value    ${REFRESH_TOKEN}    ${EMPTY}
 
     IF    '${access_token}' != '${EMPTY}' and '${refresh_token}' != '${EMPTY}'
+        Go To    ${BASE_URL}
         Add Cookie    access_token    ${access_token}    domain=20.235.55.214    path=/
         Add Cookie    refresh_token    ${refresh_token}    domain=20.235.55.214    path=/
-        Go To    ${BASE_URL}
+        Go To    ${BASE_URL}/non-po/dashboard?date_preset=month_till_date&date_column=created_on
         Sleep    3s
-        ${current_url}=    Get Location
-        ${url_no_scheme}=    Remove String    ${current_url}    http://    https://
-        Log To Console    \nURL length: ${url_no_scheme.__len__()}
-        Log To Console    \nURL contains 'login': ${{'login' in '''${current_url}'''}}
-        Log To Console    \nURL contains 'dashboard': ${{'dashboard' in '''${current_url}'''}}
-        Log To Console    \nURL contains 'non-po': ${{'non-po' in '''${current_url}'''}}
         Capture Page Screenshot    after_cookie_login.png
+    ELSE
+        Go To    ${BASE_URL}
     END
 
     Run Keyword If    not ${HEADLESS}    Maximize Browser Window
