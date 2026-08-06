@@ -28,7 +28,11 @@ Open Browser With Options
         Go To    ${BASE_URL}
         Sleep    3s
         ${current_url}=    Get Location
-        Log To Console    \nAfter cookie login, landed on: ${current_url}
+        ${url_no_scheme}=    Remove String    ${current_url}    http://    https://
+        Log To Console    \nURL length: ${url_no_scheme.__len__()}
+        Log To Console    \nURL contains 'login': ${{'login' in '''${current_url}'''}}
+        Log To Console    \nURL contains 'dashboard': ${{'dashboard' in '''${current_url}'''}}
+        Log To Console    \nURL contains 'non-po': ${{'non-po' in '''${current_url}'''}}
         Capture Page Screenshot    after_cookie_login.png
     END
 
