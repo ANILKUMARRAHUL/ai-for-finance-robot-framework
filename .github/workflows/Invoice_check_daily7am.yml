@@ -42,7 +42,7 @@ jobs:
           echo "Runner IP: $RUNNER_IP"
           curl -s -X POST "${{ secrets.WHITELIST_API_URL }}" \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.WHITELIST_API_KEY }}" \
+            -u "${{ secrets.VALID_USERNAME }}:${{ secrets.VALID_PASSWORD }}"
             -d "{\"ip\": \"$RUNNER_IP\"}"
 
       - name: Wait for whitelist to propagate
