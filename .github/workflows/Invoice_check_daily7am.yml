@@ -1,10 +1,8 @@
 name: Invoice Check 7AM IST
-
 on:
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch:
-
 jobs:
   run-tests:
     runs-on: ubuntu-latest
@@ -15,7 +13,6 @@ jobs:
       VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
       BROWSER: ${{ secrets.BROWSER }}
       TIMEOUT: ${{ secrets.TIMEOUT }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,6 +35,18 @@ jobs:
           date -u
           echo "Runner Time:"
           date
+
+      - name: Whitelist Runner IP
+        run: |
+          RUNNER_IP=$(curl -s https://api.ipify.org)
+          echo "Runner IP: $RUNNER_IP"
+          curl -s -X POST "${{ secrets.WHITELIST_API_URL }}" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.WHITELIST_API_KEY }}" \
+            -d "{\"ip\": \"$RUNNER_IP\"}"
+
+      - name: Wait for whitelist to propagate
+        run: sleep 5
 
       - name: Run State Wise Data Loading Test
         run: |
