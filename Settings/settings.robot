@@ -18,9 +18,16 @@ Open Browser With Options
     ...    sys, selenium.webdriver
     Create WebDriver    Chrome    options=${options}
     Go To    ${BASE_URL}
-    Add Cookie    access_token    ${ACCESS_TOKEN}    domain=20.235.55.214    path=/
-    Add Cookie    refresh_token    ${REFRESH_TOKEN}    domain=20.235.55.214    path=/
-    Go To    ${BASE_URL}
+
+    ${access_token}=     Get Variable Value    ${ACCESS_TOKEN}    ${EMPTY}
+    ${refresh_token}=    Get Variable Value    ${REFRESH_TOKEN}    ${EMPTY}
+
+    IF    '${access_token}' != '${EMPTY}' and '${refresh_token}' != '${EMPTY}'
+        Add Cookie    access_token    ${access_token}    domain=20.235.55.214    path=/
+        Add Cookie    refresh_token    ${refresh_token}    domain=20.235.55.214    path=/
+        Go To    ${BASE_URL}
+    END
+
     Run Keyword If    not ${HEADLESS}    Maximize Browser Window
     Set Selenium Timeout    20s
 
