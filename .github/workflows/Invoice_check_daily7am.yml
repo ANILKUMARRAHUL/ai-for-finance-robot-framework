@@ -36,21 +36,31 @@ jobs:
           echo "Runner Time:"
           date
 
-      - name: Whitelist Runner IP
+      - name: Get Auth Tokens
         run: |
-          RUNNER_IP=$(curl -s https://api.ipify.org)
-          echo "Runner IP: $RUNNER_IP"
-          curl -s -X POST "${{ secrets.WHITELIST_API_URL }}" \
+          RESPONSE_HEADERS=$(curl -s -D - -o /dev/null -X POST "http://20.235.55.214/api/v1/account/login/" \
             -H "Content-Type: application/json" \
-            -u "${{ secrets.VALID_USERNAME }}:${{ secrets.VALID_PASSWORD }}"
-            -d "{\"ip\": \"$RUNNER_IP\"}"
+            -d "{\"username\": \"${VALID_USERNAME}\", \"password\": \"${VALID_PASSWORD}\"}")
 
-      - name: Wait for whitelist to propagate
-        run: sleep 5
+          ACCESS_TOKEN=$(echo "$RESPONSE_HEADERS" | grep -i '^set-cookie: access_token=' | sed -E 's/^[Ss]et-[Cc]ookie: access_token=([^;]+);.*/\1/' | tr -d '\r')
+          REFRESH_TOKEN=$(echo "$RESPONSE_HEADERS" | grep -i '^set-cookie: refresh_token=' | sed -E 's/^[Ss]et-[Cc]ookie: refresh_token=([^;]+);.*/\1/' | tr -d '\r')
+
+          if [ -z "$ACCESS_TOKEN" ] || [ -z "$REFRESH_TOKEN" ]; then
+            echo "Failed to extract tokens from login response headers"
+            exit 1
+          fi
+
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "::add-mask::$REFRESH_TOKEN"
+          echo "ACCESS_TOKEN=$ACCESS_TOKEN" >> "$GITHUB_ENV"
+          echo "REFRESH_TOKEN=$REFRESH_TOKEN" >> "$GITHUB_ENV"
 
       - name: Run State Wise Data Loading Test
         run: |
-          robot --variable HEADLESS:True -d results -t "Validate State Wise Data Loading" Testcases/InvoiceCheck/dashboard_testcases.robot
+          robot --variable HEADLESS:True \
+                --variable ACCESS_TOKEN:${{ env.ACCESS_TOKEN }} \
+                --variable REFRESH_TOKEN:${{ env.REFRESH_TOKEN }} \
+                -d results -t "Validate State Wise Data Loading" Testcases/InvoiceCheck/dashboard_testcases.robot
 
       - name: Upload results
         if: always()
