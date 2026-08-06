@@ -60,7 +60,7 @@ Validate Dashboard Custom Month Range Filter Carries Over To Reports Page
 
 Validate State Wise Data Loading
     [Tags]    dashboard    filter    state
-    # Login To Application       ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Login To Application       ${VALID_USERNAME}    ${VALID_PASSWORD}
     # Verify Login Successful
     # Verify Home Page Loaded
     Open Invoice Check Module
