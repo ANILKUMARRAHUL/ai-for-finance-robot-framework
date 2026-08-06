@@ -26,6 +26,10 @@ Open Browser With Options
         Add Cookie    access_token    ${access_token}    domain=20.235.55.214    path=/
         Add Cookie    refresh_token    ${refresh_token}    domain=20.235.55.214    path=/
         Go To    ${BASE_URL}
+        Sleep    3s
+        ${current_url}=    Get Location
+        Log To Console    \nAfter cookie login, landed on: ${current_url}
+        Capture Page Screenshot    after_cookie_login.png
     END
 
     Run Keyword If    not ${HEADLESS}    Maximize Browser Window
