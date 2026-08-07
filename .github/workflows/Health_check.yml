@@ -36,17 +36,38 @@ jobs:
           echo "Runner Time:"
           date
 
+      - name: Show Runner IP
+        run: |
+          echo "GitHub Actions runner public IP:"
+          curl -s https://api.ipify.org
+          echo ""
+
       - name: Get Auth Tokens
         run: |
-          RESPONSE_HEADERS=$(curl -s -D - -o /dev/null -X POST "http://20.235.55.214/api/v1/account/login/" \
+          LOGIN_URL="${BASE_URL%/}/api/v1/account/login/"
+          echo "Hitting login endpoint: $LOGIN_URL"
+
+          HTTP_STATUS=$(curl -s -D headers.txt -o body.txt -w "%{http_code}" -X POST "$LOGIN_URL" \
             -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
             -d "{\"username\": \"${VALID_USERNAME}\", \"password\": \"${VALID_PASSWORD}\"}")
+
+          echo "HTTP Status Code: $HTTP_STATUS"
+          echo "--- Response Headers ---"
+          cat headers.txt
+          echo "--- Response Body (first 500 chars) ---"
+          head -c 500 body.txt
+          echo ""
+
+          RESPONSE_HEADERS=$(cat headers.txt)
 
           ACCESS_TOKEN=$(echo "$RESPONSE_HEADERS" | grep -i '^set-cookie: access_token=' | sed -E 's/^[Ss]et-[Cc]ookie: access_token=([^;]+);.*/\1/' | tr -d '\r')
           REFRESH_TOKEN=$(echo "$RESPONSE_HEADERS" | grep -i '^set-cookie: refresh_token=' | sed -E 's/^[Ss]et-[Cc]ookie: refresh_token=([^;]+);.*/\1/' | tr -d '\r')
 
           if [ -z "$ACCESS_TOKEN" ] || [ -z "$REFRESH_TOKEN" ]; then
             echo "Failed to extract tokens from login response headers"
+            echo "This likely means the request was redirected to SSO or blocked instead of reaching the real login API."
             exit 1
           fi
 
