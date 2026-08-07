@@ -18,21 +18,37 @@ Open Browser With Options
     ...    sys, selenium.webdriver
     Create WebDriver    Chrome    options=${options}
 
-    ${access_token}=     Get Variable Value    ${ACCESS_TOKEN}    ${EMPTY}
-    ${refresh_token}=    Get Variable Value    ${REFRESH_TOKEN}    ${EMPTY}
+    ${clean_base_url}=    Remove String Using Regexp    ${BASE_URL}    /+$    ${EMPTY}
+
+    ${access_token}=          Get Variable Value    ${ACCESS_TOKEN}          ${EMPTY}
+    ${refresh_token}=         Get Variable Value    ${REFRESH_TOKEN}         ${EMPTY}
+    ${user_json_b64}=         Get Variable Value    ${USER_JSON_B64}         ${EMPTY}
+    ${user_access_json_b64}=  Get Variable Value    ${USER_ACCESS_JSON_B64}  ${EMPTY}
 
     IF    '${access_token}' != '${EMPTY}' and '${refresh_token}' != '${EMPTY}'
-        Go To    ${BASE_URL}
-        Add Cookie    access_token    ${access_token}    domain=20.235.55.214    path=/
-        Add Cookie    refresh_token    ${refresh_token}    domain=20.235.55.214    path=/
-        Go To    ${BASE_URL}/invoice-check/dashboard
+        Go To    ${clean_base_url}
+
+        Add Cookie    access_token    ${access_token}    path=/
+        Add Cookie    refresh_token    ${refresh_token}    path=/
+
+        IF    '${user_json_b64}' != '${EMPTY}'
+            ${user_json}=    Evaluate    __import__('base64').b64decode('''${user_json_b64}''').decode('utf-8')
+            Execute Javascript    localStorage.setItem('user', arguments[0]);    ARGUMENTS    ${user_json}
+        END
+
+        IF    '${user_access_json_b64}' != '${EMPTY}'
+            ${user_access_json}=    Evaluate    __import__('base64').b64decode('''${user_access_json_b64}''').decode('utf-8')
+            Execute Javascript    localStorage.setItem('user_access', arguments[0]);    ARGUMENTS    ${user_access_json}
+        END
+
+        Go To    ${clean_base_url}/invoice-check/dashboard?date_preset=month_till_date&date_column=voucher_date
 
         Wait Until Keyword Succeeds    20x    1s
         ...    Element Should Be Visible    ${DASHBOARD_HEADING}
 
         Capture Page Screenshot    after_cookie_login.png
     ELSE
-        Go To    ${BASE_URL}
+        Go To    ${clean_base_url}
     END
 
     Run Keyword If    not ${HEADLESS}    Maximize Browser Window
