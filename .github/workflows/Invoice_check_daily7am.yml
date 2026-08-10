@@ -36,31 +36,9 @@ jobs:
           echo "Runner Time:"
           date
 
-      - name: Get Auth Tokens
-        run: |
-          RESPONSE_HEADERS=$(curl -s -D - -o /dev/null -X POST "http://20.235.55.214/api/v1/account/login/" \
-            -H "Content-Type: application/json" \
-            -d "{\"username\": \"${VALID_USERNAME}\", \"password\": \"${VALID_PASSWORD}\"}")
-
-          ACCESS_TOKEN=$(echo "$RESPONSE_HEADERS" | grep -i '^set-cookie: access_token=' | sed -E 's/^[Ss]et-[Cc]ookie: access_token=([^;]+);.*/\1/' | tr -d '\r')
-          REFRESH_TOKEN=$(echo "$RESPONSE_HEADERS" | grep -i '^set-cookie: refresh_token=' | sed -E 's/^[Ss]et-[Cc]ookie: refresh_token=([^;]+);.*/\1/' | tr -d '\r')
-
-          if [ -z "$ACCESS_TOKEN" ] || [ -z "$REFRESH_TOKEN" ]; then
-            echo "Failed to extract tokens from login response headers"
-            exit 1
-          fi
-
-          echo "::add-mask::$ACCESS_TOKEN"
-          echo "::add-mask::$REFRESH_TOKEN"
-          echo "ACCESS_TOKEN=$ACCESS_TOKEN" >> "$GITHUB_ENV"
-          echo "REFRESH_TOKEN=$REFRESH_TOKEN" >> "$GITHUB_ENV"
-
       - name: Run State Wise Data Loading Test
         run: |
-          robot --variable HEADLESS:True \
-                --variable ACCESS_TOKEN:${{ env.ACCESS_TOKEN }} \
-                --variable REFRESH_TOKEN:${{ env.REFRESH_TOKEN }} \
-                -d results -t "Validate State Wise Data Loading" Testcases/InvoiceCheck/dashboard_testcases.robot
+          robot --variable HEADLESS:True -d results -t "Validate State Wise Data Loading" Testcases/InvoiceCheck/dashboard_testcases.robot
 
       - name: Upload results
         if: always()
