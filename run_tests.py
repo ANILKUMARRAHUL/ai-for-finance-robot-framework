@@ -26,7 +26,7 @@ def run_robot(test_path=None, test_name=None):
 
         command = [
             "robot",
-            "-v", "HEADLESS:False",
+            "-v", "HEADLESS:True",
             "-d", output_dir
         ]
 
