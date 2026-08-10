@@ -843,12 +843,12 @@ Element Should Be Clickable
 
 Validate State Wise Data Loading For All Filter Combinations
     # 5. Voucher Date + Month Till Date
-    # Scroll To Top
-    # Sleep    1s
-    # Select Date Column And Date Range Filter
-    # ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
-    # Select Each State And Verify Data Loads For Combination
-    # ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Voucher Date + Month Till Date
+    Scroll To Top
+    Sleep    1s
+    Select Date Column And Date Range Filter
+    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}
+    Select Each State And Verify Data Loads For Combination
+    ...    ${DATE_COLUMN_VOUCHER_DATE}    ${DATE_RANGE_MONTH_TILL_DATE}    Voucher Date + Month Till Date
 
     # # 6. Voucher Date + Last Month
     Scroll To Top
